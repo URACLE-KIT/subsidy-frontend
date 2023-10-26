@@ -180,6 +180,65 @@ header {
   margin-left: auto;
 }
 
+/* 상세페이지 */
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: #fff;
+  text-align: center;
+  width: 100%;
+  font-size: 11px;
+  padding: 0;
+}
+
+.tabs button {
+  flex: 1;
+  background-color: transparent;
+  border: none;
+  padding: 20px 15px;
+  border-bottom: 2px solid #999;
+  text-align: center;
+}
+
+.tabs button.active {
+  color: #6675fc;
+  border-bottom: 2px solid #6675fc;
+  font-weight: 800;
+}
+
+.tab-content {
+  background: #fff;
+  padding: 30px;
+}
+
+/* 정책소식 */
+.policy-image img {
+  width: 75px;
+  height: 75px;
+  border-radius: 10px;
+  margin-right: 20px;
+  float: left;
+}
+
+.latest-title {
+  font-size: 18px;
+  font-weight: 800;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  flex: 1;
+  overflow: hidden;
+  margin: 6px 0;
+}
+
+.latest-date {
+  font-size: 13px;
+}
+
+.count {
+  margin-top: 20px;
+}
+
 /* 메뉴 */
 .menu {
   display: flex;

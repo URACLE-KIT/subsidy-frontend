@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const policiesData = [
   {
@@ -83,19 +84,21 @@ const Custom = () => {
       <ul className="policy-list">
         {filteredPolicies.map((policy) => (
           <li key={policy.id} className="policy-item">
-            <button className="bookmark-button" onClick={() => toggleBookmark(policy.id)}>
-              {policy.bookmarked ? <FaBookmark /> : <FaRegBookmark />}
-            </button>
-            <div className="policy-details">
-              <div className="policy-agency">
-                {policy.agency}
+            <Link to={`/detail?id=${policy.id}`}> {/* Use Link component to navigate to /detail */}
+              <button className="bookmark-button" onClick={() => toggleBookmark(policy.id)}>
+                {policy.bookmarked ? <FaBookmark /> : <FaRegBookmark />}
+              </button>
+              <div className="policy-details">
+                <div className="policy-agency">
+                  {policy.agency}
+                </div>
+                <div className="policy-description">
+                  {policy.description}
+                </div>
+                <span className="policy-date">{calculateDaysRemaining(policy.date)}</span>
+                <span className="policy-title">{policy.title}</span>
               </div>
-              <div className="policy-description">
-                {policy.description}
-              </div>
-              <span className="policy-date">{calculateDaysRemaining(policy.date)}</span>
-              <span className="policy-title">{policy.title}</span>
-            </div>
+            </Link>
           </li>
         ))}
       </ul>
