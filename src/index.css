@@ -7,9 +7,10 @@
 
 body {
   font-family: 'NanumSquareNeo-Variable';
-  margin: 110px 0 0 0;
+  margin: 70px 0 130px 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: #f5f8fc;
 }
 
 a {
@@ -23,8 +24,140 @@ a:hover {
   opacity: 0.7;
 }
 
+/* 컨테이너 */
+.container {
+  width: calc(90% - 40px);
+  margin: 30px auto;
+  background: #fff;
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+
+.container h2 {
+  font-size: 13px;
+}
+
+/* 홈 */
+.category-group {
+  width: 90%;
+  margin: auto;
+  display: flex;
+  display: inline-block;
+  vertical-align: top;
+  min-width: 100%;
+  overflow-x: scroll;
+  white-space: nowrap;
+  padding: 10px 0;
+}
+
+.category {
+  display: inline-block;
+  width: 100px;
+  padding: 5px 15px;
+  border-radius: 10px;
+  margin: 0 0 0 20px;
+  white-space: nowrap;
+  background: #fff;
+}
+
+/* 맞춤 정책 */
+.filter-container {
+  display: flex;
+  overflow-x: scroll;
+  white-space: nowrap;
+  padding: 10px;
+}
+
+.filter-option {
+  padding: 5px 15px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-radius: 50px;
+  border: 1px solid;
+}
+
+.filter-option.active {
+  background-color: #555;
+  color: #fff;
+}
+
+.policy-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.policy-item {
+  margin: 10px 0;
+  padding: 15px 20px 25px 20px;
+  border-bottom: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.policy-item button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.policy-item button:focus {
+  outline: none;
+}
+
+.policy-item button:hover {
+  color: #555;
+}
+
+.policy-agency {
+  font-size: 13px;
+}
+
+.policy-description {
+  font-size: 14px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  flex: 1;
+  overflow: hidden;
+  color: #777;
+  margin: 6px 0;
+}
+
+.policy-date {
+  font-size: 12px;
+  color: #777;
+  background: #ffdada;
+  color: #ff7373;
+  padding: 5px 8px;
+  border-radius: 50px;
+}
+
+.policy-title {
+  font-size: 15px;
+  margin: 3px 10px;
+}
+
+.bookmark-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  float: right;
+  margin-top: 19px;
+}
+
+.bookmark-button:focus {
+  outline: none;
+}
+
+.bookmark-button:hover {
+  color: #555;
+}
+
 /* 헤더 */
 header {
+  background: #f5f8fc;
   display: flex;
   justify-content: space-between;
   align-items: center;
