@@ -1,8 +1,8 @@
-import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './layout/Header';
 import Footer from './layout/Footer';
-import Main from './pages/Main/Main';
+import Menu from './layout/Menu';
+import Main from './pages/Main';
 
 function App() {
   return (
@@ -11,9 +11,8 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Main />}></Route>
-          <Route path="/signup" element={<Signup />}></Route>
-          <Route path="/login" element={<Login />}></Route>
         </Routes>
+        <Menu />
       </BrowserRouter>
     </>
   );
