@@ -52,6 +52,10 @@ input {
   font-size: 13px;
 }
 
+.container h3 {
+  text-align: center;
+}
+
 /* 홈 */
 .category-group {
   width: 90%;

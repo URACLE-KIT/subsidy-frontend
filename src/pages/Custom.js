@@ -57,10 +57,14 @@ const Custom = () => {
     const policyDate = new Date(date);
     const timeDifference = policyDate.getTime() - currentDate.getTime();
     const daysRemaining = Math.ceil(timeDifference / (1000 * 3600 * 24));
-    if (daysRemaining === 0) {
+
+    if (daysRemaining < 0) {
+      return `D+${Math.abs(daysRemaining)}`;
+    } else if (daysRemaining === 0) {
       return 'D-DAY';
+    } else {
+      return `D-${daysRemaining}`;
     }
-    return `D-${Math.abs(daysRemaining)}`;
   };
 
   const filteredPolicies = filter === "전체" ? policies : policies.filter((policy) => policy.category === filter);
@@ -86,11 +90,11 @@ const Custom = () => {
           <li key={policy.id} className="policy-item">
             <Link to={`/detail?id=${policy.id}`}>
               <button
-              className="bookmark-button"
-              onClick={(e) => {
-                e.preventDefault();
-                toggleBookmark(policy.id);
-              }}>
+                className="bookmark-button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  toggleBookmark(policy.id);
+                }}>
                 {policy.bookmarked ? <FaBookmark /> : <FaRegBookmark />}
               </button>
               <div className="policy-details">
