@@ -333,6 +333,6 @@ header {
   transition: 0.3s;
 }
 
-.menu a:hover {
+.menu a:hover, .menu a.active {
   background-color: #555;
 }
