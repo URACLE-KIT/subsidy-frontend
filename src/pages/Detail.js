@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaBookmark, FaRegBookmark, FaShare } from 'react-icons/fa';
+import { BsPersonFill, BsFileText, BsGift, BsCalendar } from 'react-icons/bs';
 import { useLocation } from 'react-router-dom';
 
 const policiesData = [
@@ -60,7 +61,6 @@ const Detail = () => {
       const timeDifference = endDate - currentDate;
 
       if (timeDifference > 0) {
-        // Calculate days left
         const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
         setCountdownLabel(`D-${daysLeft}`);
       } else if (timeDifference === 0) {
@@ -71,7 +71,6 @@ const Detail = () => {
     calculateCountdown();
   }, [policy.endDate]);
 
-  // Check the URL for the query parameter '&latest'
   const location = useLocation();
   const isLatest = location.search.includes('latest');
 
@@ -83,13 +82,21 @@ const Detail = () => {
             {policy.bookmarked ? <FaBookmark /> : <FaRegBookmark />}
           </button>
         </div>
-        <div>{policy.agency}</div>
-        <div>{policy.title}</div>
-        <div className="countdown">{countdownLabel}</div>
-        <div>지원대상&nbsp;&nbsp; {policy.target}</div>
-        <div>지원유형&nbsp;&nbsp; {policy.category}</div>
-        <div>지원혜택&nbsp;&nbsp; {policy.supportBenefit}</div>
-        <div className="dates">신청기간&nbsp;&nbsp; {policy.startDate}~{policy.endDate}</div>
+        <div className="policy-agency">{policy.agency}</div>
+        <div className="detail-title">{policy.title}</div>
+        <div className="policy-date">{countdownLabel}</div>
+        <div style={{ marginTop: '5px' }}>
+          <span className="sub-title"><BsPersonFill />&nbsp;&nbsp; 지원대상</span>{policy.target}
+        </div>
+        <div>
+          <span className="sub-title"><BsFileText />&nbsp;&nbsp; 지원유형</span>{policy.category}
+        </div>
+        <div>
+          <span className="sub-title"><BsGift />&nbsp;&nbsp; 지원혜택</span>{policy.supportBenefit}
+        </div>
+        <div>
+          <span className="sub-title"><BsCalendar />&nbsp;&nbsp; 신청기간</span>{policy.startDate}~{policy.endDate}
+        </div>
         <button className="share-button" onClick={handleShareClick}>
           <FaShare /> 공유하기
         </button>
@@ -108,36 +115,52 @@ const Detail = () => {
 
       {isLatest ? (
         <div className="tab-content">
-          {/* Show detail content for &latest */}
           <div className="tab-panel">상세 내용을 여기에 표시합니다.</div>
         </div>
       ) : (
-        <div className="tabs">
-          <button
-            className={`tab ${activeTab === '지원대상' ? 'active' : ''}`}
-            onClick={() => handleTabClick('지원대상')}
-          >
-            지원대상
-          </button>
-          <button
-            className={`tab ${activeTab === '지원내용' ? 'active' : ''}`}
-            onClick={() => handleTabClick('지원내용')}
-          >
-            지원내용
-          </button>
-          <button
-            className={`tab ${activeTab === '관련정보' ? 'active' : ''}`}
-            onClick={() => handleTabClick('관련정보')}
-          >
-            관련정보
-          </button>
-          <button
-            className={`tab ${activeTab === '신청방법' ? 'active' : ''}`}
-            onClick={() => handleTabClick('신청방법')}
-          >
-            신청방법
-          </button>
-        </div>
+        <>
+          <div className="tabs">
+            <button
+              className={`tab ${activeTab === '지원대상' ? 'active' : ''}`}
+              onClick={() => handleTabClick('지원대상')}
+            >
+              지원대상
+            </button>
+            <button
+              className={`tab ${activeTab === '지원내용' ? 'active' : ''}`}
+              onClick={() => handleTabClick('지원내용')}
+            >
+              지원내용
+            </button>
+            <button
+              className={`tab ${activeTab === '관련정보' ? 'active' : ''}`}
+              onClick={() => handleTabClick('관련정보')}
+            >
+              관련정보
+            </button>
+            <button
+              className={`tab ${activeTab === '신청방법' ? 'active' : ''}`}
+              onClick={() => handleTabClick('신청방법')}
+            >
+              신청방법
+            </button>
+          </div>
+
+          <div className="tab-content">
+            {activeTab === '지원대상' && (
+              <div className="tab-panel">지원 대상 내용</div>
+            )}
+            {activeTab === '지원내용' && (
+              <div className="tab-panel">지원 내용 내용</div>
+            )}
+            {activeTab === '관련정보' && (
+              <div className="tab-panel">관련 정보 내용</div>
+            )}
+            {activeTab === '신청방법' && (
+              <div className="tab-panel">신청 방법 내용</div>
+            )}
+          </div>
+        </>
       )}
     </>
   );

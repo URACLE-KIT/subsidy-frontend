@@ -24,6 +24,10 @@ a:hover {
   opacity: 0.7;
 }
 
+* {
+  vertical-align: middle;
+}
+
 /* 컨테이너 */
 .container {
   width: calc(90% - 40px);
@@ -31,6 +35,7 @@ a:hover {
   background: #fff;
   padding: 10px 20px;
   border-radius: 10px;
+  line-height: 1.9;
 }
 
 .container h2 {
@@ -125,6 +130,7 @@ a:hover {
 }
 
 .policy-date {
+  display: inline;
   font-size: 12px;
   color: #777;
   background: #ffdada;
@@ -181,6 +187,17 @@ header {
 }
 
 /* 상세페이지 */
+.detail-title {
+  font-size: 20px;
+  font-weight: 800;
+  margin-top: -10px;
+}
+
+.sub-title {
+  color: #999;
+  margin-right: 15px;
+}
+
 .tabs {
   display: flex;
   justify-content: space-around;
