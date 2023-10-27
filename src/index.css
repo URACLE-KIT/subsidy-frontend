@@ -186,6 +186,19 @@ header {
   margin-left: auto;
 }
 
+/* 후기 소식 */
+.review-count {
+  display: inline;
+  font-size: 12px;
+  color: #777;
+  background: #dae0ff;
+  color: #7394ff;
+  padding: 5px 8px;
+  margin-right: 10px;
+  border-radius: 50px;
+  float: right;
+}
+
 /* 상세페이지 */
 .detail-title {
   font-size: 20px;
@@ -265,6 +278,23 @@ header {
 
 .count {
   margin-top: 20px;
+}
+
+.count span {
+  margin-right: 15px;
+}
+
+.latest-btn {
+  position: fixed;
+  right: 30px;
+  bottom: 120px;
+  border-radius: 50px;
+  width: 65px;
+  height: 65px;
+  font-size: 20px;
+  background: #dae0ff;
+  border: none;
+  box-shadow: inset 3px 3px 6px #e5ece6, 2px 2px 4px #e5ece6;
 }
 
 /* 메뉴 */
