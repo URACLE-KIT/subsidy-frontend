@@ -84,8 +84,13 @@ const Custom = () => {
       <ul className="policy-list">
         {filteredPolicies.map((policy) => (
           <li key={policy.id} className="policy-item">
-            <Link to={`/detail?id=${policy.id}`}> {/* Use Link component to navigate to /detail */}
-              <button className="bookmark-button" onClick={() => toggleBookmark(policy.id)}>
+            <Link to={`/detail?id=${policy.id}`}>
+              <button
+              className="bookmark-button"
+              onClick={(e) => {
+                e.preventDefault();
+                toggleBookmark(policy.id);
+              }}>
                 {policy.bookmarked ? <FaBookmark /> : <FaRegBookmark />}
               </button>
               <div className="policy-details">
