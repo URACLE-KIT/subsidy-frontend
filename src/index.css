@@ -6,7 +6,6 @@
 }
 
 body {
-  font-family: 'NanumSquareNeo-Variable';
   margin: 70px 0 130px 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -25,6 +24,7 @@ a:hover {
 }
 
 * {
+  font-family: 'NanumSquareNeo-Variable';
   vertical-align: middle;
 }
 
@@ -244,15 +244,14 @@ header {
 
 .search-input input[type="text"] {
   width: 100%;
-  padding: 8px;
-  padding-left: 30px;
+  padding: 8px 30px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 
 .search-icon {
   position: absolute;
-  margin-left: -220px;
+  margin-left: -225px;
   margin-top: -14px;
 }
 
@@ -262,7 +261,7 @@ header {
 
 .close-icon {
   position: absolute;
-  margin-left: -30px;
+  margin-left: -25px;
   margin-top: -14px;
 }
 
