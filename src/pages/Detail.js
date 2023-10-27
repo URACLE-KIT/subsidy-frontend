@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaBookmark, FaRegBookmark, FaShare } from 'react-icons/fa';
+import { FaBookmark, FaRegBookmark, FaExternalLinkAlt, FaPencilAlt } from 'react-icons/fa';
 import { BsPersonFill, BsFileText, BsGift, BsCalendar } from 'react-icons/bs';
 import { useLocation } from 'react-router-dom';
 
@@ -97,11 +97,11 @@ const Detail = () => {
         <div>
           <span className="sub-title"><BsCalendar />&nbsp;&nbsp; 신청기간</span>{policy.startDate}~{policy.endDate}
         </div>
-        <button className="share-button" onClick={handleShareClick}>
-          <FaShare /> 공유하기
+        <button className="detail-button" onClick={handleShareClick}>
+          <FaExternalLinkAlt /> 공유하기
         </button>
-        <button>
-          <FaShare /> 후기글 작성
+        <button className="detail-button">
+          <FaPencilAlt /> 후기글 작성
         </button>
         {showShareModal && (
           <div className="share-modal">
