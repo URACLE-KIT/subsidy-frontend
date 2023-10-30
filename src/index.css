@@ -6,7 +6,6 @@
 }
 
 body {
-  font-family: 'NanumSquareNeo-Variable';
   margin: 70px 0 130px 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -25,7 +24,18 @@ a:hover {
 }
 
 * {
+  font-family: 'NanumSquareNeo-Variable';
   vertical-align: middle;
+}
+
+input {
+  padding: 14px;
+  margin: 8px 0 20px 0;
+  width: calc(100% - 28px);
+  max-width: 330px;
+  border: 2px solid rgba(0, 0, 0, .1);
+  border-radius: 5px;
+  box-shadow: inset -3px -3px 6px #fff, inset 2px 2px 5px #e6e6e6;
 }
 
 /* 컨테이너 */
@@ -40,6 +50,10 @@ a:hover {
 
 .container h2 {
   font-size: 13px;
+}
+
+.container h3 {
+  text-align: center;
 }
 
 /* 홈 */
@@ -186,6 +200,84 @@ header {
   margin-left: auto;
 }
 
+.search-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  overflow: hidden;
+  transition: height 0.3s, opacity 0.3s;
+  opacity: 0;
+}
+
+.search-modal.open {
+  height: 100%;
+  opacity: 1;
+}
+
+.close-search {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+  font-size: 30px;
+  color: #ff7373;
+}
+
+.close-search:hover {
+  transform: scale(1.2);
+}
+
+.search-input {
+  display: flex;
+  align-items: center;
+}
+
+.search-input input[type="text"] {
+  width: 100%;
+  padding: 8px 30px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.search-icon {
+  position: absolute;
+  margin-left: -225px;
+  margin-top: -14px;
+}
+
+.search-input svg {
+  color: #999;
+}
+
+.close-icon {
+  position: absolute;
+  margin-left: -25px;
+  margin-top: -14px;
+}
+
+/* 후기 소식 */
+.review-count {
+  display: inline;
+  font-size: 12px;
+  color: #777;
+  background: #dae0ff;
+  color: #7394ff;
+  padding: 5px 8px;
+  margin-right: 10px;
+  border-radius: 50px;
+  float: right;
+}
+
 /* 상세페이지 */
 .detail-title {
   font-size: 20px;
@@ -267,6 +359,23 @@ header {
   margin-top: 20px;
 }
 
+.count span {
+  margin-right: 15px;
+}
+
+.latest-btn {
+  position: fixed;
+  right: 30px;
+  bottom: 120px;
+  border-radius: 50px;
+  width: 65px;
+  height: 65px;
+  font-size: 20px;
+  background: #dae0ff;
+  border: none;
+  box-shadow: inset 3px 3px 6px #e5ece6, 2px 2px 4px #e5ece6;
+}
+
 /* 메뉴 */
 .menu {
   display: flex;
@@ -274,7 +383,6 @@ header {
   align-items: center;
   background-color: #333;
   color: #fff;
-  padding: 10px 0;
   text-align: center;
   position: fixed;
   bottom: 0;
@@ -299,10 +407,12 @@ header {
 .menu a {
   text-decoration: none;
   color: #fff;
-  padding: 10px 15px;
+  padding: 20px 15px;
   transition: 0.3s;
+  width: 110px;
+  height: 50px;
 }
 
-.menu a:hover {
+.menu a:hover, .menu a.active {
   background-color: #555;
 }

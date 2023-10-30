@@ -1,14 +1,21 @@
-import { Link } from "react-router-dom";
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
 import { FiHome, FiFileText, FiActivity, FiBook, FiUser } from 'react-icons/fi';
 
 const Menu = () => {
+    const location = useLocation();
+
+    const isActive = (pathname) => {
+        return location.pathname === pathname;
+    };
+
     return (
         <div className="menu">
-            <Link to="/"><FiHome className="menu-icon" /><p>홈</p></Link>
-            <Link to="/custom"><FiFileText className="menu-icon" /><p>맞춤 정책</p></Link>
-            <Link to="/local-news"><FiActivity className="menu-icon" /><p>후기 소식</p></Link>
-            <Link to="/latest"><FiBook className="menu-icon" /><p>정책 소식</p></Link>
-            <Link to="/mypage"><FiUser className="menu-icon" /><p>마이페이지</p></Link>
+            <Link to="/" className={isActive('/') ? 'active' : ''}><FiHome className="menu-icon" /><p>홈</p></Link>
+            <Link to="/custom" className={isActive('/custom') ? 'active' : ''}><FiFileText className="menu-icon" /><p>맞춤 정책</p></Link>
+            <Link to="/review" className={isActive('/review') ? 'active' : ''}><FiActivity className="menu-icon" /><p>후기 소식</p></Link>
+            <Link to="/latest" className={isActive('/latest') ? 'active' : ''}><FiBook className="menu-icon" /><p>정책 소식</p></Link>
+            <Link to="/mypage" className={isActive('/mypage') ? 'active' : ''}><FiUser className="menu-icon" /><p>마이페이지</p></Link>
         </div>
     );
 };
