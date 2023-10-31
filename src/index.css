@@ -38,12 +38,51 @@ input {
   box-shadow: inset -3px -3px 6px #fff, inset 2px 2px 5px #e6e6e6;
 }
 
+select {
+  padding: 14px;
+  margin: 8px 0 20px 0;
+  width: 100%;
+  max-width: 330px;
+  border: 2px solid rgba(0, 0, 0, .1);
+  border-radius: 5px;
+  box-shadow: inset -3px -3px 6px #fff, inset 2px 2px 5px #e6e6e6;
+}
+
+textarea {
+  resize: none;
+  padding: 14px;
+  margin: 8px 0 20px 0;
+  height: 140px;
+  width: calc(100% - 28px);
+  max-width: 330px;
+  border: 2px solid rgba(0, 0, 0, .1);
+  border-radius: 5px;
+  box-shadow: inset -3px -3px 6px #fff, inset 2px 2px 5px #e6e6e6;
+}
+
+button {
+  display: inline;
+  width: 100%;
+  max-width: 358px;
+  background: #dae0ff;
+  border: none;
+  border-radius: 50px;
+  transition: 0.4s;
+  cursor: pointer;
+  margin-top: -13px;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+button:hover {
+  opacity: 0.7;
+}
+
 /* 컨테이너 */
 .container {
   width: calc(90% - 40px);
   margin: 30px auto;
   background: #fff;
-  padding: 10px 20px;
+  padding: 15px 20px;
   border-radius: 10px;
   line-height: 1.9;
 }
@@ -112,6 +151,10 @@ input {
   padding: 15px 20px 25px 20px;
   border-bottom: 1px solid #ccc;
   background-color: #fff;
+}
+
+.policy-item:last-child {
+  border: none;
 }
 
 .policy-item button {
@@ -244,7 +287,7 @@ header {
 
 .search-input input[type="text"] {
   width: 100%;
-  padding: 8px 30px;
+  padding: 8px 30px 8px 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
@@ -413,6 +456,264 @@ header {
   height: 50px;
 }
 
-.menu a:hover, .menu a.active {
+.menu a:hover,
+.menu a.active {
   background-color: #555;
+}
+
+/* 마이페이지 */
+.name {
+  font-weight: 700;
+}
+
+.mycount {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 11px;
+  background: #eee;
+  padding: 20px 10px;
+  margin: 10px 0;
+  border-radius: 10px;
+}
+
+.mycount a {
+  display: flex;
+  align-items: center;
+}
+
+.mycount p.num {
+  margin: 0;
+  text-align: center;
+  display: inline;
+}
+
+.mycount .num {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  font-weight: 900;
+}
+
+.mycount span {
+  cursor: pointer;
+  padding: 0 25px;
+}
+
+.mycount .line {
+  border-left: 1px solid #999;
+  border-right: 1px solid #999;
+}
+
+.setting-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  float: right;
+  margin-top: -10px;
+}
+
+.custom-button {
+  background: #6675fc;
+  border: 1px solid #6675fc;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 15px 10px;
+}
+
+.custom-button a {
+  color: #fff;
+}
+
+.modify-btn {
+  border-radius: 50px;
+  width: 100%;
+  background: #dae0ff;
+  border: none;
+  padding: 10px 0;
+  margin-top: 30px;
+  box-shadow: inset 3px 3px 6px #e5ece6, 2px 2px 4px #e5ece6;
+}
+
+/* 로그인 & 회원가입 */
+.to-login {
+  background: transparent;
+  border: 1px solid #6675fc;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 15px 10px;
+  color: #6675fc;
+}
+
+.to-signup {
+  background: #6675fc;
+  border: 1px solid #6675fc;
+  border-radius: 10px;
+  width: 100%;
+  margin: 10px 0;
+  padding: 15px 10px;
+}
+
+.to-signup a {
+  color: #fff;
+}
+
+.login-btn {
+  border-radius: 50px;
+  width: 100%;
+  background: #dae0ff;
+  border: none;
+  padding: 10px 0;
+  margin-top: calc(50vh - 105px);
+  box-shadow: inset 3px 3px 6px #e5ece6, 2px 2px 4px #e5ece6;
+}
+
+.signup-btn {
+  border-radius: 50px;
+  width: 100%;
+  background: #dae0ff;
+  border: none;
+  padding: 10px 0;
+  margin: 30px 0;
+  box-shadow: inset 3px 3px 6px #e5ece6, 2px 2px 4px #e5ece6;
+}
+
+.password-input {
+  position: relative;
+}
+
+.password-icon {
+  position: absolute;
+  top: calc(50% + 10px);
+  transform: translateY(-50%);
+  right: 15px;
+  cursor: pointer;
+}
+
+/* 설정 */
+.section {
+  margin-bottom: 40px;
+}
+
+.section svg {
+  color: #999;
+  float: right;
+  padding-top: 8px;
+}
+
+.section .title {
+  font-weight: 800;
+}
+
+.section .list {
+  width: 100%;
+  /* border-bottom: .2px solid #999 !important; */
+  transition: 0.4s;
+  padding: 3px;
+}
+
+.section p:hover {
+  background: #eee;
+}
+
+.withdraw {
+  text-align: right;
+  color: #999;
+  margin-bottom: 20px;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 20px;
+  z-index: 999;
+  border-radius: 10px;
+  box-shadow: 0px 2px 4px 0px #eceae5;
+  padding: 20px;
+  width: 80%;
+  max-width: 550px;
+  text-align: center;
+}
+
+.modal * {
+  text-align: center;
+}
+
+.modal button {
+  display: inline;
+  margin-top: 14px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background: #A9EAFE;
+  border: none;
+  border-radius: 50px;
+  transition: 0.4s;
+  cursor: pointer;
+  white-space: normal;
+  overflow-wrap: break-word;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.modal .close-button {
+  background: transparent;
+  width: 50px;
+  height: 50px;
+  box-shadow: none;
+  margin-top: -10px;
+  margin-right: calc(-80% - 25px);
+  margin-bottom: -25px;
+  color: #ff7373;
+}
+
+.blur {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+  z-index: 998;
+}
+
+.content {
+  max-height: 60vh;
+  overflow-y: auto;
+  text-align: left;
+}
+
+.content * {
+  text-align: left;
+  line-height: 1.5;
+}
+
+.faq {
+  background: transparent !important;
+  box-shadow: none !important;
+  height: 100%;
+}
+
+.fag p {
+  max-width: 40%;
+}
+
+.faq svg {
+  float: right;
+  padding: 20px 10px;
+}
+
+.question {
+  font-weight: 800 !important;
+}
+
+.answer {
+  padding: 0 25px;
+  font-size: 14px;
 }

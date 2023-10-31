@@ -39,8 +39,8 @@ const Latest = () => {
             <h3>새로 나온 정책 소식</h3>
             <ul className="policy-list">
                 {policiesData.map((policy) => (
-                    <Link to={`/detail?id=${policy.id}&latest`}>
-                        <li key={policy.id} className="policy-item">
+                    <li key={policy.id} className="policy-item">
+                        <Link to={`/detail?id=${policy.id}&latest`}>
                             <div className="policy-details">
                                 <div className="policy-image">
                                     <img src={process.env.PUBLIC_URL + '/image1.jpg'} alt="Image" />
@@ -56,8 +56,8 @@ const Latest = () => {
                                     <span><BsChatLeftDots /> {policy.comment}</span>
                                 </div>
                             </div>
-                        </li>
-                    </Link>
+                        </Link>
+                    </li>
                 ))}
             </ul>
 

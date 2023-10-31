@@ -43,8 +43,8 @@ const Latest = () => {
             <h3>후기글 모음</h3>
             <ul className="policy-list">
                 {policiesData.map((policy) => (
-                    <Link to={`/detail?id=${policy.id}&latest`}>
-                        <li key={policy.id} className="policy-item">
+                    <li key={policy.id} className="policy-item">
+                        <Link to={`/detail?id=${policy.id}&latest`}>
                             <div className="policy-details">
                                 <div className="policy-info">
                                     <div className="latest-title">
@@ -58,8 +58,8 @@ const Latest = () => {
                                     <div className="review-count">{policy.subsidy}</div>
                                 </div>
                             </div>
-                        </li>
-                    </Link>
+                        </Link>
+                    </li>
                 ))}
             </ul>
         </div>

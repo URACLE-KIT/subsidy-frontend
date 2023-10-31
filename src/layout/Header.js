@@ -34,27 +34,28 @@ const Header = () => {
     return (
         <header>
             <div className="title">
-                <Link to="/">제목</Link>
+                <Link to="/">보조알리미</Link>
             </div>
             <div className="util">
                 <div className="util-btn" onClick={toggleSearch}>
                     <FaSearch />
                 </div>
-                <div className="util-btn">
+                {/* <div className="util-btn">
                     <FaBell />
-                </div>
+                </div> */}
             </div>
             {isSearchOpen && (
                 <div
                     className={`search-modal ${isSearchOpen ? 'open' : ''}`}
-                    // onClick={(e) => {
-                    //     if (e.target.classList.contains('search-modal')) {
-                    //         closeSearch();
-                    //     }
-                    // }}
+                // onClick={(e) => {
+                //     if (e.target.classList.contains('search-modal')) {
+                //         closeSearch();
+                //     }
+                // }}
                 >
                     <div className="search-content">
-                        <button onClick={closeSearch} className="close-search">
+                        <button onClick={closeSearch} className="close-search"
+                            style={{ boxShadow: 'none', width: 'auto', marginTop: 0 }}>
                             <RiCloseFill />
                         </button>
 
@@ -75,7 +76,7 @@ const Header = () => {
                                         setSearchText('');
                                     }}
                                 />
-                                <FaSearch className="search-icon" onClick={handleSearch} />
+                                {/* <FaSearch className="search-icon" onClick={handleSearch} /> */}
                             </div>
                         </div>
                     </div>
