@@ -244,7 +244,7 @@ header {
 
 .search-input input[type="text"] {
   width: 100%;
-  padding: 8px 30px;
+  padding: 8px 30px 8px 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }

@@ -75,7 +75,7 @@ const Header = () => {
                                         setSearchText('');
                                     }}
                                 />
-                                <FaSearch className="search-icon" onClick={handleSearch} />
+                                {/* <FaSearch className="search-icon" onClick={handleSearch} /> */}
                             </div>
                         </div>
                     </div>

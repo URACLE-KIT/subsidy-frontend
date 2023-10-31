@@ -7,8 +7,17 @@ import Custom from './pages/Custom';
 import Latest from './pages/Latest';
 import Detail from './pages/Detail';
 import Review from './pages/Review';
+import { useEffect } from 'react';
 
 function App() {
+  useEffect(() => {
+    // mount 되는 시점에 호출되는 이벤트
+    M.pop.alert('hello world')
+    return () => {
+      // unmount 되는 시점에 호출되는 이벤트
+    }
+  })
+
   return (
     <>
       <BrowserRouter>
