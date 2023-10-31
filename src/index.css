@@ -38,6 +38,16 @@ input {
   box-shadow: inset -3px -3px 6px #fff, inset 2px 2px 5px #e6e6e6;
 }
 
+select {
+  padding: 14px;
+  margin: 8px 0 20px 0;
+  width: 100%;
+  max-width: 330px;
+  border: 2px solid rgba(0, 0, 0, .1);
+  border-radius: 5px;
+  box-shadow: inset -3px -3px 6px #fff, inset 2px 2px 5px #e6e6e6;
+}
+
 textarea {
   resize: none;
   padding: 14px;
@@ -524,7 +534,7 @@ header {
   background: #dae0ff;
   border: none;
   padding: 10px 0;
-  margin-top: calc(50vh - 135px);
+  margin-top: 30px;
   box-shadow: inset 3px 3px 6px #e5ece6, 2px 2px 4px #e5ece6;
 }
 
@@ -659,6 +669,7 @@ header {
   margin-top: -10px;
   margin-right: calc(-80% - 25px);
   margin-bottom: -25px;
+  color: #ff7373;
 }
 
 .blur {
@@ -670,4 +681,39 @@ header {
   background: rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(5px);
   z-index: 998;
+}
+
+.content {
+  max-height: 60vh;
+  overflow-y: auto;
+  text-align: left;
+}
+
+.content * {
+  text-align: left;
+  line-height: 1.5;
+}
+
+.faq {
+  background: transparent !important;
+  box-shadow: none !important;
+  height: 100%;
+}
+
+.fag p {
+  max-width: 40%;
+}
+
+.faq svg {
+  float: right;
+  padding: 20px 10px;
+}
+
+.question {
+  font-weight: 800 !important;
+}
+
+.answer {
+  padding: 0 25px;
+  font-size: 14px;
 }

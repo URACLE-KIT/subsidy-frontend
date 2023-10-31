@@ -8,7 +8,6 @@ import Latest from './pages/Latest';
 import Detail from './pages/Detail';
 import Review from './pages/Review';
 import Mypage from './pages/Mypage';
-import Mycustom from './pages/Mycustom';
 import Profile from './pages/Profile';
 import Write from './pages/Write';
 import Login from './pages/Login';
@@ -37,7 +36,6 @@ function App() {
           <Route path="/detail" element={<Detail />}></Route>
           <Route path="/review" element={<Review />}></Route>
           <Route path="/mypage" element={<Mypage />}></Route>
-          <Route path="/mycustom" element={<Mycustom />}></Route>
           <Route path="/profile" element={<Profile />}></Route>
           <Route path="/write" element={<Write />}></Route>
           <Route path="/login" element={<Login />}></Route>

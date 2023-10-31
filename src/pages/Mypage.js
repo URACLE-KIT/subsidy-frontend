@@ -98,9 +98,9 @@ const Mypage = () => {
                     <span className='line' onClick={() => handleTabClick('스크랩')}>스크랩<br /><p className='num'>5</p></span>
                     <span onClick={() => handleTabClick('작성 댓글')}>작성 댓글<br /><p className='num'>0</p></span>
                 </div>
-                <button className="custom-button">
+                {/* <button className="custom-button">
                     <Link to='/mycustom'>내 맞춤정보</Link>
-                </button>
+                </button> */}
             </div>
 
 
