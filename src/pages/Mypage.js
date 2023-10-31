@@ -114,6 +114,13 @@ const Mypage = () => {
                 </button>
                 <button
                     style={{boxShadow: 'none', width: 'auto', marginTop: 0, borderRadius: 0}}
+                    className={`tab ${activeTab === '작성 글' ? 'active' : ''}`}
+                    onClick={() => handleTabClick('작성 글')}
+                >
+                    작성 글
+                </button>
+                <button
+                    style={{boxShadow: 'none', width: 'auto', marginTop: 0, borderRadius: 0}}
                     className={`tab ${activeTab === '작성 댓글' ? 'active' : ''}`}
                     onClick={() => handleTabClick('작성 댓글')}
                 >
@@ -152,6 +159,9 @@ const Mypage = () => {
                             ))}
                         </ul>
                     </div>
+                )}
+                {activeTab === '작성 글' && (
+                    <div className="tab-panel">작성 글 내용</div>
                 )}
                 {activeTab === '작성 댓글' && (
                     <div className="tab-panel">작성 댓글 내용</div>
