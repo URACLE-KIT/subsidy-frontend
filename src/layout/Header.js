@@ -34,7 +34,7 @@ const Header = () => {
     return (
         <header>
             <div className="title">
-                <Link to="/">제목</Link>
+                <Link to="/">보조알리미</Link>
             </div>
             <div className="util">
                 <div className="util-btn" onClick={toggleSearch}>

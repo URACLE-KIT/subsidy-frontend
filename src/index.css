@@ -43,7 +43,7 @@ input {
   width: calc(90% - 40px);
   margin: 30px auto;
   background: #fff;
-  padding: 10px 20px;
+  padding: 15px 20px;
   border-radius: 10px;
   line-height: 1.9;
 }
@@ -415,4 +415,127 @@ header {
 
 .menu a:hover, .menu a.active {
   background-color: #555;
+}
+
+/* 마이페이지 */
+.name {
+  font-weight: 700;
+}
+
+.mycount {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 11px;
+  background: #eee;
+  padding: 20px 10px;
+  margin: 10px 0;
+  border-radius: 10px;
+}
+
+.mycount a {
+  display: flex;
+  align-items: center;
+}
+
+.mycount p.num {
+  margin: 0;
+  text-align: center;
+  display: inline;
+}
+
+.mycount .num {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  font-weight: 900;
+}
+
+.mycount span {
+  cursor: pointer;
+  padding: 0 25px;
+}
+
+.mycount .line {
+  border-left: 1px solid #999;
+  border-right: 1px solid #999;
+}
+
+.setting-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  float: right;
+  margin-top: -10px;
+}
+
+.custom-button {
+  background: #6675fc;
+  border: 1px solid #6675fc;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 15px 10px;
+}
+
+.custom-button a {
+  color: #fff;
+}
+
+.modify-btn {
+  border-radius: 50px;
+  width: 100%;
+  background: #dae0ff;
+  border: none;
+  padding: 10px 0;
+  margin-top: calc(50vh - 135px);
+  box-shadow: inset 3px 3px 6px #e5ece6, 2px 2px 4px #e5ece6;
+}
+
+/* 로그인 & 회원가입 */
+.to-login {
+  background: transparent;
+  border: 1px solid #6675fc;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 15px 10px;
+  color: #6675fc;
+}
+
+.to-signup {
+  background: #6675fc;
+  border: 1px solid #6675fc;
+  border-radius: 10px;
+  width: 100%;
+  margin: 10px 0;
+  padding: 15px 10px;
+}
+
+.to-signup a {
+  color: #fff;
+}
+
+.login-btn {
+  border-radius: 50px;
+  width: 100%;
+  background: #dae0ff;
+  border: none;
+  padding: 10px 0;
+  margin-top: calc(50vh - 105px);
+  box-shadow: inset 3px 3px 6px #e5ece6, 2px 2px 4px #e5ece6;
+}
+
+.password-input {
+  position: relative;
+}
+
+.password-icon {
+  position: absolute;
+  top: calc(50% + 10px);
+  transform: translateY(-50%);
+  right: 15px;
+  cursor: pointer;
 }
