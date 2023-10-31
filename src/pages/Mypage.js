@@ -94,7 +94,7 @@ const Mypage = () => {
                     <Link to='/profile'><span className="sub-title">프로필 수정 <FaPencilAlt /></span></Link>
                 </div>
                 <div className="mycount">
-                    <Link to="/"><span>맞춤 정책<br /><p className='num'>56</p></span></Link>
+                    <Link to="/custom"><span>맞춤 정책<br /><p className='num'>56</p></span></Link>
                     <span className='line' onClick={() => handleTabClick('스크랩')}>스크랩<br /><p className='num'>5</p></span>
                     <span onClick={() => handleTabClick('작성 댓글')}>작성 댓글<br /><p className='num'>0</p></span>
                 </div>
