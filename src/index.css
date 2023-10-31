@@ -38,6 +38,18 @@ input {
   box-shadow: inset -3px -3px 6px #fff, inset 2px 2px 5px #e6e6e6;
 }
 
+textarea {
+  resize: none;
+  padding: 14px;
+  margin: 8px 0 20px 0;
+  height: 140px;
+  width: calc(100% - 28px);
+  max-width: 330px;
+  border: 2px solid rgba(0, 0, 0, .1);
+  border-radius: 5px;
+  box-shadow: inset -3px -3px 6px #fff, inset 2px 2px 5px #e6e6e6;
+}
+
 button {
   display: inline;
   width: 100%;

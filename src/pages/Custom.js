@@ -90,6 +90,7 @@ const Custom = () => {
           <li key={policy.id} className="policy-item">
             <Link to={`/detail?id=${policy.id}`}>
               <button
+                style={{boxShadow: 'none', width: 'auto', marginTop: 0}}
                 className="bookmark-button"
                 onClick={(e) => {
                   e.preventDefault();

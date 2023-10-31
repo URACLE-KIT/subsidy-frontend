@@ -48,12 +48,12 @@ const Mypage = () => {
     const [policies, setPolicies] = useState(policiesData);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            navigate('/required');
-        }
-    }, []);
+    // useEffect(() => {
+    //     const token = localStorage.getItem('token');
+    //     if (!token) {
+    //         navigate('/required');
+    //     }
+    // }, []);
 
     const toggleBookmark = (id) => {
         const updatedPolicies = policies.map((policy) =>
@@ -106,12 +106,14 @@ const Mypage = () => {
 
             <div className="tabs">
                 <button
+                    style={{boxShadow: 'none', width: 'auto', marginTop: 0, borderRadius: 0}}
                     className={`tab ${activeTab === '스크랩' ? 'active' : ''}`}
                     onClick={() => handleTabClick('스크랩')}
                 >
                     스크랩
                 </button>
                 <button
+                    style={{boxShadow: 'none', width: 'auto', marginTop: 0, borderRadius: 0}}
                     className={`tab ${activeTab === '작성 댓글' ? 'active' : ''}`}
                     onClick={() => handleTabClick('작성 댓글')}
                 >
@@ -127,6 +129,7 @@ const Mypage = () => {
                                 <li key={policy.id} className="policy-item">
                                     <Link to={`/detail?id=${policy.id}`}>
                                         <button
+                                            style={{boxShadow: 'none', width: 'auto', marginTop: 0}}
                                             className="bookmark-button"
                                             onClick={(e) => {
                                                 e.preventDefault();

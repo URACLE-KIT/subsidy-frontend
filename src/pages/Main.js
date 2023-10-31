@@ -83,13 +83,6 @@ const Main = () => {
         {customs.map((customs) => (
           <li key={customs.id} className="policy-item">
             <Link to={`/detail?id=${customs.id}`}>
-              <button
-                className="bookmark-button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  toggleBookmark(customs.id);
-                }}>
-              </button>
               <div className="policy-details">
                 <div className="policy-agency">
                   {customs.agency}
