@@ -79,7 +79,8 @@ const Detail = () => {
     <>
       <div className="container">
         <div className="header">
-          <button className="bookmark-button" onClick={toggleBookmark}>
+          <button className="bookmark-button" onClick={toggleBookmark}
+                style={{boxShadow: 'none', width: 'auto', marginTop: 0}}>
             {policy.bookmarked ? <FaBookmark /> : <FaRegBookmark />}
           </button>
         </div>
@@ -124,24 +125,28 @@ const Detail = () => {
         <>
           <div className="tabs">
             <button
+              style={{boxShadow: 'none', width: 'auto', marginTop: 0, borderRadius: 0}}
               className={`tab ${activeTab === '지원대상' ? 'active' : ''}`}
               onClick={() => handleTabClick('지원대상')}
             >
               지원대상
             </button>
             <button
+              style={{boxShadow: 'none', width: 'auto', marginTop: 0, borderRadius: 0}}
               className={`tab ${activeTab === '지원내용' ? 'active' : ''}`}
               onClick={() => handleTabClick('지원내용')}
             >
               지원내용
             </button>
             <button
+              style={{boxShadow: 'none', width: 'auto', marginTop: 0, borderRadius: 0}}
               className={`tab ${activeTab === '관련정보' ? 'active' : ''}`}
               onClick={() => handleTabClick('관련정보')}
             >
               관련정보
             </button>
             <button
+              style={{boxShadow: 'none', width: 'auto', marginTop: 0, borderRadius: 0}}
               className={`tab ${activeTab === '신청방법' ? 'active' : ''}`}
               onClick={() => handleTabClick('신청방법')}
             >
