@@ -528,6 +528,16 @@ header {
   box-shadow: inset 3px 3px 6px #e5ece6, 2px 2px 4px #e5ece6;
 }
 
+.signup-btn {
+  border-radius: 50px;
+  width: 100%;
+  background: #dae0ff;
+  border: none;
+  padding: 10px 0;
+  margin: 30px 0;
+  box-shadow: inset 3px 3px 6px #e5ece6, 2px 2px 4px #e5ece6;
+}
+
 .password-input {
   position: relative;
 }
