@@ -87,7 +87,7 @@ const Mypage = () => {
         <>
             <div className="container" style={{ padding: '30px 20px' }}>
                 <div className="header">
-                    <FiSettings className="setting-button" />
+                    <Link to='/setting'><FiSettings className="setting-button" /></Link>
                 </div>
                 <span className="name">홍길동님</span>
                 <div>

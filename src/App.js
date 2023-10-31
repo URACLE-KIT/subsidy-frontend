@@ -14,6 +14,7 @@ import Write from './pages/Write';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Required from './pages/Required';
+import Setting from './pages/Setting';
 import { useEffect } from 'react';
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
           <Route path="/login" element={<Login />}></Route>
           <Route path="/signup" element={<Signup />}></Route>
           <Route path="/required" element={<Required />}></Route>
+          <Route path="/setting" element={<Setting />}></Route>
         </Routes>
         <Menu />
       </BrowserRouter>
