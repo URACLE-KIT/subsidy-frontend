@@ -13,6 +13,17 @@ const Profile = () => {
         <label htmlFor="email">이메일</label>
         <input type="text" id="email" value="test@user.com" disabled />
       </div>
+      <div className="profile-field">
+        <label htmlFor="gender">성별</label>
+        <select id="gender">
+          <option value="남">남</option>
+          <option value="여">여</option>
+        </select>
+      </div>
+      <div className="profile-field">
+        <label htmlFor="birth">생년월일</label>
+        <input type="date" id="birth" />
+      </div>
 
       <button className="modify-btn">수정</button>
     </div>
