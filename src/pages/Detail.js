@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaBookmark, FaRegBookmark, FaExternalLinkAlt, FaPencilAlt } from 'react-icons/fa';
 import { BsPersonFill, BsFileText, BsGift, BsCalendar } from 'react-icons/bs';
 import { useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom/dist';
 
 const policiesData = [
   {
@@ -102,7 +103,9 @@ const Detail = () => {
           <FaExternalLinkAlt /> 공유하기
         </button>
         <button className="detail-button">
-          <FaPencilAlt /> 후기글 작성
+          <Link to="/write">
+            <FaPencilAlt /> 후기글 작성
+          </Link>
         </button>
         {showShareModal && (
           <div className="share-modal">
