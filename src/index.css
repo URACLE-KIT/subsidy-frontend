@@ -143,6 +143,10 @@ button:hover {
   background-color: #fff;
 }
 
+.policy-item:last-child {
+  border: none;
+}
+
 .policy-item button {
   background: none;
   border: none;
