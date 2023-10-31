@@ -40,21 +40,22 @@ const Header = () => {
                 <div className="util-btn" onClick={toggleSearch}>
                     <FaSearch />
                 </div>
-                <div className="util-btn">
+                {/* <div className="util-btn">
                     <FaBell />
-                </div>
+                </div> */}
             </div>
             {isSearchOpen && (
                 <div
                     className={`search-modal ${isSearchOpen ? 'open' : ''}`}
-                    // onClick={(e) => {
-                    //     if (e.target.classList.contains('search-modal')) {
-                    //         closeSearch();
-                    //     }
-                    // }}
+                // onClick={(e) => {
+                //     if (e.target.classList.contains('search-modal')) {
+                //         closeSearch();
+                //     }
+                // }}
                 >
                     <div className="search-content">
-                        <button onClick={closeSearch} className="close-search">
+                        <button onClick={closeSearch} className="close-search"
+                            style={{ boxShadow: 'none', width: 'auto', marginTop: 0 }}>
                             <RiCloseFill />
                         </button>
 
