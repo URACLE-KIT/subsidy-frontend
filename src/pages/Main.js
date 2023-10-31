@@ -71,7 +71,7 @@ const Main = () => {
             <p>203건</p>
         </div>
     
-        <div className="category">
+        <div className="category" style={{marginRight: '20px'}}>
             <h3>가족정책</h3>
             <p>301건</p>
         </div>
