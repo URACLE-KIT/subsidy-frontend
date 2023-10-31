@@ -99,7 +99,7 @@ const Mypage = () => {
                     <span onClick={() => handleTabClick('작성 댓글')}>작성 댓글<br /><p className='num'>0</p></span>
                 </div>
                 <button className="custom-button">
-                    <Link to='/custom'>내 맞춤정보</Link>
+                    <Link to='/mycustom'>내 맞춤정보</Link>
                 </button>
             </div>
 
