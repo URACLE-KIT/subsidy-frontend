@@ -48,12 +48,12 @@ const Mypage = () => {
     const [policies, setPolicies] = useState(policiesData);
     const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     const token = localStorage.getItem('token');
-    //     if (!token) {
-    //         navigate('/required');
-    //     }
-    // }, []);
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/required');
+        }
+    }, []);
 
     const toggleBookmark = (id) => {
         const updatedPolicies = policies.map((policy) =>
