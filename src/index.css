@@ -538,6 +538,30 @@ header {
   box-shadow: inset 3px 3px 6px #e5ece6, 2px 2px 4px #e5ece6;
 }
 
+.tag-button {
+  margin: 4px;
+  width: 30%;
+  height: 60px;
+  display: inline;
+  font-size: 12px;
+  color: black;
+  background: white;
+  padding: 5px 8px;
+  border: 1px solid #6675fc;
+  border-radius: 10px;
+  box-shadow: none;
+}
+.tag-button:hover {
+  opacity: 1;
+}
+.tag-savebutton {
+  margin-top: 30px;
+  height: 40px;
+}
+.tag-icon{
+  margin-bottom: 6px;
+}
+
 /* 로그인 & 회원가입 */
 .to-login {
   background: transparent;
@@ -717,3 +741,4 @@ header {
   padding: 0 25px;
   font-size: 14px;
 }
+
