@@ -2,6 +2,7 @@ import { useState } from "react";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import emailjs from 'emailjs-com';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -9,6 +10,7 @@ const Signup = () => {
     const [inputVerificationCode, setInputVerificationCode] = useState('');
     const [showVerificationInput, setShowVerificationInput] = useState(false);
     const storedVerificationCode = localStorage.getItem('verificationCode');
+    const navigate = useNavigate();
 
     const checkEmailExistence = async (email) => {
         const response = await fetch(`http://localhost:8080/auth/checkEmail/${email}`);
@@ -88,7 +90,7 @@ const Signup = () => {
             alert("회원가입이 완료되었습니다.");
             localStorage.removeItem('verificationCode');
             console.log("회원가입 응답:", response.data);
-            window.location.href = "/login";
+            navigate('/login');
         } catch (error) {
             alert("회원가입 중 오류가 발생했습니다.");
             console.error("회원가입 오류:", error);
