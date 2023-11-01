@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FcHome, FcBusinessman, FcGraduationCap } from "react-icons/fc";
+import { FcHome, FcBusinessman, FcGraduationCap, FcDam, FcPlus, FcKindle, FcLikePlaceholder, FcVlc, FcGlobe, FcLandscape } from "react-icons/fc";
 
 const Mycustom = () => {
   //const [selectedTag, setSelectedTag] = useState([]);
@@ -24,43 +24,43 @@ const Mycustom = () => {
     },
     {
       value: "고용·창업",
-      icon: <FcHome size="24" />,
+      icon: <FcDam size="24" />,
       backgroundColor: "initial",
       textColor: "black",
     },
     {
       value: "보건·의료",
-      icon: <FcHome size="24" />,
+      icon: <FcPlus size="24" />,
       backgroundColor: "initial",
       textColor: "black",
     },
     {
       value: "행정·안전",
-      icon: <FcHome size="24" />,
+      icon: <FcKindle size="24" />,
       backgroundColor: "initial",
       textColor: "black",
     },
     {
       value: "임신·출산",
-      icon: <FcHome size="24" />,
+      icon: <FcLikePlaceholder size="24" />,
       backgroundColor: "initial",
       textColor: "black",
     },
     {
       value: "보호·돌봄",
-      icon: <FcHome size="24" />,
+      icon: <FcVlc size="24" />,
       backgroundColor: "initial",
       textColor: "black",
     },
     {
       value: "문화·환경",
-      icon: <FcHome size="24" />,
+      icon: <FcGlobe size="24" />,
       backgroundColor: "initial",
       textColor: "black",
     },
     {
       value: "농림축산어업",
-      icon: <FcHome size="24" />,
+      icon: <FcLandscape size="24" />,
       backgroundColor: "initial",
       textColor: "black",
     },
