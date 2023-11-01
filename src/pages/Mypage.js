@@ -47,6 +47,7 @@ const Mypage = () => {
     const [activeTab, setActiveTab] = useState('스크랩');
     const [policies, setPolicies] = useState(policiesData);
     const navigate = useNavigate();
+    const name = localStorage.getItem('name');
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -89,7 +90,7 @@ const Mypage = () => {
                 <div className="header">
                     <Link to='/setting'><FiSettings className="setting-button" /></Link>
                 </div>
-                <span className="name">홍길동님</span>
+                <span className="name">{name}님</span>
                 <div>
                     <Link to='/profile'><span className="sub-title">프로필 수정 <FaPencilAlt /></span></Link>
                 </div>

@@ -25,6 +25,9 @@ const Login = () => {
 
             alert('로그인을 성공하였습니다.');
             localStorage.setItem('token', response.data.token);
+            localStorage.setItem('id', response.data.id);
+            localStorage.setItem('name', response.data.name);
+            localStorage.setItem('email', response.data.email);
             console.log(user);
 
             navigate('/');
