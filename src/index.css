@@ -520,6 +520,7 @@ header {
   border: 1px solid #6675fc;
   border-radius: 10px;
   width: 100%;
+  max-width: 100%;
   margin-top: 10px;
   padding: 15px 10px;
 }
@@ -555,6 +556,7 @@ header {
   opacity: 1;
 }
 .tag-savebutton {
+  max-width: 100%;
   margin-top: 30px;
   height: 40px;
 }
