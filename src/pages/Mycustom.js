@@ -13,7 +13,7 @@ import {
 } from "react-icons/fc";
 
 const Mycustom = () => {
-  const [selectedTag, setSelectedTag] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState([]);
   const buttonsInitialState = [
     {
       value: "생활안정",
@@ -81,10 +81,10 @@ const Mycustom = () => {
   const toggleTag = (button) => {
     const updatedButtons = buttons.map((btn) => {
       if (btn === button) {
-        if (selectedTag.includes(button.value)) {
-          setSelectedTag(selectedTag.filter((tag) => tag !== button.value));
+        if (selectedCategory.includes(button.value)) {
+          setSelectedCategory(selectedCategory.filter((tag) => tag !== button.value));
         } else {
-          setSelectedTag([...selectedTag, button.value]);
+          setSelectedCategory([...selectedCategory, button.value]);
         }
         btn.backgroundColor =
           btn.backgroundColor === "initial" ? "#6675fc" : "initial";
@@ -98,13 +98,13 @@ const Mycustom = () => {
   };
 
   useEffect(() => {
-    const storedTags = JSON.parse(localStorage.getItem("tags"));
+    const storedCategory = JSON.parse(localStorage.getItem("category"));
     
-    if (storedTags) {
-      setSelectedTag(storedTags);
+    if (storedCategory) {
+      setSelectedCategory(storedCategory);
       // 로컬 스토리지에서 가져온 태그에 해당하는 버튼 상태를 업데이트
       const updatedButtons = buttons.map((button) => {
-        if (storedTags.includes(button.value)) {
+        if (storedCategory.includes(button.value)) {
           button.backgroundColor = "#6675fc";
           button.textColor = "white";
         }
@@ -115,8 +115,8 @@ const Mycustom = () => {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('tags', JSON.stringify(selectedTag));
-  }, [selectedTag]);
+    localStorage.setItem('category', JSON.stringify(selectedCategory));
+  }, [selectedCategory]);
 
   return (
     <div className="container">
@@ -126,7 +126,7 @@ const Mycustom = () => {
         {buttons.map((button, index) => (
           <button
             key={index}
-            className="tag-button"
+            className="category-button"
             value={button.value}
             onClick={() => toggleTag(button)}
             style={{
@@ -134,7 +134,7 @@ const Mycustom = () => {
               color: button.textColor,
             }}
           >
-            <div className="tag-icon">{button.icon}</div>
+            <div className="category-icon">{button.icon}</div>
             {button.value}
           </button>
         ))}

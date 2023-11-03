@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
 import { Link } from "react-router-dom";
 const policiesData = [
@@ -70,11 +70,13 @@ const Custom = () => {
     filter === "전체"
       ? policies
       : policies.filter((policy) => policy.category === filter);
-  const storedTags = JSON.parse(localStorage.getItem("tags"));
+  const storedCategory = JSON.parse(localStorage.getItem("category"));
   const filterOptions = ["전체"];
-  storedTags.map((t) => {
-    filterOptions.push(t);
-  });
+
+  
+  if (storedCategory) {
+    filterOptions.push(...storedCategory);
+  }
 
   return (
     <div className="container">
