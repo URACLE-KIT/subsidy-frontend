@@ -2,11 +2,13 @@ import { FaTimes, FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import { useState, useEffect  } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import emailjs from 'emailjs-com';
 
 const Modal = ({ isOpen, onClose, children }) => {
     const [faqOpen, setFaqOpen] = useState(new Array(2).fill(false));
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [resetEmail, setResetEmail] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -49,6 +51,33 @@ const Modal = ({ isOpen, onClose, children }) => {
             navigate('/required');
         } catch (error) {
             console.error('회원탈퇴 오류:', error);
+        }
+    };    
+
+    const handleResetPassword = async () => {
+        try {
+            const email = resetEmail;
+    
+            const response = await axios.get(`http://localhost:8080/auth/find/${email}`);
+            const id = response.data.id;
+    
+            if (id) {
+                const resetLink = `http://localhost:3000/reset?id=${id}`;
+    
+                const templateParams = {
+                    to_email: email,
+                    to_name: email.split('@')[0],
+                    reset_link: resetLink,
+                };
+    
+                await emailjs.send('service_6ivehyn', 'template_fwqamhr', templateParams, '3YYSEIx_1W94_6PHN');
+                alert('비밀번호 재설정 링크를 전송했습니다. 메일함을 확인해주세요.');
+            } else {
+                alert('사용자를 찾을 수 없습니다.');
+            }
+        } catch (error) {
+            console.log(error);
+            alert('사용자를 찾을 수 없습니다.');
         }
     };    
 
@@ -138,6 +167,21 @@ const Modal = ({ isOpen, onClose, children }) => {
         modalContent = (
             <div className="content">
                 {faqContent}
+            </div>
+        );
+    } else if (children === '비밀번호 재설정') {
+        modalContent = (
+            <div className="content">
+                <input
+                    style={{ width: 'calc(100% - 40px)' }}
+                    placeholder='이메일 주소 입력'
+                    type="text"
+                    value={resetEmail}
+                    onChange={(e) => setResetEmail(e.target.value)}
+                />
+                <button
+                    style={{ textAlign: 'center', margin: '0 0 20px 0' }}
+                    onClick={handleResetPassword}>재설정 링크 전송</button>
             </div>
         );
     } else if (children === '회원 탈퇴') {
