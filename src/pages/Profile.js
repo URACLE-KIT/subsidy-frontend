@@ -7,7 +7,7 @@ const Profile = () => {
   const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState(null);
+  const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -49,7 +49,7 @@ const Profile = () => {
     try {
       const data = {
         name: name,
-        updated_at: new Date().toISOString(),
+        updated_at: new Date()
       };
 
       if (password) {
@@ -59,6 +59,7 @@ const Profile = () => {
       const response = await axios.patch(`http://localhost:8080/auth/update/${id}`, data);
 
       if (response.status === 200) {
+        console.log(new Date());
         alert('프로필이 업데이트되었습니다.');
         localStorage.setItem('name', name);
         
