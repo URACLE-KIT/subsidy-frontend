@@ -25,7 +25,7 @@ const Setting = () => {
       localStorage.removeItem('id');
       localStorage.removeItem('email');
       closeModal();
-      navigate('/login');
+      navigate('/required');
     }
   };
 

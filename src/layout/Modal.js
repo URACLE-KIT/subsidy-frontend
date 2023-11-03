@@ -1,8 +1,20 @@
 import { FaTimes, FaAngleDown, FaAngleUp } from 'react-icons/fa';
-import { useState } from 'react';
+import { useState, useEffect  } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Modal = ({ isOpen, onClose, children }) => {
     const [faqOpen, setFaqOpen] = useState(new Array(2).fill(false));
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const storedEmail = localStorage.getItem('email');
+        if (storedEmail) {
+            setEmail(storedEmail);
+        }
+    }, []);
 
     if (!isOpen) {
         return null;
@@ -15,6 +27,30 @@ const Modal = ({ isOpen, onClose, children }) => {
         updatedFaqOpen[index] = !updatedFaqOpen[index];
         setFaqOpen(updatedFaqOpen);
     };
+
+    const handleWithdrawal = async () => {
+        try {
+            const data = {
+                email: email,
+                password: password
+            };
+            
+            console.log(data);
+    
+            const response = await axios.delete('http://localhost:8080/auth/withdrawal', {
+                data: data
+            });
+    
+            console.log(response.data);
+            localStorage.removeItem('token');
+            localStorage.removeItem('name');
+            localStorage.removeItem('id');
+            localStorage.removeItem('email');
+            navigate('/required');
+        } catch (error) {
+            console.error('회원탈퇴 오류:', error);
+        }
+    };    
 
     const faqItems = [
         {
@@ -37,7 +73,7 @@ const Modal = ({ isOpen, onClose, children }) => {
             question: '5. 회원 탈퇴는 어떻게 하나요?',
             answer: '회원 탈퇴를 원하신다면 마이페이지 하단에 있는 "회원 탈퇴" 버튼을 클릭하십시오. 탈퇴 절차를 따라가시면 계정이 삭제됩니다. 탈퇴 후에는 관련 정보와 데이터는 복구할 수 없으니 신중히 결정해주시기 바랍니다.',
         },
-    ];    
+    ];
 
     const faqContent = (
         <div>
@@ -102,6 +138,22 @@ const Modal = ({ isOpen, onClose, children }) => {
         modalContent = (
             <div className="content">
                 {faqContent}
+            </div>
+        );
+    } else if (children === '회원 탈퇴') {
+        modalContent = (
+            <div style={{ textAlign: 'center' }} className="content">
+                <p>정말 탈퇴하시려면 비밀번호를 입력해 주세요.</p>
+                <input
+                    style={{ width: 'calc(100% - 40px)' }}
+                    placeholder='비밀번호 입력'
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <button
+                    style={{ textAlign: 'center', margin: '0 0 20px 0' }}
+                    onClick={handleWithdrawal}>회원 탈퇴</button>
             </div>
         );
     } else if (children === '이용 약관') {
