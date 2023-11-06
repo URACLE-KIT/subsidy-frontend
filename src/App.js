@@ -15,17 +15,9 @@ import Signup from './pages/Signup';
 import Required from './pages/Required';
 import Setting from './pages/Setting';
 import Mycustom from './pages/Mycustom';
-import { useEffect } from 'react';
+import Reset from './pages/Reset';
 
 function App() {
-  // useEffect(() => {
-  //   // mount 되는 시점에 호출되는 이벤트
-  //   M.pop.alert('hello world')
-  //   return () => {
-  //     // unmount 되는 시점에 호출되는 이벤트
-  //   }
-  // })
-
   return (
     <>
       <BrowserRouter>
@@ -44,6 +36,7 @@ function App() {
           <Route path="/required" element={<Required />}></Route>
           <Route path="/setting" element={<Setting />}></Route>
           <Route path="/mycustom" element={<Mycustom />}></Route>
+          <Route path="/reset" element={<Reset />}></Route>
         </Routes>
         <Menu />
       </BrowserRouter>

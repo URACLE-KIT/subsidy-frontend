@@ -1,8 +1,39 @@
 import { FaTimes, FaAngleDown, FaAngleUp } from 'react-icons/fa';
-import { useState } from 'react';
+import { useState, useEffect  } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import emailjs from 'emailjs-com';
+
+const policiesData = [
+  {
+    id: 1,
+    agency: "서민금융진흥원",
+    title: "청년도약계좌",
+    description: "서민금융진흥원에서 제공하는 정책입니다.",
+    startDate: "2023-10-26",
+    endDate: "2023-12-31",
+    category: "서비스(의료)",
+    bookmarked: false,
+    target: "청년 (12~26세)",
+    supportBenefit: "HPV 예방접종 및 의료비 지원",
+  },
+];
 
 const Modal = ({ isOpen, onClose, children }) => {
+    const [policy, setPolicy] = useState(policiesData[0]);
     const [faqOpen, setFaqOpen] = useState(new Array(2).fill(false));
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [resetEmail, setResetEmail] = useState("");
+    const shareableLink = `${window.location.origin}/detail?id=${policy.id}`;
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const storedEmail = M.data.storage('email');
+        if (storedEmail) {
+            setEmail(storedEmail);
+        }
+    }, []);
 
     if (!isOpen) {
         return null;
@@ -16,14 +47,85 @@ const Modal = ({ isOpen, onClose, children }) => {
         setFaqOpen(updatedFaqOpen);
     };
 
+    const handleCopyLink = () => {
+      const input = document.createElement('input');
+      input.value = shareableLink;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+      M.pop.alert('링크가 복사되었습니다.');
+    };
+
+    const handleWithdrawal = async () => {
+        try {
+            const data = {
+                email: email,
+                password: password
+            };
+            
+    
+            await axios.delete('/auth/withdrawal', {
+                data: data
+            });
+    
+            M.data.removeParam("token");
+            M.data.removeParam("name");
+            M.data.removeParam("id");
+            M.data.removeParam("email");
+            navigate('/required');
+        } catch (error) {
+            console.error(error);
+        }
+    };    
+
+    const handleResetPassword = async () => {
+        try {
+            const email = resetEmail;
+    
+            const response = await axios.get(`/auth/find/${email}`);
+            const id = response.data.id;
+    
+            if (id) {
+                const resetLink = `/reset?id=${id}`;
+    
+                const templateParams = {
+                    to_email: email,
+                    to_name: email.split('@')[0],
+                    reset_link: resetLink,
+                };
+    
+                await emailjs.send('service_6ivehyn', 'template_fwqamhr', templateParams, '3YYSEIx_1W94_6PHN');
+                M.pop.alert('비밀번호 재설정 링크를 전송했습니다. 메일함을 확인해주세요.');
+            } else {
+                M.pop.alert('사용자를 찾을 수 없습니다.');
+            }
+        } catch (error) {
+            console.log(error);
+            M.pop.alert('사용자를 찾을 수 없습니다.');
+        }
+    };    
+
     const faqItems = [
         {
             question: '1. 보조알리미는 어떤 앱인가요?',
-            answer: '보조알리미는..',
+            answer: '보조알리미는 사용자 맞춤 카테고리별로 보조금을 한 눈에 볼 수 있도록 하는 서비스로, 보조금을 놓치지 않고 챙겨받을 수 있도록 도와줍니다.',
         },
         {
             question: '2. 앱 이용이 잘 되지 않아요.',
-            answer: '...',
+            answer: '앱 이용에 문제가 있을 때, claphyeon@kumoh.ac.kr로 이메일을 통해 문의해주시면 답변을 받을 수 있습니다. 가능한 빠르게 도움을 드리도록 노력하겠습니다.',
+        },
+        {
+            question: '3. 회원가입은 어떻게 하나요?',
+            answer: '앱의 회원가입 페이지로 이동하여 필요한 정보(이름, 이메일, 비밀번호)를 입력하고 가입 버튼을 클릭하면 가입이 완료됩니다. 회원가입 이후에는 앱을 자유롭게 이용할 수 있습니다.',
+        },
+        {
+            question: '4. 비밀번호를 잊어버렸어요. 어떻게 찾을 수 있나요?',
+            answer: '비밀번호를 잊어버리셨다면 비밀번호 찾기 페이지로 이동하여 가입 시 사용한 이메일 주소를 입력하면, 해당 이메일 주소로 비밀번호 재설정 링크를 보내드립니다. 해당 링크를 클릭하면 새 비밀번호를 설정할 수 있습니다.',
+        },
+        {
+            question: '5. 회원 탈퇴는 어떻게 하나요?',
+            answer: '회원 탈퇴를 원하신다면 마이페이지 하단에 있는 "회원 탈퇴" 버튼을 클릭하십시오. 탈퇴 절차를 따라가시면 계정이 삭제됩니다. 탈퇴 후에는 관련 정보와 데이터는 복구할 수 없으니 신중히 결정해주시기 바랍니다.',
         },
     ];
 
@@ -92,6 +194,37 @@ const Modal = ({ isOpen, onClose, children }) => {
                 {faqContent}
             </div>
         );
+    } else if (children === '비밀번호 재설정') {
+        modalContent = (
+            <div className="content">
+                <input
+                    style={{ width: 'calc(100% - 40px)' }}
+                    placeholder='이메일 주소 입력'
+                    type="text"
+                    value={resetEmail}
+                    onChange={(e) => setResetEmail(e.target.value)}
+                />
+                <button
+                    style={{ margin: '0 0 20px 0' }}
+                    onClick={handleResetPassword}>재설정 링크 전송</button>
+            </div>
+        );
+    } else if (children === '회원 탈퇴') {
+        modalContent = (
+            <div className="content">
+                <p>정말 탈퇴하시려면 비밀번호를 입력해 주세요.</p>
+                <input
+                    style={{ width: 'calc(100% - 40px)' }}
+                    placeholder='비밀번호 입력'
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <button
+                    style={{ margin: '0 0 20px 0' }}
+                    onClick={handleWithdrawal}>회원 탈퇴</button>
+            </div>
+        );
     } else if (children === '이용 약관') {
         modalContent = (
             <div className="content">
@@ -126,6 +259,13 @@ const Modal = ({ isOpen, onClose, children }) => {
                 </p> <p><strong>문의하기</strong></p> <p>
                     이용 약관에 관한 질문이나 제안 사항이 있으시면 언제든지 claphyeon@kumoh.ac.kr 로 연락하십시오.
                 </p> <p>본 이용 약관 페이지는 <a href="https://app-privacy-policy-generator.nisrulz.com/" target="_blank" rel="noopener noreferrer">App Privacy Policy Generator</a>에 의해 생성되었습니다.</p>
+            </div>
+        );
+    } else if (children === '공유하기') {
+        modalContent = (
+            <div className="content">
+                <p>{shareableLink}</p>
+                <button onClick={handleCopyLink}>링크 복사</button>
             </div>
         );
     } else {

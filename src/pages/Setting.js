@@ -20,12 +20,12 @@ const Setting = () => {
   const handleLogout = () => {
     const confirmLogout = window.confirm('로그아웃 하시겠습니까?');
     if (confirmLogout) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('name');
-      localStorage.removeItem('id');
-      localStorage.removeItem('email');
+      M.data.removeParam("token");
+      M.data.removeParam("name");
+      M.data.removeParam("id");
+      M.data.removeParam("email");
       closeModal();
-      navigate('/login');
+      navigate('/required');
     }
   };
 
