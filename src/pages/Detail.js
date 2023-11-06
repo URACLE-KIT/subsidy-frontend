@@ -102,7 +102,7 @@ const Detail = () => {
         <button className="detail-button" onClick={() => openModal('공유하기')}>
           <FaExternalLinkAlt /> 공유하기
         </button>
-        <Link to="/write">
+        <Link to="/write?type=review">
           <button className="detail-button">
             <FaPencilAlt /> 후기글 작성
           </button>
