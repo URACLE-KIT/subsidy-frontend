@@ -28,7 +28,7 @@ const Reset = () => {
             // console.log(id, password);
             try {
                 if (id) {
-                    const response = await axios.post(`http://localhost:8080/auth/reset?id=${id}&newPassword=${password}`);
+                    const response = await axios.post(`/api/auth/reset?id=${id}&newPassword=${password}`);
                     alert('비밀번호 재설정이 완료되었습니다.');
                     navigate('/required');
                 } else {
