@@ -36,7 +36,7 @@ const policiesData = [
 const Latest = () => {
     return (
         <div className="container">
-            <h3>새로 나온 정책 소식</h3>
+            <h3>새로 나온 보조금 소식</h3>
             <ul className="policy-list">
                 {policiesData.map((policy) => (
                     <li key={policy.id} className="policy-item">

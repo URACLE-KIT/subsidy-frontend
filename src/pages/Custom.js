@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
 import { Link } from "react-router-dom";
+
 const policiesData = [
   {
     id: 1,
@@ -43,6 +44,14 @@ const policiesData = [
 const Custom = () => {
   const [filter, setFilter] = useState("전체");
   const [policies, setPolicies] = useState(policiesData);
+  const [name, setName] = useState('');
+
+  useEffect(() => {
+    const storedName = M.data.storage('name');
+    if (storedName) {
+      setName(storedName);
+    }
+  }, []);
 
   const toggleBookmark = (id) => {
     const updatedPolicies = policies.map((policy) =>
@@ -78,7 +87,7 @@ const Custom = () => {
 
   return (
     <div className="container">
-      <h3>홍길동님을 위한 맞춤 정책</h3>
+      <h3>{name}님을 위한 맞춤 보조금</h3>
       <div className="filter-container">
         {filterOptions.map((option) => (
           <div

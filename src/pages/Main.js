@@ -62,23 +62,23 @@ const Main = () => {
     <>
     <div className="category-group">
         <div className="category">
-            <h3>맞춤정책</h3>
+            <h3>맞춤보조금</h3>
             <p>153건</p>
         </div>
     
         <div className="category">
-            <h3>청년정책</h3>
+            <h3>청년보조금</h3>
             <p>203건</p>
         </div>
     
         <div className="category" style={{marginRight: '20px'}}>
-            <h3>가족정책</h3>
+            <h3>가족보조금</h3>
             <p>301건</p>
         </div>
     </div>
     
     <div className="container">
-      <h2>맞춤 정책</h2>
+      <h2>맞춤보조금</h2>
       <ul className="policy-list">
         {customs.map((customs) => (
           <li key={customs.id} className="policy-item">
@@ -104,11 +104,11 @@ const Main = () => {
     </div>
     
     <div className="container">
-      <h2>정책 소식</h2>
+      <h2>홍보 소식</h2>
     </div>
     
     <div className="container">
-      <h2>신규 정책 20</h2>
+      <h2>신규 보조금 20</h2>
     </div>
     </>
   );
