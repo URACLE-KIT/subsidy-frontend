@@ -79,11 +79,12 @@ const Custom = () => {
     filter === "전체"
       ? policies
       : policies.filter((policy) => policy.category === filter);
-  const storedTags = JSON.parse(localStorage.getItem("tags"));
+  const storedCategory = M.data.storage("category");
   const filterOptions = ["전체"];
-  storedTags.map((t) => {
-    filterOptions.push(t);
-  });
+
+  if (storedCategory) {
+    filterOptions.push(...storedCategory);
+  }
 
   return (
     <div className="container">
