@@ -69,10 +69,8 @@ const Modal = ({ isOpen, onClose, children }) => {
                 data: data
             });
     
-            M.data.removeParam("token");
-            M.data.removeParam("name");
-            M.data.removeParam("id");
-            M.data.removeParam("email");
+            M.data.removeStorage();
+            M.pop.alert('회원 탈퇴가 완료되었습니다.');
             navigate('/required');
         } catch (error) {
             console.error(error);

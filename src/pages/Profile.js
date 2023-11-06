@@ -14,9 +14,9 @@ const Profile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedId = localStorage.getItem('id');
-    const storedName = localStorage.getItem('name');
-    const storedEmail = localStorage.getItem('email');
+    const storedId = M.data.storage('id');
+    const storedName = M.data.storage('name');
+    const storedEmail = M.data.storage('email');
 
     if (storedId) {
       setId(storedId);
@@ -56,17 +56,17 @@ const Profile = () => {
         data.password = password;
       }
 
-      const response = await axios.patch(`http://localhost:8080/auth/update/${id}`, data);
+      const response = await axios.patch(`/auth/update/${id}`, data);
 
       if (response.status === 200) {
         console.log(new Date());
-        alert('프로필이 업데이트되었습니다.');
-        localStorage.setItem('name', name);
+        M.pop.alert('프로필이 업데이트되었습니다.');
+        M.data.storage({'name': name});
         
         navigate('/mypage');
       }
     } catch (error) {
-      alert('프로필 업데이트에 실패했습니다.');
+      M.pop.alert('프로필 업데이트에 실패했습니다.');
       console.error(error);
     }
   };

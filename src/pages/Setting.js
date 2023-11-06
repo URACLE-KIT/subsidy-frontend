@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaAngleRight } from 'react-icons/fa';
 import Modal from '../layout/Modal';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +7,13 @@ const Setting = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = M.data.storage('token');
+    if (!token) {
+      navigate('/required');
+    }
+  }, []);
 
   const openModal = (content) => {
     setModalContent(content);
@@ -20,10 +27,7 @@ const Setting = () => {
   const handleLogout = () => {
     const confirmLogout = window.confirm('로그아웃 하시겠습니까?');
     if (confirmLogout) {
-      M.data.removeParam("token");
-      M.data.removeParam("name");
-      M.data.removeParam("id");
-      M.data.removeParam("email");
+      M.data.removeStorage();
       closeModal();
       navigate('/required');
     }

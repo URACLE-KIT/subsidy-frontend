@@ -13,7 +13,7 @@ const Signup = () => {
 
     const checkEmailExistence = async (email) => {
         try {
-            const response = await axios.get(`http://10.0.2.2:8080/auth/checkEmail/${email}`);
+            const response = await axios.get(`/auth/checkEmail/${email}`);
             
             return response.data.exists;
         } catch (error) {
@@ -41,7 +41,7 @@ const Signup = () => {
             .then((response) => {
                 M.pop.alert('인증코드를 전송했습니다. 메일함을 확인해주세요.');
                 console.log('인증코드 전송 성공!', response.status, response.text);
-                M.data.storage({'verificationCode': verificationCode})
+                M.data.storage({'verificationCode': verificationCode});
                 setShowVerificationInput(true);
             }, (error) => {
                 console.log(error);
@@ -91,7 +91,7 @@ const Signup = () => {
             const response = await axios.post("/auth/signup", userData);
 
             alert("회원가입이 완료되었습니다.");
-            M.data.removeParam("verificationCode");
+            M.data.removeStorage("verificationCode");
             console.log("회원가입 응답:", response.data);
             navigate('/login');
         } catch (error) {
