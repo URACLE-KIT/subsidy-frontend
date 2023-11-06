@@ -88,7 +88,7 @@ const Signup = () => {
         };
 
         try {
-            const response = await axios.post("/api/auth/signup", userData);
+            const response = await axios.post("/auth/signup", userData);
 
             alert("회원가입이 완료되었습니다.");
             M.data.removeStorage("verificationCode");
