@@ -4,15 +4,32 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import emailjs from 'emailjs-com';
 
+const policiesData = [
+  {
+    id: 1,
+    agency: "서민금융진흥원",
+    title: "청년도약계좌",
+    description: "서민금융진흥원에서 제공하는 정책입니다.",
+    startDate: "2023-10-26",
+    endDate: "2023-12-31",
+    category: "서비스(의료)",
+    bookmarked: false,
+    target: "청년 (12~26세)",
+    supportBenefit: "HPV 예방접종 및 의료비 지원",
+  },
+];
+
 const Modal = ({ isOpen, onClose, children }) => {
+    const [policy, setPolicy] = useState(policiesData[0]);
     const [faqOpen, setFaqOpen] = useState(new Array(2).fill(false));
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [resetEmail, setResetEmail] = useState("");
+    const shareableLink = `${window.location.origin}/detail?id=${policy.id}`;
     const navigate = useNavigate();
 
     useEffect(() => {
-        const storedEmail = localStorage.getItem('email');
+        const storedEmail = M.data.storage('email');
         if (storedEmail) {
             setEmail(storedEmail);
         }
@@ -30,6 +47,16 @@ const Modal = ({ isOpen, onClose, children }) => {
         setFaqOpen(updatedFaqOpen);
     };
 
+    const handleCopyLink = () => {
+      const input = document.createElement('input');
+      input.value = shareableLink;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+      M.pop.alert('링크가 복사되었습니다.');
+    };
+
     const handleWithdrawal = async () => {
         try {
             const data = {
@@ -37,20 +64,18 @@ const Modal = ({ isOpen, onClose, children }) => {
                 password: password
             };
             
-            console.log(data);
     
-            const response = await axios.delete('http://localhost:8080/auth/withdrawal', {
+            await axios.delete('/auth/withdrawal', {
                 data: data
             });
     
-            console.log(response.data);
-            localStorage.removeItem('token');
-            localStorage.removeItem('name');
-            localStorage.removeItem('id');
-            localStorage.removeItem('email');
+            M.data.removeParam("token");
+            M.data.removeParam("name");
+            M.data.removeParam("id");
+            M.data.removeParam("email");
             navigate('/required');
         } catch (error) {
-            console.error('회원탈퇴 오류:', error);
+            console.error(error);
         }
     };    
 
@@ -58,11 +83,11 @@ const Modal = ({ isOpen, onClose, children }) => {
         try {
             const email = resetEmail;
     
-            const response = await axios.get(`http://localhost:8080/auth/find/${email}`);
+            const response = await axios.get(`/auth/find/${email}`);
             const id = response.data.id;
     
             if (id) {
-                const resetLink = `http://localhost:3000/reset?id=${id}`;
+                const resetLink = `/reset?id=${id}`;
     
                 const templateParams = {
                     to_email: email,
@@ -71,13 +96,13 @@ const Modal = ({ isOpen, onClose, children }) => {
                 };
     
                 await emailjs.send('service_6ivehyn', 'template_fwqamhr', templateParams, '3YYSEIx_1W94_6PHN');
-                alert('비밀번호 재설정 링크를 전송했습니다. 메일함을 확인해주세요.');
+                M.pop.alert('비밀번호 재설정 링크를 전송했습니다. 메일함을 확인해주세요.');
             } else {
-                alert('사용자를 찾을 수 없습니다.');
+                M.pop.alert('사용자를 찾을 수 없습니다.');
             }
         } catch (error) {
             console.log(error);
-            alert('사용자를 찾을 수 없습니다.');
+            M.pop.alert('사용자를 찾을 수 없습니다.');
         }
     };    
 
@@ -180,13 +205,13 @@ const Modal = ({ isOpen, onClose, children }) => {
                     onChange={(e) => setResetEmail(e.target.value)}
                 />
                 <button
-                    style={{ textAlign: 'center', margin: '0 0 20px 0' }}
+                    style={{ margin: '0 0 20px 0' }}
                     onClick={handleResetPassword}>재설정 링크 전송</button>
             </div>
         );
     } else if (children === '회원 탈퇴') {
         modalContent = (
-            <div style={{ textAlign: 'center' }} className="content">
+            <div className="content">
                 <p>정말 탈퇴하시려면 비밀번호를 입력해 주세요.</p>
                 <input
                     style={{ width: 'calc(100% - 40px)' }}
@@ -196,7 +221,7 @@ const Modal = ({ isOpen, onClose, children }) => {
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <button
-                    style={{ textAlign: 'center', margin: '0 0 20px 0' }}
+                    style={{ margin: '0 0 20px 0' }}
                     onClick={handleWithdrawal}>회원 탈퇴</button>
             </div>
         );
@@ -234,6 +259,13 @@ const Modal = ({ isOpen, onClose, children }) => {
                 </p> <p><strong>문의하기</strong></p> <p>
                     이용 약관에 관한 질문이나 제안 사항이 있으시면 언제든지 claphyeon@kumoh.ac.kr 로 연락하십시오.
                 </p> <p>본 이용 약관 페이지는 <a href="https://app-privacy-policy-generator.nisrulz.com/" target="_blank" rel="noopener noreferrer">App Privacy Policy Generator</a>에 의해 생성되었습니다.</p>
+            </div>
+        );
+    } else if (children === '공유하기') {
+        modalContent = (
+            <div className="content">
+                <p>{shareableLink}</p>
+                <button onClick={handleCopyLink}>링크 복사</button>
             </div>
         );
     } else {

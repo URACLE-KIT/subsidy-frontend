@@ -16,23 +16,22 @@ const Login = () => {
         const password = document.getElementById("password").value;
 
         try {
-            const response = await axios.post('http://localhost:8080/auth/signin', {
+            const response = await axios.post('/auth/signin', {
                 email: email,
                 password: password
             });
 
-            const user = response.data;
-
-            alert('로그인을 성공하였습니다.');
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('id', response.data.id);
-            localStorage.setItem('name', response.data.name);
-            localStorage.setItem('email', response.data.email);
-            console.log(user);
+            M.pop.alert('로그인을 성공하였습니다.');
+            M.data.storage({
+                'token': response.data.token,
+                'id': response.data.id,
+                'name': response.data.name,
+                'email': response.data.email
+            })
 
             navigate('/');
         } catch (error) {
-            alert('가입되지 않은 이메일이거나, 비밀번호가 올바르지 않습니다.');
+            M.pop.alert('가입되지 않은 이메일이거나, 비밀번호가 올바르지 않습니다.');
             console.error(error);
         }
     };

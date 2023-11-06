@@ -6,6 +6,7 @@ import { useState } from 'react';
 const Header = () => {
     const [isSearchOpen, setSearchOpen] = useState(false);
     const [searchText, setSearchText] = useState('');
+    const [searchOption, setSearchOption] = useState('title');
     const navigate = useNavigate();
 
     const toggleSearch = () => {
@@ -14,7 +15,7 @@ const Header = () => {
 
     const handleSearch = () => {
         if (searchText) {
-            navigate(`/custom?search=${searchText}`);
+            navigate(`/custom?search=${searchText}&option=${searchOption}`);
             setSearchText('');
             setSearchOpen(false);
         }
@@ -62,6 +63,14 @@ const Header = () => {
                         <h3>궁금한 정책을 검색해 보세요!</h3>
 
                         <div className="search-input">
+                            {/* <select
+                                value={searchOption}
+                                onChange={(e) => setSearchOption(e.target.value)}
+                            >
+                                <option value="title">제목</option>
+                                <option value="category">카테고리</option>
+                                <option value="content">내용</option>
+                            </select> */}
                             <input
                                 type="text"
                                 placeholder="검색어를 입력하세요"

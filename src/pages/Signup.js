@@ -9,20 +9,23 @@ const Signup = () => {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [inputVerificationCode, setInputVerificationCode] = useState('');
     const [showVerificationInput, setShowVerificationInput] = useState(false);
-    const storedVerificationCode = localStorage.getItem('verificationCode');
     const navigate = useNavigate();
 
     const checkEmailExistence = async (email) => {
-        const response = await fetch(`http://localhost:8080/auth/checkEmail/${email}`);
-        const data = await response.json();
-        return data.exists;
-    };
+        try {
+            const response = await axios.get(`http://10.0.2.2:8080/auth/checkEmail/${email}`);
+            
+            return response.data.exists;
+        } catch (error) {
+            console.error("이메일 존재 확인 오류:", error);
+        }
+    };    
 
     const sendEmailVerificationCode = async (email) => {
         const isEmailExists = await checkEmailExistence(email);
 
         if (isEmailExists) {
-            alert('중복된 이메일 주소입니다. 다른 이메일 주소를 사용해주세요.');
+            M.pop.alert('중복된 이메일 주소입니다. 다른 이메일 주소를 사용해주세요.');
             return;
         }
 
@@ -36,12 +39,12 @@ const Signup = () => {
 
         emailjs.send('service_6ivehyn', 'template_alppw2q', templateParams, '3YYSEIx_1W94_6PHN')
             .then((response) => {
-                alert('인증코드를 전송했습니다. 메일함을 확인해주세요.');
+                M.pop.alert('인증코드를 전송했습니다. 메일함을 확인해주세요.');
                 console.log('인증코드 전송 성공!', response.status, response.text);
-                localStorage.setItem('verificationCode', verificationCode);
+                M.data.storage({'verificationCode': verificationCode})
                 setShowVerificationInput(true);
             }, (error) => {
-                console.log('Failed...', error);
+                console.log(error);
             });
     };
 
@@ -61,18 +64,18 @@ const Signup = () => {
         const created_at = new Date().toISOString();
         const updated_at = "";
 
-        if (inputVerificationCode !== storedVerificationCode) {
-            alert("이메일 인증을 받아주세요.");
+        if (inputVerificationCode !== M.data.storage('verificationCode')) {
+            M.pop.alert("이메일 인증을 받아주세요.");
             return;
         }
 
         if (!name) {
-            alert("이름을 입력하세요.");
+            M.pop.alert("이름을 입력하세요.");
             return;
         }
 
         if (password !== confirmPassword) {
-            alert("비밀번호가 일치하지 않습니다.");
+            M.pop.alert("비밀번호가 일치하지 않습니다.");
             return;
         }
 
@@ -85,10 +88,10 @@ const Signup = () => {
         };
 
         try {
-            const response = await axios.post("http://localhost:8080/auth/signup", userData);
+            const response = await axios.post("/auth/signup", userData);
 
             alert("회원가입이 완료되었습니다.");
-            localStorage.removeItem('verificationCode');
+            M.data.removeParam("verificationCode");
             console.log("회원가입 응답:", response.data);
             navigate('/login');
         } catch (error) {
@@ -151,11 +154,11 @@ const Signup = () => {
                             color: '#000'
                         }}
                         onClick={() => {
-                            const storedVerificationCode = localStorage.getItem('verificationCode');
+                            const storedVerificationCode = M.data.storage('verificationCode');
                             if (inputVerificationCode !== storedVerificationCode) {
-                                alert("인증 코드가 일치하지 않습니다.");
+                                M.pop.alert(parseInt(storedVerificationCode));
                             } else {
-                                alert("인증 코드가 확인되었습니다.");
+                                M.pop.alert("인증 코드가 확인되었습니다.");
                             }
                         }}
                     >

@@ -16,17 +16,8 @@ import Required from './pages/Required';
 import Setting from './pages/Setting';
 import Mycustom from './pages/Mycustom';
 import Reset from './pages/Reset';
-import { useEffect } from 'react';
 
 function App() {
-  // useEffect(() => {
-  //   // mount 되는 시점에 호출되는 이벤트
-  //   M.pop.alert('hello world')
-  //   return () => {
-  //     // unmount 되는 시점에 호출되는 이벤트
-  //   }
-  // })
-
   return (
     <>
       <BrowserRouter>
