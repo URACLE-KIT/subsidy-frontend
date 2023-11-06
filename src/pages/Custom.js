@@ -85,8 +85,8 @@ const Custom = () => {
               </button>
               <div className="policy-details">
                 <div className="policy-agency">{policy.receiving_agency}</div>
-                <div className="policy-description">{policy.description}</div>
                 <div className="policy-title">{policy.title}</div>
+                <div className="policy-description">{policy.description}</div>
                 <div className="policy-date" style={{ maxWidth: "100%" }}>{policy.application_period}</div>
                 <div className="policy-description">{policy.telephone_inquiry}</div>
               </div>
