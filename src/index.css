@@ -186,18 +186,21 @@ button:hover {
 }
 
 .policy-date {
-  display: inline;
   font-size: 12px;
   color: #777;
   background: #ffdada;
   color: #ff7373;
   padding: 5px 8px;
   border-radius: 50px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  flex: 1;
+  overflow: hidden;
 }
 
 .policy-title {
   font-size: 15px;
-  margin: 3px 10px;
+  margin: 3px 0;
 }
 
 .bookmark-button {
