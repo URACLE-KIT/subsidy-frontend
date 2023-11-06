@@ -56,7 +56,7 @@ const Profile = () => {
         data.password = password;
       }
 
-      const response = await axios.patch(`/api/auth/update/${id}`, data);
+      const response = await axios.patch(`/auth/update/${id}`, data);
 
       if (response.status === 200) {
         console.log(new Date());

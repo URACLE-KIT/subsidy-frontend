@@ -13,7 +13,7 @@ const Signup = () => {
 
     const checkEmailExistence = async (email) => {
         try {
-            const response = await axios.get(`/auth/checkEmail/${email}`);
+            const response = await axios.get(`/checkEmail/${email}`);
             
             return response.data.exists;
         } catch (error) {
