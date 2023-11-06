@@ -538,7 +538,7 @@ header {
   box-shadow: inset 3px 3px 6px #e5ece6, 2px 2px 4px #e5ece6;
 }
 
-.tag-button {
+.category-button {
   margin: 4px;
   width: 30%;
   height: 60px;
@@ -551,15 +551,11 @@ header {
   border-radius: 10px;
   box-shadow: none;
 }
-.tag-button:hover {
+.category-button:hover {
   opacity: 1;
 }
-.tag-savebutton {
-  max-width: 100%;
-  margin-top: 30px;
-  height: 40px;
-}
-.tag-icon{
+
+.category-icon{
   margin-bottom: 6px;
 }
 
