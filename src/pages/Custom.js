@@ -22,7 +22,7 @@ const Custom = () => {
     if (storedName) {
       setName(storedName);
     }
-    
+
     const storedUserId = M.data.storage('id');
     if (storedUserId) {
       setUserId(storedUserId);
@@ -58,7 +58,7 @@ const Custom = () => {
   useEffect(() => {
     const updatedPolicies =
       filter === "전체" ? policies : policies.filter((policy) => policy.category === filter);
-    
+
     setFilteredPolicies(updatedPolicies);
   }, [filter, policies]);
 
@@ -90,11 +90,11 @@ const Custom = () => {
 
   const toggleBookmark = (id) => {
     const isBookmarked = isScrapped(id);
-  
+
     if (isBookmarked) {
       const updatedUserScrappedPolicies = userScrappedPolicies.filter(policy => policy.id !== id);
       setUserScrappedPolicies(updatedUserScrappedPolicies);
-  
+
       axios.delete(`/v1/subsidyscraps/delete?scrapId=${id}`)
         .then((response) => {
           console.log("스크랩 삭제 성공:", response);
@@ -107,7 +107,7 @@ const Custom = () => {
         .then((response) => {
           const updatedUserScrappedPolicies = [...userScrappedPolicies, response.data];
           setUserScrappedPolicies(updatedUserScrappedPolicies);
-  
+
           console.log("스크랩 추가 성공:", response);
         })
         .catch((error) => {
@@ -115,7 +115,7 @@ const Custom = () => {
         });
     }
   };
-  
+
   const pageNumbers = Math.ceil(filteredPolicies.length / itemsPerPage);
 
   useEffect(() => {
@@ -136,17 +136,17 @@ const Custom = () => {
 
   const sortPolicies = () => {
     const policiesCopy = [...filteredPolicies];
-  
+
     policiesCopy.sort((a, b) => {
       if (sortOption === "기본순") {
         return a.id - b.id;
       }
-      
+
       if (sortOption === "제목순") {
         return a.title.localeCompare(b.title);
       }
     });
-  
+
     setFilteredPolicies(policiesCopy);
   };
 
