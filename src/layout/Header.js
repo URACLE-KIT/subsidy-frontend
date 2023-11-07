@@ -60,17 +60,17 @@ const Header = () => {
                             <RiCloseFill />
                         </button>
 
-                        <h3>궁금한 정책을 검색해 보세요!</h3>
+                        <h3 style={{ textAlign: 'center' }}>궁금한 정책을 검색해 보세요!</h3>
 
                         <div className="search-input">
-                            {/* <select
+                            <select
                                 value={searchOption}
                                 onChange={(e) => setSearchOption(e.target.value)}
                             >
                                 <option value="title">제목</option>
-                                <option value="category">카테고리</option>
                                 <option value="content">내용</option>
-                            </select> */}
+                                <option value="category">카테고리</option>
+                            </select>
                             <input
                                 type="text"
                                 placeholder="검색어를 입력하세요"

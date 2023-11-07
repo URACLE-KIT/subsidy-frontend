@@ -1,50 +1,18 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
-import { Link } from "react-router-dom";
-
-const policiesData = [
-  {
-    id: 1,
-    agency: "서민금융진흥원",
-    title: "청년도약계좌",
-    description: "서민금융진흥원에서 제공하는 정책입니다.",
-    date: "2023-10-26",
-    category: "생활안정",
-    bookmarked: false,
-  },
-  {
-    id: 2,
-    agency: "보건의료",
-    title: "청년도약계좌",
-    description: "서민금융진흥원에서 제공하는 정책입니다.",
-    date: "2023-12-01",
-    category: "보건·의료",
-    bookmarked: false,
-  },
-  {
-    id: 3,
-    agency: "서민금융진흥원",
-    title: "청년도약계좌",
-    description: "서민금융진흥원에서 제공하는 정책입니다.",
-    date: "2023-12-01",
-    category: "전체",
-    bookmarked: false,
-  },
-  {
-    id: 4,
-    agency: "서민금융진흥원",
-    title: "청년도약계좌",
-    description: "서민금융진흥원에서 제공하는 정책입니다.",
-    date: "2023-12-01",
-    category: "전체",
-    bookmarked: false,
-  },
-];
+import { Link, useLocation } from "react-router-dom";
 
 const Custom = () => {
+  const location = useLocation();
+  const search = new URLSearchParams(location.search).get("search");
+  const option = new URLSearchParams(location.search).get("option");
   const [filter, setFilter] = useState("전체");
-  const [policies, setPolicies] = useState(policiesData);
+  const [policies, setPolicies] = useState([]);
   const [name, setName] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const [filteredPolicies, setFilteredPolicies] = useState([]);
 
   useEffect(() => {
     const storedName = M.data.storage('name');
@@ -53,38 +21,71 @@ const Custom = () => {
     }
   }, []);
 
-  const toggleBookmark = (id) => {
-    const updatedPolicies = policies.map((policy) =>
-      policy.id === id ? { ...policy, bookmarked: !policy.bookmarked } : policy
-    );
-    setPolicies(updatedPolicies);
-  };
+  useEffect(() => {
+    let requestURL = "/v1/subsidies/all";
 
-  const calculateDaysRemaining = (date) => {
-    const currentDate = new Date();
-    const policyDate = new Date(date);
-    const timeDifference = policyDate.getTime() - currentDate.getTime();
-    const daysRemaining = Math.ceil(timeDifference / (1000 * 3600 * 24));
-
-    if (daysRemaining < 0) {
-      return `D+${Math.abs(daysRemaining)}`;
-    } else if (daysRemaining === 0) {
-      return "D-DAY";
-    } else {
-      return `D-${daysRemaining}`;
+    if (search && option) {
+      requestURL = `/v1/subsidies/search/${option}?${option}=${encodeURIComponent(search)}`;
     }
-  };
 
-  const filteredPolicies =
-    filter === "전체"
-      ? policies
-      : policies.filter((policy) => policy.category === filter);
+    axios.get(requestURL)
+      .then((response) => {
+        setPolicies(response.data);
+      })
+      .catch((error) => {
+        console.error("데이터 가져오기 실패:", error);
+      });
+  }, [search, option]);
+
+  useEffect(() => {
+    const updatedPolicies =
+      filter === "전체" ? policies : policies.filter((policy) => policy.category === filter);
+    
+    setFilteredPolicies(updatedPolicies);
+  }, [filter, policies]);
+
   const storedCategory = M.data.storage("category");
   const filterOptions = ["전체"];
-
   if (storedCategory) {
     filterOptions.push(...storedCategory);
   }
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < pageNumbers) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const toggleBookmark = (id) => {
+    const updatedPolicies = filteredPolicies.map((policy) =>
+      policy.id === id ? { ...policy, bookmarked: !policy.bookmarked } : policy
+    );
+    setFilteredPolicies(updatedPolicies);
+  };
+
+  const pageNumbers = Math.ceil(filteredPolicies.length / itemsPerPage);
+
+  useEffect(() => {
+    const policyDateElements = document.querySelectorAll(".policy-date");
+    policyDateElements.forEach((element) => {
+      const text = element.textContent;
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+      context.font = getComputedStyle(element).font;
+      const textWidth = context.measureText(text).width;
+      element.style.width = textWidth + "px";
+    });
+  }, [filteredPolicies, name, currentPage]);
+
+  const maxPageDisplay = 5;
+  const startPage = Math.max(1, currentPage - Math.floor(maxPageDisplay / 2));
+  const endPage = Math.min(pageNumbers, startPage + maxPageDisplay - 1);
 
   return (
     <div className="container">
@@ -101,7 +102,7 @@ const Custom = () => {
         ))}
       </div>
       <ul className="policy-list">
-        {filteredPolicies.map((policy) => (
+        {filteredPolicies.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((policy) => (
           <li key={policy.id} className="policy-item">
             <Link to={`/detail?id=${policy.id}`}>
               <button
@@ -115,17 +116,39 @@ const Custom = () => {
                 {policy.bookmarked ? <FaBookmark /> : <FaRegBookmark />}
               </button>
               <div className="policy-details">
-                <div className="policy-agency">{policy.agency}</div>
+                <div className="policy-agency">{policy.receiving_agency}</div>
+                <div className="policy-title">{policy.title}</div>
                 <div className="policy-description">{policy.description}</div>
-                <span className="policy-date">
-                  {calculateDaysRemaining(policy.date)}
-                </span>
-                <span className="policy-title">{policy.title}</span>
+                <div className="policy-date" style={{ maxWidth: "100%" }}>{policy.application_period}</div>
+                <div className="policy-description">{policy.telephone_inquiry}</div>
               </div>
             </Link>
           </li>
         ))}
       </ul>
+      <div className="pagination">
+        <button
+          onClick={handlePreviousPage}
+          className={`page-button ${currentPage === 1 ? "disabled" : ""}`}
+        >
+          &lsaquo;
+        </button>
+        {Array.from({ length: endPage - startPage + 1 }, (_, i) => (
+          <button
+            key={startPage + i}
+            onClick={() => setCurrentPage(startPage + i)}
+            className={`page-button ${currentPage === startPage + i ? "active" : ""}`}
+          >
+            {startPage + i}
+          </button>
+        ))}
+        <button
+          onClick={handleNextPage}
+          className={`page-button ${currentPage === pageNumbers ? "disabled" : ""}`}
+        >
+          &rsaquo;
+        </button>
+      </div>
     </div>
   );
 };
