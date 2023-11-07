@@ -742,3 +742,37 @@ header {
   font-size: 14px;
 }
 
+/* 페이징 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.page-button {
+  background-color: #dae0ff;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  margin: 0 4px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.page-button.active {
+  background-color: #0056b3;
+}
+
+.page-button.disabled {
+  background-color: #ccc;
+  pointer-events: none;
+}
+
+.page-button:first-child, .page-button:last-child {
+  margin: 0;
+}
+
+.page-button:hover {
+  background-color: #0056b3;
+}

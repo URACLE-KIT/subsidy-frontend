@@ -7,6 +7,10 @@ const Custom = () => {
   const [filter, setFilter] = useState("전체");
   const [policies, setPolicies] = useState([]);
   const [name, setName] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const [filteredPolicies, setFilteredPolicies] = useState([]);
+  const filterOptions = ["전체"];
 
   useEffect(() => {
     const storedName = M.data.storage('name');
@@ -25,23 +29,32 @@ const Custom = () => {
       });
   }, []);
 
-  const toggleBookmark = (id) => {
-    const updatedPolicies = policies.map((policy) =>
-      policy.id === id ? { ...policy, bookmarked: !policy.bookmarked } : policy
-    );
-    setPolicies(updatedPolicies);
+  useEffect(() => {
+    const updatedPolicies =
+      filter === "전체" ? policies : policies.filter((policy) => policy.category === filter);
+    setFilteredPolicies(updatedPolicies);
+  }, [filter, policies]);
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
   };
 
-  const filteredPolicies =
-    filter === "전체"
-      ? policies
-      : policies.filter((policy) => policy.category === filter);
-  const storedCategory = M.data.storage("category");
-  const filterOptions = ["전체"];
+  const handleNextPage = () => {
+    if (currentPage < pageNumbers) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
-  if (storedCategory) {
-    filterOptions.push(...storedCategory);
-  }
+  const toggleBookmark = (id) => {
+    const updatedPolicies = filteredPolicies.map((policy) =>
+      policy.id === id ? { ...policy, bookmarked: !policy.bookmarked } : policy
+    );
+    setFilteredPolicies(updatedPolicies);
+  };
+
+  const pageNumbers = Math.ceil(filteredPolicies.length / itemsPerPage);
 
   useEffect(() => {
     const policyDateElements = document.querySelectorAll(".policy-date");
@@ -53,7 +66,7 @@ const Custom = () => {
       const textWidth = context.measureText(text).width;
       element.style.width = textWidth + "px";
     });
-  }, [policies]);
+  }, [currentPage]);
 
   return (
     <div className="container">
@@ -70,7 +83,7 @@ const Custom = () => {
         ))}
       </div>
       <ul className="policy-list">
-        {filteredPolicies.map((policy) => (
+        {filteredPolicies.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((policy) => (
           <li key={policy.id} className="policy-item">
             <Link to={`/detail?id=${policy.id}`}>
               <button
@@ -94,6 +107,29 @@ const Custom = () => {
           </li>
         ))}
       </ul>
+      <div className="pagination">
+        <button
+          onClick={handlePreviousPage}
+          className={`page-button ${currentPage === 1 ? "disabled" : ""}`}
+        >
+          &lsaquo;
+        </button>
+        {[...Array(pageNumbers)].map((_, number) => (
+          <button
+            key={number + 1}
+            onClick={() => setCurrentPage(number + 1)}
+            className={`page-button ${currentPage === number + 1 ? "active" : ""}`}
+          >
+            {number + 1}
+          </button>
+        ))}
+        <button
+          onClick={handleNextPage}
+          className={`page-button ${currentPage === pageNumbers ? "disabled" : ""}`}
+        >
+          &rsaquo;
+        </button>
+      </div>
     </div>
   );
 };
