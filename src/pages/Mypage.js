@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
   FaBookmark,
   FaRegBookmark,
@@ -9,71 +10,90 @@ import { FiSettings } from "react-icons/fi";
 import { BsPersonFill, BsFileText, BsGift, BsCalendar } from "react-icons/bs";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-const policiesData = [
-  {
-    id: 1,
-    agency: "서민금융진흥원",
-    title: "청년도약계좌",
-    description: "서민금융진흥원에서 제공하는 정책입니다.",
-    date: "2023-10-26",
-    category: "전체",
-    bookmarked: true,
-  },
-  {
-    id: 2,
-    agency: "서민금융진흥원",
-    title: "청년도약계좌",
-    description: "서민금융진흥원에서 제공하는 정책입니다.",
-    date: "2023-12-01",
-    category: "전체",
-    bookmarked: true,
-  },
-  {
-    id: 3,
-    agency: "서민금융진흥원",
-    title: "청년도약계좌",
-    description: "서민금융진흥원에서 제공하는 정책입니다.",
-    date: "2023-12-01",
-    category: "전체",
-    bookmarked: true,
-  },
-  {
-    id: 4,
-    agency: "서민금융진흥원",
-    title: "청년도약계좌",
-    description: "서민금융진흥원에서 제공하는 정책입니다.",
-    date: "2023-12-01",
-    category: "전체",
-    bookmarked: true,
-  },
-];
-
 const Mypage = () => {
   const [activeTab, setActiveTab] = useState("스크랩");
-  const [policies, setPolicies] = useState(policiesData);
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const navigate = useNavigate();
+  const [userId, setUserId] = useState("");
+  const [userScrappedPolicies, setUserScrappedPolicies] = useState([]);
+  const [policies, setPolicies] = useState([]);
 
   useEffect(() => {
-    const storedName = M.data.storage('name');
-    const token = M.data.storage('token');
+    const storedName = M.data.storage("name");
+    const token = M.data.storage("token");
     if (!token) {
-        navigate('/required');
+      navigate("/required");
     }
     if (storedName) {
       setName(storedName);
     }
+
+    const storedUserId = M.data.storage("id");
+    if (storedUserId) {
+      setUserId(storedUserId);
+    }
   }, []);
 
-  const toggleBookmark = (id) => {
-    const updatedPolicies = policies.map((policy) =>
-      policy.id === id ? { ...policy, bookmarked: !policy.bookmarked } : policy
-    );
-    setPolicies(updatedPolicies);
-  };
+  useEffect(() => {
+    axios
+      .get(`/v1/subsidyscraps/find/subsidyinfo?userId=${userId}`)
+      .then((response) => {
+        setUserScrappedPolicies(response.data);
+      })
+      .catch((error) => {
+        console.error("스크랩된 보조금 가져오기 실패:", error);
+      });
+  }, [userId]);
+
+  useEffect(() => {
+    const scrappedPolicies = userScrappedPolicies.map((policy) => {
+      return {
+        id: policy.id,
+        agency: policy.receiving_agency,
+        title: policy.title,
+        description: policy.description,
+        date: policy.application_period,
+        category: "전체",
+        bookmarked: true,
+      };
+    });
+    setPolicies(scrappedPolicies);
+  }, [userScrappedPolicies]);
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
+  };
+
+  const isScrapped = (id) => {
+    return userScrappedPolicies.some((policy) => policy.id === id);
+  };
+
+  const toggleBookmark = (id) => {
+    const isBookmarked = isScrapped(id);
+  
+    if (isBookmarked) {
+      const updatedUserScrappedPolicies = userScrappedPolicies.filter(policy => policy.id !== id);
+      setUserScrappedPolicies(updatedUserScrappedPolicies);
+  
+      axios.delete(`/v1/subsidyscraps/delete?scrapId=${id}`)
+        .then((response) => {
+          console.log("스크랩 삭제 성공:", response);
+        })
+        .catch((error) => {
+          console.error("스크랩 삭제 실패:", error);
+        });
+    } else {
+      axios.post(`/v1/subsidyscraps/create?userId=${userId}&subsidyId=${id}`)
+        .then((response) => {
+          const updatedUserScrappedPolicies = [...userScrappedPolicies, response.data];
+          setUserScrappedPolicies(updatedUserScrappedPolicies);
+  
+          console.log("스크랩 추가 성공:", response);
+        })
+        .catch((error) => {
+          console.error("스크랩 추가 실패:", error);
+        });
+    }
   };
 
   const location = useLocation();
@@ -176,31 +196,25 @@ const Mypage = () => {
         {activeTab === "스크랩" && (
           <div className="tab-panel">
             <ul className="policy-list">
-              {policiesData.map((policy) => (
+              {policies.map((policy) => (
                 <li key={policy.id} className="policy-item">
-                  <Link to={`/detail?id=${policy.id}`}>
-                    <button
-                      style={{ boxShadow: "none", width: "auto", marginTop: 0 }}
-                      className="bookmark-button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        toggleBookmark(policy.id);
-                      }}
-                    >
-                      {policy.bookmarked ? <FaBookmark /> : <FaRegBookmark />}
-                    </button>
-                    <div className="policy-details">
-                      <div className="policy-agency">{policy.agency}</div>
-                      <div className="policy-description">
-                        {policy.description}
-                      </div>
-                      <span className="policy-date">
-                        {calculateDaysRemaining(policy.date)}
-                      </span>
-                      <span className="policy-title">{policy.title}</span>
-                    </div>
-                  </Link>
-                </li>
+                <Link to={`/detail?id=${policy.id}`}>
+                  <button
+                    style={{ boxShadow: "none", width: "auto", marginTop: 0 }}
+                    className="bookmark-button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleBookmark(policy.id);
+                    }}
+                  >
+                    {isScrapped(policy.id) ? <FaBookmark /> : <FaRegBookmark />}
+                  </button>
+                  <div className="policy-details">
+                    <div className="policy-title">{policy.title}</div>
+                    <div className="policy-description">{policy.description}</div>
+                  </div>
+                </Link>
+              </li>
               ))}
             </ul>
           </div>
