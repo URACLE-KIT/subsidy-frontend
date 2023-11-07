@@ -15,6 +15,11 @@ const Signup = () => {
   const [year, setYear] = useState("2023");
   const [month, setMonth] = useState("01");
   const [day, setDay] = useState("01");
+  const gButtonInitialState = [
+    { value: "M", backgroundColor: "initial", textColor: "black" },
+    { value: "F", backgroundColor: "initial", textColor: "black" },
+  ];
+  const [genderButtons, setGenderButtons] = useState(gButtonInitialState);
 
   const checkEmailExistence = async (email) => {
     try {
@@ -75,13 +80,12 @@ const Signup = () => {
   const handleSignup = async () => {
     const name = document.getElementById("name").value;
     const gender = ugender;
-    const birthday = year+month+day;
+    const birthday = year + "-" + month + "-" + day;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
     const created_at = new Date().toISOString();
     const updated_at = "";
-
 
     if (inputVerificationCode !== M.data.storage("verificationCode")) {
       M.pop.alert("이메일 인증을 받아주세요.");
@@ -109,7 +113,7 @@ const Signup = () => {
     };
 
     try {
-      const response = await axios.post("/auth/signup", userData);
+      const response = await axios.post("/v1/users/signup", userData);
 
       alert("회원가입이 완료되었습니다.");
       M.data.removeStorage("verificationCode");
@@ -140,6 +144,20 @@ const Signup = () => {
 
   const handleGenderClick = (selectedGender) => {
     setUgender(selectedGender);
+
+    if (selectedGender === "M") {
+      const updatedButtons = [
+        { value: "M", backgroundColor: "#0a0afe", textColor: "white" },
+        { value: "F", backgroundColor: "initial", textColor: "black" },
+      ];
+      setGenderButtons(updatedButtons);
+    } else if (selectedGender === "F") {
+      const updatedButtons = [
+        { value: "M", backgroundColor: "initial", textColor: "black" },
+        { value: "F", backgroundColor: "#0a0afe", textColor: "white" },
+      ];
+      setGenderButtons(updatedButtons);
+    }
   };
 
   return (
@@ -156,13 +174,21 @@ const Signup = () => {
       <div className="gender">
         <button
           className="man"
-          onClick={() => handleGenderClick("남자")}
+          onClick={() => handleGenderClick("M")}
+          style={{
+            backgroundColor: genderButtons[0].backgroundColor,
+            color: genderButtons[0].textColor,
+          }}
         >
           남자
         </button>
         <button
           className="woman"
-          onClick={() => handleGenderClick("여자")}
+          onClick={() => handleGenderClick("F")}
+          style={{
+            backgroundColor: genderButtons[1].backgroundColor,
+            color: genderButtons[1].textColor,
+          }}
         >
           여자
         </button>

@@ -16,7 +16,7 @@ const Login = () => {
         const password = document.getElementById("password").value;
 
         try {
-            const response = await axios.post('/auth/signin', {
+            const response = await axios.post('/v1/users/signin', {
                 email: email,
                 password: password
             });

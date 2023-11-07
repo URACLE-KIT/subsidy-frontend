@@ -630,10 +630,6 @@ header {
   height: 35px;
   line-height: 35px;
 }
-.gender button:focus{
-  background-color: rgb(10, 10, 254);
-  color: white;
-}
 
 .birthday select:first-child{
   background-color: white;
