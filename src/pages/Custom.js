@@ -114,7 +114,7 @@ const Custom = () => {
           console.error("스크랩 추가 실패:", error);
         });
     }
-  };  
+  };
   
   const pageNumbers = Math.ceil(filteredPolicies.length / itemsPerPage);
 
