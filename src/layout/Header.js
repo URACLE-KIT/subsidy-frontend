@@ -60,7 +60,7 @@ const Header = () => {
                             <RiCloseFill />
                         </button>
 
-                        <h3>궁금한 정책을 검색해 보세요!</h3>
+                        <h3 style={{ textAlign: 'center' }}>궁금한 정책을 검색해 보세요!</h3>
 
                         <div className="search-input">
                             <select

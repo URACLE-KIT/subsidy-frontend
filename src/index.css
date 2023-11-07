@@ -287,11 +287,19 @@ header {
   align-items: center;
 }
 
-.search-input input[type="text"] {
-  width: 100%;
-  padding: 8px 30px 8px 10px;
+.search-input select {
+  width: 100px;
+  border-radius: 4px 0 0 4px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-right: 0;
+  background: #fff;
+}
+
+.search-input input[type="text"] {
+  width: 180px;
+  padding: 15px 30px 15px 10px;
+  border: 1px solid #ccc;
+  border-radius: 0 4px 4px 0;
 }
 
 .search-icon {
