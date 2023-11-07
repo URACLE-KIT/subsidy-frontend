@@ -625,6 +625,31 @@ header {
   right: 15px;
   cursor: pointer;
 }
+.gender{
+  width: 100%;
+  margin-bottom: 10px;
+  display: flex;
+  text-align: center;
+  display: inline-block;
+}
+.gender button{
+  width: 47%;
+  margin: 3px;
+  background-color: white;
+  border: 1px solid rgb(199, 199, 199);
+  border-radius: 8px;
+  height: 35px;
+  line-height: 35px;
+}
+
+.birthday select:first-child{
+  background-color: white;
+  max-width: 90px;
+}
+.birthday select{
+  background-color: white;
+  max-width: 80px;
+}
 
 /* 설정 */
 .section {
