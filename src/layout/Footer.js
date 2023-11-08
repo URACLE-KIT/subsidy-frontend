@@ -20,7 +20,7 @@ const Footer = () => {
     <>
       <footer className="footer">
         <h5>보조알리미</h5>
-        <p>20' 박수현, 18' 김인찬, 17' 원종현, 18'이찬영</p>
+        <p>20' 박수현, 18' 김인찬, 17' 원종현, 18' 이찬영</p>
         <Link to='https://uracle.co.kr/'>유라클</Link>
         <p>보조알리미 v1.0</p>
         <span onClick={() => openModal('이용 약관')}>이용 약관</span>
