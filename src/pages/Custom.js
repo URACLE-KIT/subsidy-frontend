@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaBookmark, FaRegBookmark, FaEye, FaRegCommentDots } from "react-icons/fa";
+import { FaBookmark, FaRegBookmark, FaRegEye, FaRegCommentDots } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 
 const Custom = () => {
@@ -210,7 +210,7 @@ const Custom = () => {
                 <div className="policy-title">{policy.title}</div>
                 <div className="policy-description">{policy.description}</div>
                 <div className="policy-date" style={{ maxWidth: "100%" }}>{policy.application_period}</div>
-                <div className="policy-description"><FaEye /> {policy.views}&nbsp;&nbsp;&nbsp;<FaRegCommentDots /> 3{}</div>
+                <div className="policy-description"><FaRegEye /> {policy.views}&nbsp;&nbsp;&nbsp;<FaRegCommentDots /> 3{}</div>
               </div>
             </Link>
           </li>
