@@ -822,7 +822,7 @@ header {
 }
 
 .page-button.active {
-  background-color: #0056b3;
+  background-color: #889cff;
 }
 
 .page-button.disabled {
@@ -835,5 +835,5 @@ header {
 }
 
 .page-button:hover {
-  background-color: #0056b3;
+  background-color: #889cff;
 }
