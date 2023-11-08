@@ -1,50 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-const customData = [
-  {
-    id: 1,
-    agency: "서민금융진흥원",
-    title: "청년도약계좌",
-    description: "서민금융진흥원에서 제공하는 정책입니다.",
-    date: "2023-12-31",
-    category: "전체",
-    bookmarked: false,
-  },
-  {
-    id: 2,
-    agency: "보건복지부",
-    title: "생계급여",
-    description: "보건복지부에서 제공하는 정책입니다.",
-    date: "2023-12-31",
-    category: "전체",
-    bookmarked: false,
-  },
-  {
-    id: 3,
-    agency: "국토교통부",
-    title: "청년우대형청약통장",
-    description: "국토교통부에서 제공하는 정책입니다.",
-    date: "2023-12-31",
-    category: "전체",
-    bookmarked: false,
-  },
-  {
-    id: 4,
-    agency: "서민금융진흥원",
-    title: "청년도약계좌",
-    description: "서민금융진흥원에서 제공하는 정책입니다.",
-    date: "2023-12-01",
-    category: "전체",
-    bookmarked: false,
-  },
-];
 
 const Main = () => {
-  const [customs, setCustoms] = useState(customData);
   const [policies, setPolicies] = useState([]);
   const storedCategory = M.data.storage("category");
-
+  
   var total = 0;
   var filteredPolicies = [];
   var count = [];
@@ -59,6 +20,14 @@ const Main = () => {
   count.map((count)=>(
     total += count
   ))
+
+  const sumPolicies = filteredPolicies.reduce((accumulator, currentArray) => {
+    return accumulator.concat(currentArray);
+  }, []);
+
+  sumPolicies.sort((a, b)=> b.id - a.id);
+
+  const top4Items = sumPolicies.slice(0, 4);
 
   useEffect(() => {
     axios
@@ -105,18 +74,18 @@ const Main = () => {
       <div className="container">
         <h2>맞춤보조금</h2>
         <ul className="policy-list">
-          {customs.map((customs) => (
-            <li key={customs.id} className="policy-item">
-              <Link to={`/detail?id=${customs.id}`}>
+          {top4Items.map((top4Items) => (
+            <li key={top4Items.id} className="policy-item">
+              <Link to={`/detail?id=${top4Items.id}`}>
                 <div className="policy-details">
-                  <div className="policy-agency">{customs.agency}</div>
+                  <div className="policy-agency">{top4Items.agency}</div>
                   <div className="policy-description">
-                    {customs.description}
+                    {top4Items.description}
                   </div>
                   <span className="policy-date">
-                    {calculateDaysRemaining(customs.date)}
+                    {calculateDaysRemaining(top4Items.date)}
                   </span>
-                  <span className="policy-title">{customs.title}</span>
+                  <span className="policy-title">{top4Items.title}</span>
                 </div>
               </Link>
             </li>
