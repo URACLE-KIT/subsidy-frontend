@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaBookmark, FaRegBookmark } from "react-icons/fa";
+import { FaBookmark, FaRegBookmark, FaEye, FaRegCommentDots } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 
 const Custom = () => {
@@ -150,6 +150,13 @@ const Custom = () => {
       if (sortOption === "제목순") {
         return a.title.localeCompare(b.title);
       }
+
+      if (sortOption === "조회수순") {
+        return b.views - a.views;
+      }
+
+      if (sortOption === "후기순") {
+      }
     });
 
     setFilteredPolicies(policiesCopy);
@@ -181,6 +188,8 @@ const Custom = () => {
       >
         <option value="기본순">기본순</option>
         <option value="제목순">제목순</option>
+        <option value="조회수순">조회수순</option>
+        <option value="후기순">후기순</option>
       </select>
       <ul className="policy-list">
         {filteredPolicies.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((policy) => (
@@ -201,7 +210,7 @@ const Custom = () => {
                 <div className="policy-title">{policy.title}</div>
                 <div className="policy-description">{policy.description}</div>
                 <div className="policy-date" style={{ maxWidth: "100%" }}>{policy.application_period}</div>
-                <div className="policy-description">{policy.telephone_inquiry}</div>
+                <div className="policy-description"><FaEye /> {policy.views}&nbsp;&nbsp;&nbsp;<FaRegCommentDots /> 3{}</div>
               </div>
             </Link>
           </li>
