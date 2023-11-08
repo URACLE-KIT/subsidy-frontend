@@ -35,7 +35,10 @@ const Header = () => {
     return (
         <header>
             <div className="title">
-                <Link to="/">보조알리미</Link>
+                <Link to="/">
+                    <img src={process.env.PUBLIC_URL + '/logo.png'} alt="Image" />
+                    보조알리미
+                </Link>
             </div>
             <div className="util">
                 <div className="util-btn" onClick={toggleSearch}>
