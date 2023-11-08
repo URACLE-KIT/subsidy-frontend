@@ -6,6 +6,8 @@ import axios from 'axios';
 const Latest = () => {
     const [subsidiesData, setSubsidiesData] = useState([]);
     const [sortOption, setSortOption] = useState("최신순");
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
 
     useEffect(() => {
         axios.get('/v1/subsidies-review/all')
@@ -19,6 +21,7 @@ const Latest = () => {
 
     const handleSortChange = (event) => {
         setSortOption(event.target.value);
+        setCurrentPage(1);
     };
 
     const formatDate = (dateString) => {
@@ -42,6 +45,23 @@ const Latest = () => {
     };
 
     const sortedPolicies = sortPolicies(subsidiesData, sortOption);
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentPolicies = sortedPolicies.slice(indexOfFirstItem, indexOfLastItem);
+    const pageNumbers = Math.ceil(sortedPolicies.length / itemsPerPage);
+
+    const handlePreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const handleNextPage = () => {
+        if (currentPage < pageNumbers) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
 
     return (
         <div className="container">
@@ -59,7 +79,7 @@ const Latest = () => {
                 <option value="댓글순">댓글순</option>
             </select>
             <ul className="policy-list">
-                {sortedPolicies.map((policy) => (
+                {currentPolicies.map((policy) => (
                     <li key={policy.id} className="policy-item">
                         <Link to={`/detail?id=${policy.id}&latest`}>
                             <div className="policy-details">
@@ -75,7 +95,7 @@ const Latest = () => {
                                     <div className='count views'>
                                         <span><FaRegEye /> {policy.views}</span>
                                         <span><FaRegHeart /> {policy.likes}</span>
-                                        <span><FaRegCommentDots /> {policy.views}</span>
+                                        <span><FaRegCommentDots /> {policy.comments}</span>
                                     </div>
                                 </div>
                             </div>
@@ -83,6 +103,29 @@ const Latest = () => {
                     </li>
                 ))}
             </ul>
+            <div className="pagination">
+                <button
+                    onClick={handlePreviousPage}
+                    className={`page-button ${currentPage === 1 ? "disabled" : ""}`}
+                >
+                    &lsaquo;
+                </button>
+                {Array.from({ length: pageNumbers }, (_, i) => (
+                    <button
+                        key={i}
+                        onClick={() => setCurrentPage(i + 1)}
+                        className={`page-button ${currentPage === i + 1 ? "active" : ""}`}
+                    >
+                        {i + 1}
+                    </button>
+                ))}
+                <button
+                    onClick={handleNextPage}
+                    className={`page-button ${currentPage === pageNumbers ? "disabled" : ""}`}
+                >
+                    &rsaquo;
+                </button>
+            </div>
         </div>
     );
 };

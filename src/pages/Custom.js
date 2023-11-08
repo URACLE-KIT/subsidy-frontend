@@ -64,6 +64,7 @@ const Custom = () => {
 
   const handleSortChange = (event) => {
     setSortOption(event.target.value);
+    setCurrentPage(1);
   };
 
   const storedCategory = M.data.storage("category");
@@ -90,16 +91,16 @@ const Custom = () => {
 
   const toggleBookmark = (id) => {
     const isBookmarked = isScrapped(id);
-  
+
     if (isBookmarked) {
       const updatedUserScrappedPolicies = userScrappedPolicies.filter(policy => policy.id !== id);
       setUserScrappedPolicies(updatedUserScrappedPolicies);
     } else {
-      const newPolicy = { id: id, title: "", description: ""};
+      const newPolicy = { id: id, title: "", description: "" };
       const updatedUserScrappedPolicies = [...userScrappedPolicies, newPolicy];
       setUserScrappedPolicies(updatedUserScrappedPolicies);
     }
-  
+
     if (isBookmarked) {
       axios
         .delete(`/v1/subsidyscraps/deleteBySubsidyId?subsidyId=${id}`)
@@ -119,7 +120,7 @@ const Custom = () => {
           console.error("스크랩 추가 실패:", error);
         });
     }
-  };  
+  };
 
   const pageNumbers = Math.ceil(filteredPolicies.length / itemsPerPage);
 
@@ -210,7 +211,7 @@ const Custom = () => {
                 <div className="policy-title">{policy.title}</div>
                 <div className="policy-description">{policy.description}</div>
                 <div className="policy-date" style={{ maxWidth: "100%" }}>{policy.application_period}</div>
-                <div className="policy-description"><FaRegEye /> {policy.views}&nbsp;&nbsp;&nbsp;<FaRegCommentDots /> 3{}</div>
+                <div className="policy-description"><FaRegEye /> {policy.views}&nbsp;&nbsp;&nbsp;<FaRegCommentDots /> 3{ }</div>
               </div>
             </Link>
           </li>
