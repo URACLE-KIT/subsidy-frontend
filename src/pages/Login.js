@@ -26,7 +26,9 @@ const Login = () => {
                 'token': response.data.token,
                 'id': response.data.id,
                 'name': response.data.name,
-                'email': response.data.email
+                'email': response.data.email,
+                'gender': response.data.gender,
+                'birthday': response.data.birthday
             })
 
             navigate('/');
