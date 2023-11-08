@@ -654,7 +654,7 @@ header {
 }
 
 .gender button {
-  width: 47%;
+  width: calc(50% - 6px);
   margin: 3px;
   background-color: white;
   border: 1px solid rgb(199, 199, 199);
