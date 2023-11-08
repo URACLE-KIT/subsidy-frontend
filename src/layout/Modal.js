@@ -262,8 +262,7 @@ const Modal = ({ isOpen, onClose, children }) => {
     } else if (children === '공유하기') {
         modalContent = (
             <div className="content">
-                <p>{shareableLink}</p>
-                <button onClick={handleCopyLink}>링크 복사</button>
+                <div className='copy' onClick={handleCopyLink}>{shareableLink}</div>
             </div>
         );
     } else {

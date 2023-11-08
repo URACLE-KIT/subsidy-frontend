@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaBookmark, FaRegBookmark, FaExternalLinkAlt, FaPencilAlt } from 'react-icons/fa';
-import { BsPersonFill, BsFileText, BsGift, BsCalendar } from 'react-icons/bs';
+import { BsBriefcase, BsTelephone, BsBoxArrowUpRight, BsLink45Deg, BsPersonFill, BsFileText, BsGift, BsCalendar } from 'react-icons/bs';
 import { Link, useLocation } from 'react-router-dom';
 
 import Modal from '../layout/Modal';
 
 const Detail = () => {
   const [policy, setPolicy] = useState(null);
-  const [activeTab, setActiveTab] = useState('지원대상');
+  const [activeTab, setActiveTab] = useState('신청정보');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [countdownLabel, setCountdownLabel] = useState('');
@@ -118,33 +118,22 @@ const Detail = () => {
         {policy && (
           <>
             <div className="header">
-              <button className="bookmark-button" onClick={toggleBookmark} style={{ boxShadow: 'none', width: 'auto', marginTop: 0 }}>
+              <div className='views'>
+                조회수 {policy.views}
+              </div>
+              <button className="bookmark-button" onClick={toggleBookmark} style={{ boxShadow: 'none', width: 'auto', marginTop: '-50px' }}>
                 {isScrapped(policy.id) ? <FaBookmark /> : <FaRegBookmark />}
               </button>
-            </div>
-            <div className="policy-agency">{policy.agency}</div>
-            <div className="detail-title">{policy.title}</div>
-            <div className="policy-date">{countdownLabel}</div>
-            <div style={{ marginTop: '5px' }}>
-              <span className="sub-title"><BsPersonFill />&nbsp;&nbsp; 지원대상</span>{policy.target}
-            </div>
-            <div>
-              <span className="sub-title"><BsFileText />&nbsp;&nbsp; 지원유형</span>{policy.category}
-            </div>
-            <div>
-              <span className="sub-title"><BsGift />&nbsp;&nbsp; 지원혜택</span>{policy.supportBenefit}
-            </div>
-            <div>
-              <span className="sub-title"><BsCalendar />&nbsp;&nbsp; 신청기간</span>{policy.startDate}~{policy.endDate}
-            </div>
-            <button className="detail-button" onClick={() => openModal('공유하기')}>
-              <FaExternalLinkAlt /> 공유하기
-            </button>
-            <Link to="/write?type=review">
-              <button className="detail-button">
-                <FaPencilAlt /> 후기글 작성
+              <div className="detail-title">{policy.title}</div>
+              <button className="detail-button" onClick={() => openModal('공유하기')}>
+                <FaExternalLinkAlt /> 공유하기
               </button>
-            </Link>
+              <Link to="/write?type=review">
+                <button className="detail-button">
+                  <FaPencilAlt /> 후기글 작성
+                </button>
+              </Link>
+            </div>
           </>
         )}
 
@@ -154,21 +143,21 @@ const Detail = () => {
       </div>
 
       {policy ? (
-        <div className="tab-content">
+        <>
           <div className="tabs">
             <button
               style={{ boxShadow: 'none', width: 'auto', marginTop: 0, borderRadius: 0 }}
-              className={`tab ${activeTab === '지원대상' ? 'active' : ''}`}
-              onClick={() => handleTabClick('지원대상')}
+              className={`tab ${activeTab === '신청정보' ? 'active' : ''}`}
+              onClick={() => handleTabClick('신청정보')}
             >
-              지원대상
+              신청정보
             </button>
             <button
               style={{ boxShadow: 'none', width: 'auto', marginTop: 0, borderRadius: 0 }}
-              className={`tab ${activeTab === '지원내용' ? 'active' : ''}`}
-              onClick={() => handleTabClick('지원내용')}
+              className={`tab ${activeTab === '신청문의' ? 'active' : ''}`}
+              onClick={() => handleTabClick('신청문의')}
             >
-              지원내용
+              신청문의
             </button>
             <button
               style={{ boxShadow: 'none', width: 'auto', marginTop: 0, borderRadius: 0 }}
@@ -187,24 +176,54 @@ const Detail = () => {
           </div>
 
           <div className="tab-content">
-            {activeTab === '지원대상' && (
-              <div className="tab-panel">지원 대상 내용</div>
+            {activeTab === '신청정보' && (
+              <div className="tab-panel">
+                <h3>신청정보</h3>
+                <div className='tab-item'>
+                  <span className="sub-title"><BsCalendar />&nbsp;&nbsp; 신청기간</span>{policy.application_period}
+                </div>
+                <div className='tab-item'>
+                  <span className="sub-title"><BsGift />&nbsp;&nbsp; 지원형태</span>{policy.support_type}
+                </div>
+              </div>
             )}
-            {activeTab === '지원내용' && (
-              <div className="tab-panel">지원 내용 내용</div>
+            {activeTab === '신청문의' && (
+              <div className="tab-panel">
+                <h3>신청문의</h3>
+
+                <div className='tab-item'>
+                  <span className="sub-title"><BsTelephone />&nbsp;&nbsp; 전화문의</span>{policy.telephone_inquiry}
+                </div>
+              </div>
             )}
             {activeTab === '관련정보' && (
-              <div className="tab-panel">관련 정보 내용</div>
+              <div className="tab-panel">
+                <h3>관련정보</h3>
+
+                <div className='tab-item'>
+                  <span className="sub-title"><BsFileText />&nbsp;&nbsp; 카테고리</span>{policy.category}
+                </div>
+                <div className='tab-item'>
+                  <span className="sub-title"><BsLink45Deg />&nbsp;&nbsp; 상세정보</span>
+                  <Link to={policy.detail_information_url}>바로가기 <BsBoxArrowUpRight /></Link>
+                </div>
+              </div>
             )}
             {activeTab === '신청방법' && (
               <div className="tab-panel">
                 <h3>신청방법</h3>
-                <p>{policy.application_process}</p>
-                <p>{policy.detail_information_url}</p>
+                <div className='tab-item'>
+                  <span className="sub-title"><BsPersonFill />&nbsp;&nbsp; 신청방법</span>
+                  <Link to={policy.application_process_url}>{policy.application_process} <BsBoxArrowUpRight /></Link>
+                </div>
+                <div className='tab-item'>
+                  <span className="sub-title"><BsBriefcase />&nbsp;&nbsp; 접수기관</span>
+                  {policy.receiving_agency}
+                </div>
               </div>
             )}
           </div>
-        </div>
+        </>
       ) : (
         <div></div>
       )}
