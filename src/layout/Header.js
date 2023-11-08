@@ -11,6 +11,7 @@ const Header = () => {
 
     const toggleSearch = () => {
         setSearchOpen(!isSearchOpen);
+        navigate('/');
     };
 
     const handleSearch = () => {
@@ -32,6 +33,7 @@ const Header = () => {
         setSearchText('');
     };
 
+    
     return (
         <header>
             <div className="title">
