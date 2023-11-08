@@ -17,6 +17,17 @@ const Mypage = () => {
   const [userId, setUserId] = useState("");
   const [userScrappedPolicies, setUserScrappedPolicies] = useState([]);
   const [policies, setPolicies] = useState([]);
+  const [policiesAll, setPoliciesAll] = useState([]);
+  const [category, setCategory] = useState([]);
+
+  var total = 0;
+  var filteredPolicies = [];
+  var count = [];
+  category.map((c) =>
+    filteredPolicies.push(policiesAll.filter((policy) => policy.category === c))
+  );
+  filteredPolicies.map((fp) => count.push(fp.length));
+  count.map((count) => (total += count));
 
   useEffect(() => {
     const storedName = M.data.storage("name");
@@ -32,6 +43,20 @@ const Mypage = () => {
     if (storedUserId) {
       setUserId(storedUserId);
     }
+
+    var storedCategory = M.data.storage("category");
+    if (!storedCategory) {
+      storedCategory = [];
+    }
+    setCategory(storedCategory);
+    axios
+      .get("/v1/subsidies/all")
+      .then((response) => {
+        setPoliciesAll(response.data);
+      })
+      .catch((error) => {
+        console.error("데이터 가져오기 실패:", error);
+      });
   }, []);
 
   useEffect(() => {
@@ -134,7 +159,7 @@ const Mypage = () => {
             <span>
               맞춤 정책
               <br />
-              <p className="num">56</p>
+              <p className="num">{total}</p>
             </span>
           </Link>
           <span style={{ borderLeft: '1px solid #999' }} onClick={() => handleTabClick("스크랩")}>

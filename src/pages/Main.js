@@ -4,16 +4,13 @@ import axios from "axios";
 
 const Main = () => {
   const [policies, setPolicies] = useState([]);
-  var storedCategory = M.data.storage("category");
-
+  const [category, setCategory] = useState([]);
+  
   var total = 0;
   var filteredPolicies = [];
   var count = [];
-
-  if (!storedCategory) {
-    storedCategory = [];
-  }
-  storedCategory.map((c) =>
+  
+  category.map((c) =>
     filteredPolicies.push(policies.filter((policy) => policy.category === c))
   );
 
@@ -29,6 +26,11 @@ const Main = () => {
   const top4Items = sumPolicies.slice(0, 4);
 
   useEffect(() => {
+    var storedCategory = M.data.storage("category");
+    if (!storedCategory) {
+      storedCategory = [];
+    }
+    setCategory(storedCategory);
     axios
       .get("/v1/subsidies/all")
       .then((response) => {
@@ -39,20 +41,20 @@ const Main = () => {
       });
   }, []);
 
-  const calculateDaysRemaining = (date) => {
-    const currentDate = new Date();
-    const policyDate = new Date(date);
-    const timeDifference = policyDate.getTime() - currentDate.getTime();
-    const daysRemaining = Math.ceil(timeDifference / (1000 * 3600 * 24));
+  // const calculateDaysRemaining = (date) => {
+  //   const currentDate = new Date();
+  //   const policyDate = new Date(date);
+  //   const timeDifference = policyDate.getTime() - currentDate.getTime();
+  //   const daysRemaining = Math.ceil(timeDifference / (1000 * 3600 * 24));
 
-    if (daysRemaining < 0) {
-      return `D+${Math.abs(daysRemaining)}`;
-    } else if (daysRemaining === 0) {
-      return "D-DAY";
-    } else {
-      return `D-${daysRemaining}`;
-    }
-  };
+  //   if (daysRemaining < 0) {
+  //     return `D+${Math.abs(daysRemaining)}`;
+  //   } else if (daysRemaining === 0) {
+  //     return "D-DAY";
+  //   } else {
+  //     return `D-${daysRemaining}`;
+  //   }
+  // };
 
   return (
     <>
@@ -62,7 +64,7 @@ const Main = () => {
           <p>{total}건</p>
         </div>
 
-        {storedCategory.map((category, index) => (
+        {category.map((category, index) => (
           <div className="category">
             <h3>{category}</h3>
             <p>{count[index]}건</p>
@@ -78,13 +80,13 @@ const Main = () => {
               <Link to={`/detail?id=${top4Items.id}`}>
                 <div className="policy-details">
                   <div className="policy-agency">{top4Items.agency}</div>
+                  <div className="policy-title">{top4Items.title}</div>
                   <div className="policy-description">
                     {top4Items.description}
                   </div>
-                  <span className="policy-date">
-                    {calculateDaysRemaining(top4Items.date)}
-                  </span>
-                  <span className="policy-title">{top4Items.title}</span>
+                  <div className="policy-date">
+                    {top4Items.application_period}
+                  </div>
                 </div>
               </Link>
             </li>
