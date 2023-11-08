@@ -4,28 +4,27 @@ import axios from "axios";
 
 const Main = () => {
   const [policies, setPolicies] = useState([]);
-  const storedCategory = M.data.storage("category");
-  
+  var storedCategory = M.data.storage("category");
+
   var total = 0;
   var filteredPolicies = [];
   var count = [];
-  
-  storedCategory.map((c)=>(
-    filteredPolicies.push(policies.filter((policy)=>policy.category === c))
-  ))
 
-  filteredPolicies.map((fp)=>(
-    count.push(fp.length)
-  ))
-  count.map((count)=>(
-    total += count
-  ))
+  if (!storedCategory) {
+    storedCategory = [];
+  }
+  storedCategory.map((c) =>
+    filteredPolicies.push(policies.filter((policy) => policy.category === c))
+  );
+
+  filteredPolicies.map((fp) => count.push(fp.length));
+  count.map((count) => (total += count));
 
   const sumPolicies = filteredPolicies.reduce((accumulator, currentArray) => {
     return accumulator.concat(currentArray);
   }, []);
 
-  sumPolicies.sort((a, b)=> b.id - a.id);
+  sumPolicies.sort((a, b) => b.id - a.id);
 
   const top4Items = sumPolicies.slice(0, 4);
 
