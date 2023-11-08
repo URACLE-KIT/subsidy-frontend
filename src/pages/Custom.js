@@ -90,12 +90,19 @@ const Custom = () => {
 
   const toggleBookmark = (id) => {
     const isBookmarked = isScrapped(id);
-
+  
     if (isBookmarked) {
       const updatedUserScrappedPolicies = userScrappedPolicies.filter(policy => policy.id !== id);
       setUserScrappedPolicies(updatedUserScrappedPolicies);
-
-      axios.delete(`/v1/subsidyscraps/delete?scrapId=${id}`)
+    } else {
+      const newPolicy = { id: id, title: "", description: ""};
+      const updatedUserScrappedPolicies = [...userScrappedPolicies, newPolicy];
+      setUserScrappedPolicies(updatedUserScrappedPolicies);
+    }
+  
+    if (isBookmarked) {
+      axios
+        .delete(`/v1/subsidyscraps/deleteBySubsidyId?subsidyId=${id}`)
         .then((response) => {
           console.log("스크랩 삭제 성공:", response);
         })
@@ -103,18 +110,16 @@ const Custom = () => {
           console.error("스크랩 삭제 실패:", error);
         });
     } else {
-      axios.post(`/v1/subsidyscraps/create?userId=${userId}&subsidyId=${id}`)
+      axios
+        .post(`/v1/subsidyscraps/create?userId=${userId}&subsidyId=${id}`)
         .then((response) => {
-          const updatedUserScrappedPolicies = [...userScrappedPolicies, response.data];
-          setUserScrappedPolicies(updatedUserScrappedPolicies);
-
           console.log("스크랩 추가 성공:", response);
         })
         .catch((error) => {
           console.error("스크랩 추가 실패:", error);
         });
     }
-  };
+  };  
 
   const pageNumbers = Math.ceil(filteredPolicies.length / itemsPerPage);
 
