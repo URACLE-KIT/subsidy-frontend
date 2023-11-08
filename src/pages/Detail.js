@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaBookmark, FaRegBookmark, FaExternalLinkAlt, FaPencilAlt } from 'react-icons/fa';
+import { FaBookmark, FaRegBookmark, FaExternalLinkAlt, FaPencilAlt, FaRegEye, FaRegCommentDots } from 'react-icons/fa';
 import { BsBriefcase, BsTelephone, BsBoxArrowUpRight, BsLink45Deg, BsPersonFill, BsFileText, BsGift, BsCalendar } from 'react-icons/bs';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -96,6 +96,28 @@ const Detail = () => {
       });
   }, [location.search]);
 
+  const viewedPages = M.data.storage('viewedPages') || [];
+
+  const isPageViewed = () => {
+    return viewedPages.includes(id);
+  };
+
+  useEffect(() => {
+    if (!isPageViewed()) {
+      axios.put(`/v1/subsidies/increment-views?id=${id}`)
+        .then((response) => {
+          console.log("조회 수 증가 성공:", response);
+          viewedPages.push(id);
+          M.data.storage({
+            'viewedPages': viewedPages
+          })
+        })
+        .catch((error) => {
+          console.error("조회 수 증가 실패:", error);
+        });
+    }
+  }, [id]);
+
   return (
     <>
       <div className="container">
@@ -103,7 +125,10 @@ const Detail = () => {
           <>
             <div className="header">
               <div className='views'>
-                조회수 {policy.views}
+                <FaRegEye /> {policy.views}&nbsp;&nbsp;&nbsp;
+                <Link to={`/review?id=${id}`} style={{ color: '#999' }}>
+                  <FaRegCommentDots /> {policy.views}
+                </Link>
               </div>
               <button className="bookmark-button" onClick={toggleBookmark} style={{ boxShadow: 'none', width: 'auto', marginTop: '-50px' }}>
                 {isScrapped(policy.title) ? <FaBookmark /> : <FaRegBookmark />}
