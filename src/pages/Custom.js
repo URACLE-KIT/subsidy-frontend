@@ -184,7 +184,7 @@ const Custom = () => {
         id="filterSelect"
         value={sortOption}
         onChange={handleSortChange}
-        style={{ width: '130px', marginTop: '20px' }}
+        style={{ marginTop: '20px' }}
       >
         <option value="기본순">기본순</option>
         <option value="제목순">제목순</option>

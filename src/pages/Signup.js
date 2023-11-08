@@ -147,14 +147,14 @@ const Signup = () => {
 
     if (selectedGender === "M") {
       const updatedButtons = [
-        { value: "M", backgroundColor: "#0a0afe", textColor: "white" },
+        { value: "M", backgroundColor: "#dae0ff", textColor: "black" },
         { value: "F", backgroundColor: "initial", textColor: "black" },
       ];
       setGenderButtons(updatedButtons);
     } else if (selectedGender === "F") {
       const updatedButtons = [
         { value: "M", backgroundColor: "initial", textColor: "black" },
-        { value: "F", backgroundColor: "#0a0afe", textColor: "white" },
+        { value: "F", backgroundColor: "#dae0ff", textColor: "black" },
       ];
       setGenderButtons(updatedButtons);
     }
@@ -205,7 +205,7 @@ const Signup = () => {
             </option>
           ))}
         </select>
-        년
+        &nbsp;년&nbsp;&nbsp;&nbsp;
         <select value={month} onChange={(e) => setMonth(e.target.value)}>
           {monthOptions.map((option) => (
             <option key={option} value={option}>
@@ -213,7 +213,7 @@ const Signup = () => {
             </option>
           ))}
         </select>
-        월
+        &nbsp;월&nbsp;&nbsp;&nbsp;
         <select value={day} onChange={(e) => setDay(e.target.value)}>
           {dayOptions.map((option) => (
             <option key={option} value={option}>

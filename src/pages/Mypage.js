@@ -137,12 +137,17 @@ const Mypage = () => {
               <p className="num">56</p>
             </span>
           </Link>
-          <span className="line" onClick={() => handleTabClick("스크랩")}>
+          <span style={{ borderLeft: '1px solid #999' }} onClick={() => handleTabClick("스크랩")}>
             스크랩
             <br />
             <p className="num">{userScrappedPolicies.length}</p>
           </span>
-          <span onClick={() => handleTabClick("작성 댓글")}>
+          <span style={{ borderLeft: '1px solid #999' }} onClick={() => handleTabClick("작성 글")}>
+            작성 글
+            <br />
+            <p className="num">{userScrappedPolicies.length}</p>
+          </span>
+          <span style={{ borderLeft: '1px solid #999' }} onClick={() => handleTabClick("작성 댓글")}>
             작성 댓글
             <br />
             <p className="num">0</p>

@@ -501,7 +501,7 @@ header {
   text-align: center;
   font-size: 11px;
   background: #eee;
-  padding: 20px 10px;
+  padding: 20px 2px;
   margin: 10px 0;
   border-radius: 10px;
 }
@@ -526,12 +526,7 @@ header {
 
 .mycount span {
   cursor: pointer;
-  padding: 0 25px;
-}
-
-.mycount .line {
-  border-left: 1px solid #999;
-  border-right: 1px solid #999;
+  padding: 0 20px;
 }
 
 .setting-button {
@@ -654,7 +649,7 @@ header {
 }
 
 .gender button {
-  width: 47%;
+  width: calc(50% - 6px);
   margin: 3px;
   background-color: white;
   border: 1px solid rgb(199, 199, 199);
