@@ -6,7 +6,7 @@
 }
 
 body {
-  margin: 70px 0 130px 0;
+  margin: 90px 0 90px 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: #f5f8fc;
@@ -39,6 +39,7 @@ input {
 }
 
 select {
+  background: #fff;
   padding: 14px;
   margin: 8px 0 20px 0;
   width: 100%;
@@ -354,6 +355,23 @@ header {
   margin-right: 15px;
 }
 
+.header {
+  padding: 8px 10px;
+}
+
+.views {
+  margin-bottom: 20px;
+  color: #999;
+}
+
+.tab-item {
+  margin: 10px 0;
+}
+
+.tab-content * {
+  line-height: 1.7;
+}
+
 .tabs {
   display: flex;
   justify-content: space-around;
@@ -562,11 +580,12 @@ header {
   border-radius: 10px;
   box-shadow: none;
 }
+
 .category-button:hover {
   opacity: 1;
 }
 
-.category-icon{
+.category-icon {
   margin-bottom: 6px;
 }
 
@@ -625,14 +644,16 @@ header {
   right: 15px;
   cursor: pointer;
 }
-.gender{
+
+.gender {
   width: 100%;
   margin-bottom: 10px;
   display: flex;
   text-align: center;
   display: inline-block;
 }
-.gender button{
+
+.gender button {
   width: 47%;
   margin: 3px;
   background-color: white;
@@ -642,11 +663,12 @@ header {
   line-height: 35px;
 }
 
-.birthday select:first-child{
+.birthday select:first-child {
   background-color: white;
   max-width: 90px;
 }
-.birthday select{
+
+.birthday select {
   background-color: white;
   max-width: 80px;
 }
@@ -664,6 +686,11 @@ header {
 
 .section .title {
   font-weight: 800;
+}
+
+.title img {
+  width: 40px;
+  margin-right: 5px;
 }
 
 .section .list {
@@ -701,6 +728,16 @@ header {
 
 .modal * {
   text-align: center !important;
+}
+
+.copy {
+  padding: 14px;
+  margin: 8px 0 20px 0;
+  width: calc(100% - 32px);
+  max-width: 330px;
+  border: 2px solid rgba(0, 0, 0, .1);
+  border-radius: 5px;
+  box-shadow: inset -3px -3px 6px #fff, inset 2px 2px 5px #e6e6e6;
 }
 
 .modal button {
@@ -783,7 +820,7 @@ header {
 }
 
 .page-button {
-  background-color: #dae0ff;
+  background-color: #b2d4ff;
   color: #fff;
   border: none;
   padding: 8px 12px;
@@ -794,7 +831,7 @@ header {
 }
 
 .page-button.active {
-  background-color: #0056b3;
+  background-color: #65a8ff;
 }
 
 .page-button.disabled {
@@ -802,10 +839,30 @@ header {
   pointer-events: none;
 }
 
-.page-button:first-child, .page-button:last-child {
+.page-button:first-child,
+.page-button:last-child {
   margin: 0;
 }
 
 .page-button:hover {
-  background-color: #0056b3;
+  background-color: #65a8ff;
+}
+
+/* 푸터 */
+.footer {
+  background: rgba(255, 255, 255, .8);
+  text-align: center;
+  padding: 10px;
+  margin-top: 50px;
+}
+
+.footer * {
+  color: #999;
+  font-size: 12px;
+}
+
+.footer h5 {
+  font-size: 13px;
+  font-weight: 800;
+  color: #000
 }

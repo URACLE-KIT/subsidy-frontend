@@ -1,31 +1,39 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { FaBookmark, FaRegBookmark, FaExternalLinkAlt, FaPencilAlt } from 'react-icons/fa';
-import { BsPersonFill, BsFileText, BsGift, BsCalendar } from 'react-icons/bs';
-import { useLocation } from 'react-router-dom';
-import { Link } from 'react-router-dom/dist';
+import { BsBriefcase, BsTelephone, BsBoxArrowUpRight, BsLink45Deg, BsPersonFill, BsFileText, BsGift, BsCalendar } from 'react-icons/bs';
+import { Link, useLocation } from 'react-router-dom';
+
 import Modal from '../layout/Modal';
 
-const policiesData = [
-  {
-    id: 1,
-    agency: "서민금융진흥원",
-    title: "청년도약계좌",
-    description: "서민금융진흥원에서 제공하는 정책입니다.",
-    startDate: "2023-10-26",
-    endDate: "2023-12-31",
-    category: "서비스(의료)",
-    bookmarked: false,
-    target: "청년 (12~26세)",
-    supportBenefit: "HPV 예방접종 및 의료비 지원",
-  },
-];
-
 const Detail = () => {
-  const [policy, setPolicy] = useState(policiesData[0]);
-  const [activeTab, setActiveTab] = useState('지원대상');
+  const [policy, setPolicy] = useState(null);
+  const [activeTab, setActiveTab] = useState('신청정보');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
-  const [countdownLabel, setCountdownLabel] = useState('');
+  const [userId, setUserId] = useState('');
+  const [userScrappedPolicies, setUserScrappedPolicies] = useState([]);
+
+  useEffect(() => {
+    const storedUserId = M.data.storage('id');
+    if (storedUserId) {
+      setUserId(storedUserId);
+    }
+  }, []);
+
+  useEffect(() => {
+    axios.get(`/v1/subsidyscraps/find/subsidyinfo?userId=${userId}`)
+      .then((response) => {
+        setUserScrappedPolicies(response.data);
+      })
+      .catch((error) => {
+        console.error("스크랩된 보조금 가져오기 실패:", error);
+      });
+  }, [userId]);
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const id = searchParams.get('id');
 
   const openModal = (content) => {
     setModalContent(content);
@@ -36,115 +44,104 @@ const Detail = () => {
     setModalOpen(false);
   };
 
+  const isScrapped = (title) => {
+    return userScrappedPolicies.some((policy) => policy.title === title);
+  };
+
   const toggleBookmark = () => {
-    setPolicy((prevPolicy) => ({
-      ...prevPolicy,
-      bookmarked: !prevPolicy.bookmarked,
-    }));
+    const isBookmarked = isScrapped(policy.title);
+
+    if (isBookmarked) {
+      const updatedUserScrappedPolicies = userScrappedPolicies.filter((policy) => policy.title !== policy.title);
+      setUserScrappedPolicies(updatedUserScrappedPolicies);
+    } else {
+      const newPolicy = { id: policy.id, title: policy.title, description: policy.description };
+      const updatedUserScrappedPolicies = [...userScrappedPolicies, newPolicy];
+      setUserScrappedPolicies(updatedUserScrappedPolicies);
+    }
+
+    if (isBookmarked) {
+      axios
+        .delete(`/v1/subsidyscraps/deleteBySubsidyId?subsidyId=${id}`)
+        .then((response) => {
+          console.log("스크랩 삭제 성공:", response);
+        })
+        .catch((error) => {
+          console.error("스크랩 삭제 실패:", error);
+        });
+    } else {
+      axios
+        .post(`/v1/subsidyscraps/create?userId=${userId}&subsidyId=${id}`)
+        .then((response) => {
+          console.log("스크랩 추가 성공:", response);
+        })
+        .catch((error) => {
+          console.error("스크랩 추가 실패:", error);
+        });
+    }
   };
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
 
-  // const handleShareClick = () => {
-  //   setShowShareModal(true);
-  // };
-
-  // const closeShareModal = () => {
-  //   setShowShareModal(false);
-  // };
-
   useEffect(() => {
-    const calculateCountdown = () => {
-      const endDate = new Date(policy.endDate);
-      const currentDate = new Date();
-      const timeDifference = endDate - currentDate;
-
-      if (timeDifference > 0) {
-        const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-        setCountdownLabel(`D-${daysLeft}`);
-      } else if (timeDifference === 0) {
-        setCountdownLabel('D-DAY');
-      }
-    };
-
-    calculateCountdown();
-  }, [policy.endDate]);
-
-  const location = useLocation();
-  const isLatest = location.search.includes('latest');
+    axios
+      .get(`/v1/subsidies/id?id=${id}`)
+      .then((response) => {
+        setPolicy(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [location.search]);
 
   return (
     <>
       <div className="container">
-        <div className="header">
-          <button className="bookmark-button" onClick={toggleBookmark}
-            style={{ boxShadow: 'none', width: 'auto', marginTop: 0 }}>
-            {policy.bookmarked ? <FaBookmark /> : <FaRegBookmark />}
-          </button>
-        </div>
-        <div className="policy-agency">{policy.agency}</div>
-        <div className="detail-title">{policy.title}</div>
-        <div className="policy-date">{countdownLabel}</div>
-        <div style={{ marginTop: '5px' }}>
-          <span className="sub-title"><BsPersonFill />&nbsp;&nbsp; 지원대상</span>{policy.target}
-        </div>
-        <div>
-          <span className="sub-title"><BsFileText />&nbsp;&nbsp; 지원유형</span>{policy.category}
-        </div>
-        <div>
-          <span className="sub-title"><BsGift />&nbsp;&nbsp; 지원혜택</span>{policy.supportBenefit}
-        </div>
-        <div>
-          <span className="sub-title"><BsCalendar />&nbsp;&nbsp; 신청기간</span>{policy.startDate}~{policy.endDate}
-        </div>
-        <button className="detail-button" onClick={() => openModal('공유하기')}>
-          <FaExternalLinkAlt /> 공유하기
-        </button>
-        <Link to="/write?type=review">
-          <button className="detail-button">
-            <FaPencilAlt /> 후기글 작성
-          </button>
-        </Link>
+        {policy && (
+          <>
+            <div className="header">
+              <div className='views'>
+                조회수 {policy.views}
+              </div>
+              <button className="bookmark-button" onClick={toggleBookmark} style={{ boxShadow: 'none', width: 'auto', marginTop: '-50px' }}>
+                {isScrapped(policy.title) ? <FaBookmark /> : <FaRegBookmark />}
+              </button>
+              <div className="detail-title">{policy.title}</div>
+              <button className="detail-button" onClick={() => openModal('공유하기')}>
+                <FaExternalLinkAlt /> 공유하기
+              </button>
+              <Link to="/write?type=review">
+                <button className="detail-button">
+                  <FaPencilAlt /> 후기글 작성
+                </button>
+              </Link>
+            </div>
+          </>
+        )}
 
         <Modal isOpen={modalOpen} onClose={closeModal}>
           {modalContent}
         </Modal>
-        
-        {/* {showShareModal && (
-          <>
-            <div className="blur" />
-            <div className="modal">
-              <h3>공유하기</h3>
-              <p>{shareableLink}</p>
-              <button onClick={handleCopyLink}>링크 복사</button>
-              <button onClick={closeShareModal}>닫기</button>
-            </div>
-          </>
-        )} */}
       </div>
 
-      {isLatest ? (
-        <div className="tab-content">
-          <div className="tab-panel">상세 내용을 여기에 표시합니다.</div>
-        </div>
-      ) : (
+      {policy ? (
         <>
           <div className="tabs">
             <button
               style={{ boxShadow: 'none', width: 'auto', marginTop: 0, borderRadius: 0 }}
-              className={`tab ${activeTab === '지원대상' ? 'active' : ''}`}
-              onClick={() => handleTabClick('지원대상')}
+              className={`tab ${activeTab === '신청정보' ? 'active' : ''}`}
+              onClick={() => handleTabClick('신청정보')}
             >
-              지원대상
+              신청정보
             </button>
             <button
               style={{ boxShadow: 'none', width: 'auto', marginTop: 0, borderRadius: 0 }}
-              className={`tab ${activeTab === '지원내용' ? 'active' : ''}`}
-              onClick={() => handleTabClick('지원내용')}
+              className={`tab ${activeTab === '신청문의' ? 'active' : ''}`}
+              onClick={() => handleTabClick('신청문의')}
             >
-              지원내용
+              신청문의
             </button>
             <button
               style={{ boxShadow: 'none', width: 'auto', marginTop: 0, borderRadius: 0 }}
@@ -163,20 +160,56 @@ const Detail = () => {
           </div>
 
           <div className="tab-content">
-            {activeTab === '지원대상' && (
-              <div className="tab-panel">지원 대상 내용</div>
+            {activeTab === '신청정보' && (
+              <div className="tab-panel">
+                <h3>신청정보</h3>
+                <div className='tab-item'>
+                  <span className="sub-title"><BsCalendar />&nbsp;&nbsp; 신청기간</span>{policy.application_period}
+                </div>
+                <div className='tab-item'>
+                  <span className="sub-title"><BsGift />&nbsp;&nbsp; 지원형태</span>{policy.support_type}
+                </div>
+              </div>
             )}
-            {activeTab === '지원내용' && (
-              <div className="tab-panel">지원 내용 내용</div>
+            {activeTab === '신청문의' && (
+              <div className="tab-panel">
+                <h3>신청문의</h3>
+
+                <div className='tab-item'>
+                  <span className="sub-title"><BsTelephone />&nbsp;&nbsp; 전화문의</span>{policy.telephone_inquiry}
+                </div>
+              </div>
             )}
             {activeTab === '관련정보' && (
-              <div className="tab-panel">관련 정보 내용</div>
+              <div className="tab-panel">
+                <h3>관련정보</h3>
+
+                <div className='tab-item'>
+                  <span className="sub-title"><BsFileText />&nbsp;&nbsp; 카테고리</span>{policy.category}
+                </div>
+                <div className='tab-item'>
+                  <span className="sub-title"><BsLink45Deg />&nbsp;&nbsp; 상세정보</span>
+                  <Link to={policy.detail_information_url}>바로가기 <BsBoxArrowUpRight /></Link>
+                </div>
+              </div>
             )}
             {activeTab === '신청방법' && (
-              <div className="tab-panel">신청 방법 내용</div>
+              <div className="tab-panel">
+                <h3>신청방법</h3>
+                <div className='tab-item'>
+                  <span className="sub-title"><BsPersonFill />&nbsp;&nbsp; 신청방법</span>
+                  <Link to={policy.application_process_url}>{policy.application_process} <BsBoxArrowUpRight /></Link>
+                </div>
+                <div className='tab-item'>
+                  <span className="sub-title"><BsBriefcase />&nbsp;&nbsp; 접수기관</span>
+                  {policy.receiving_agency}
+                </div>
+              </div>
             )}
           </div>
         </>
+      ) : (
+        <div></div>
       )}
     </>
   );

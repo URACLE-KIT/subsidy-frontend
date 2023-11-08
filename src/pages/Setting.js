@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { FaAngleRight } from 'react-icons/fa';
 import Modal from '../layout/Modal';
 import { useNavigate } from 'react-router-dom';
