@@ -11,7 +11,6 @@ const Detail = () => {
   const [activeTab, setActiveTab] = useState('신청정보');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
-  const [countdownLabel, setCountdownLabel] = useState('');
   const [userId, setUserId] = useState('');
   const [userScrappedPolicies, setUserScrappedPolicies] = useState([]);
 
@@ -45,18 +44,18 @@ const Detail = () => {
     setModalOpen(false);
   };
 
-  const isScrapped = (id) => {
-    return userScrappedPolicies.some((policy) => policy.id === id);
+  const isScrapped = (title) => {
+    return userScrappedPolicies.some((policy) => policy.title === title);
   };
 
   const toggleBookmark = () => {
-    const isBookmarked = isScrapped(id);
+    const isBookmarked = isScrapped(policy.title);
 
     if (isBookmarked) {
-      const updatedUserScrappedPolicies = userScrappedPolicies.filter(policy => policy.id !== id);
+      const updatedUserScrappedPolicies = userScrappedPolicies.filter((policy) => policy.title !== policy.title);
       setUserScrappedPolicies(updatedUserScrappedPolicies);
     } else {
-      const newPolicy = { id: id, title: "", description: "" };
+      const newPolicy = { id: policy.id, title: policy.title, description: policy.description };
       const updatedUserScrappedPolicies = [...userScrappedPolicies, newPolicy];
       setUserScrappedPolicies(updatedUserScrappedPolicies);
     }
@@ -87,25 +86,6 @@ const Detail = () => {
   };
 
   useEffect(() => {
-    const calculateCountdown = () => {
-      if (policy && policy.endDate) {
-        const endDate = new Date(policy.endDate);
-        const currentDate = new Date();
-        const timeDifference = endDate - currentDate;
-
-        if (timeDifference > 0) {
-          const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-          setCountdownLabel(`D-${daysLeft}`);
-        } else if (timeDifference === 0) {
-          setCountdownLabel('D-DAY');
-        }
-      }
-    };
-
-    calculateCountdown();
-  }, [policy]);
-
-  useEffect(() => {
     axios
       .get(`/v1/subsidies/id?id=${id}`)
       .then((response) => {
@@ -126,7 +106,7 @@ const Detail = () => {
                 조회수 {policy.views}
               </div>
               <button className="bookmark-button" onClick={toggleBookmark} style={{ boxShadow: 'none', width: 'auto', marginTop: '-50px' }}>
-                {isScrapped(id) ? <FaBookmark /> : <FaRegBookmark />}
+                {isScrapped(policy.title) ? <FaBookmark /> : <FaRegBookmark />}
               </button>
               <div className="detail-title">{policy.title}</div>
               <button className="detail-button" onClick={() => openModal('공유하기')}>
