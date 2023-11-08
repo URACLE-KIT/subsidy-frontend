@@ -33,6 +33,8 @@ const Detail = () => {
   }, [userId]);
 
   const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const id = searchParams.get('id');
 
   const openModal = (content) => {
     setModalContent(content);
@@ -47,14 +49,21 @@ const Detail = () => {
     return userScrappedPolicies.some((policy) => policy.id === id);
   };
 
-  const toggleBookmark = (id) => {
+  const toggleBookmark = () => {
     const isBookmarked = isScrapped(id);
 
     if (isBookmarked) {
       const updatedUserScrappedPolicies = userScrappedPolicies.filter(policy => policy.id !== id);
       setUserScrappedPolicies(updatedUserScrappedPolicies);
+    } else {
+      const newPolicy = { id: id, title: "", description: "" };
+      const updatedUserScrappedPolicies = [...userScrappedPolicies, newPolicy];
+      setUserScrappedPolicies(updatedUserScrappedPolicies);
+    }
 
-      axios.delete(`/v1/subsidyscraps/delete?scrapId=${id}`)
+    if (isBookmarked) {
+      axios
+        .delete(`/v1/subsidyscraps/deleteBySubsidyId?subsidyId=${id}`)
         .then((response) => {
           console.log("스크랩 삭제 성공:", response);
         })
@@ -62,11 +71,9 @@ const Detail = () => {
           console.error("스크랩 삭제 실패:", error);
         });
     } else {
-      axios.post(`/v1/subsidyscraps/create?userId=${userId}&subsidyId=${id}`)
+      axios
+        .post(`/v1/subsidyscraps/create?userId=${userId}&subsidyId=${id}`)
         .then((response) => {
-          const updatedUserScrappedPolicies = [...userScrappedPolicies, response.data];
-          setUserScrappedPolicies(updatedUserScrappedPolicies);
-
           console.log("스크랩 추가 성공:", response);
         })
         .catch((error) => {
@@ -99,9 +106,6 @@ const Detail = () => {
   }, [policy]);
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const id = searchParams.get('id');
-
     axios
       .get(`/v1/subsidies/id?id=${id}`)
       .then((response) => {
@@ -122,7 +126,7 @@ const Detail = () => {
                 조회수 {policy.views}
               </div>
               <button className="bookmark-button" onClick={toggleBookmark} style={{ boxShadow: 'none', width: 'auto', marginTop: '-50px' }}>
-                {isScrapped(policy.id) ? <FaBookmark /> : <FaRegBookmark />}
+                {isScrapped(id) ? <FaBookmark /> : <FaRegBookmark />}
               </button>
               <div className="detail-title">{policy.title}</div>
               <button className="detail-button" onClick={() => openModal('공유하기')}>
