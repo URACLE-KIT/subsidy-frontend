@@ -75,7 +75,7 @@ const Mypage = () => {
       const updatedUserScrappedPolicies = userScrappedPolicies.filter(policy => policy.id !== id);
       setUserScrappedPolicies(updatedUserScrappedPolicies);
   
-      axios.delete(`/v1/subsidyscraps/delete?scrapId=${id}`)
+      axios.delete(`/v1/subsidyscraps/deleteBySubsidyId?subsidyId=${id}`)
         .then((response) => {
           console.log("스크랩 삭제 성공:", response);
         })
@@ -140,7 +140,7 @@ const Mypage = () => {
           <span className="line" onClick={() => handleTabClick("스크랩")}>
             스크랩
             <br />
-            <p className="num">5</p>
+            <p className="num">{userScrappedPolicies.length}</p>
           </span>
           <span onClick={() => handleTabClick("작성 댓글")}>
             작성 댓글
