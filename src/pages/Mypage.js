@@ -149,7 +149,7 @@ const Mypage = () => {
           </span>
         </div>
         <button className="custom-button">
-          <Link to="/mycustom">내 맞춤정보</Link>
+          <Link to="/mycustom">내 맞춤 카테고리</Link>
         </button>
       </div>
 

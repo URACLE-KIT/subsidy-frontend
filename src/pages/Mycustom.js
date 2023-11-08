@@ -122,7 +122,7 @@ const Mycustom = () => {
   return (
     <div className="container">
       <div>
-        <h2>맞춤 정책 카테고리 설정</h2>
+        <h2>맞춤 보조금 카테고리 설정</h2>
       </div>
 
       <div>
