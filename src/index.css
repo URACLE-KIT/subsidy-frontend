@@ -197,7 +197,6 @@ button:hover {
   text-overflow: ellipsis;
   flex: 1;
   overflow: hidden;
-  display: inline-block;
 }
 
 .policy-title {
