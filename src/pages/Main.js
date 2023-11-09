@@ -5,11 +5,12 @@ import axios from "axios";
 const Main = () => {
   const [policies, setPolicies] = useState([]);
   const [category, setCategory] = useState([]);
-  
+  const [reviews, setReviews] = useState([]);
+
   var total = 0;
   var filteredPolicies = [];
   var count = [];
-  
+
   category.map((c) =>
     filteredPolicies.push(policies.filter((policy) => policy.category === c))
   );
@@ -41,20 +42,16 @@ const Main = () => {
       });
   }, []);
 
-  // const calculateDaysRemaining = (date) => {
-  //   const currentDate = new Date();
-  //   const policyDate = new Date(date);
-  //   const timeDifference = policyDate.getTime() - currentDate.getTime();
-  //   const daysRemaining = Math.ceil(timeDifference / (1000 * 3600 * 24));
-
-  //   if (daysRemaining < 0) {
-  //     return `D+${Math.abs(daysRemaining)}`;
-  //   } else if (daysRemaining === 0) {
-  //     return "D-DAY";
-  //   } else {
-  //     return `D-${daysRemaining}`;
-  //   }
-  // };
+  useEffect(() => {
+    axios
+      .get("/v1/subsidies-review/all")
+      .then((response) => {
+        setReviews(response.data);
+      })
+      .catch((error) => {
+        console.error("후기 데이터 가져오기 실패:", error);
+      });
+  }, []);
 
   return (
     <>
@@ -96,6 +93,22 @@ const Main = () => {
 
       <div className="container">
         <h2>후기 소식</h2>
+        <ul className="policy-list">
+          {reviews.slice(0, 4).map((review) => (
+            <li className="policy-item">
+              <Link to={`/detail?id=${review.id}&latest`}>
+                <div className="policy-details">
+                  <div className="policy-title">
+                    {review.title}
+                  </div>
+                  <div className="policy-description">
+                    {review.content}
+                  </div>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
 
       <div className="container">
