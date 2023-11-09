@@ -336,7 +336,7 @@ header {
 .detail-title {
   font-size: 20px;
   font-weight: 800;
-  margin-top: -10px;
+  margin-top: 10px;
 }
 
 .detail-button {
@@ -362,6 +362,14 @@ header {
 .views {
   margin-bottom: 20px;
   color: #999;
+}
+
+.views * {
+  color: #999;
+}
+
+.views span {
+  margin-left: 20px;
 }
 
 .tab-item {
@@ -860,4 +868,14 @@ header {
   font-size: 13px;
   font-weight: 800;
   color: #000
+}
+
+.ql-toolbar .ql-formats button {
+  border-radius: 0;
+  margin-top: 10px;
+}
+
+.ql-toolbar {
+  background-color: #e8e6e6;
+  margin-top: 0;
 }

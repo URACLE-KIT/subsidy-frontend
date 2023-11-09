@@ -3,12 +3,10 @@ import axios from "axios";
 import {
   FaBookmark,
   FaRegBookmark,
-  FaExternalLinkAlt,
   FaPencilAlt,
 } from "react-icons/fa";
 import { FiSettings } from "react-icons/fi";
-import { BsPersonFill, BsFileText, BsGift, BsCalendar } from "react-icons/bs";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Mypage = () => {
   const [activeTab, setActiveTab] = useState("스크랩");
@@ -118,23 +116,6 @@ const Mypage = () => {
         .catch((error) => {
           console.error("스크랩 추가 실패:", error);
         });
-    }
-  };
-
-  const location = useLocation();
-
-  const calculateDaysRemaining = (date) => {
-    const currentDate = new Date();
-    const policyDate = new Date(date);
-    const timeDifference = policyDate.getTime() - currentDate.getTime();
-    const daysRemaining = Math.ceil(timeDifference / (1000 * 3600 * 24));
-
-    if (daysRemaining < 0) {
-      return `D+${Math.abs(daysRemaining)}`;
-    } else if (daysRemaining === 0) {
-      return "D-DAY";
-    } else {
-      return `D-${daysRemaining}`;
     }
   };
 

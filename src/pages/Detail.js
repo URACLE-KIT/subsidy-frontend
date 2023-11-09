@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaBookmark, FaRegBookmark, FaExternalLinkAlt, FaPencilAlt, FaRegEye, FaRegCommentDots } from 'react-icons/fa';
+import { FaBookmark, FaRegBookmark, FaExternalLinkAlt, FaPencilAlt, FaRegEye, FaRegCommentDots, FaRegTrashAlt, FaHeart, FaRegHeart } from 'react-icons/fa';
 import { BsBriefcase, BsTelephone, BsBoxArrowUpRight, BsLink45Deg, BsPersonFill, BsFileText, BsGift, BsCalendar } from 'react-icons/bs';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -8,11 +8,14 @@ import Modal from '../layout/Modal';
 
 const Detail = () => {
   const [policy, setPolicy] = useState(null);
+  const [review, setReview] = useState(null);
   const [activeTab, setActiveTab] = useState('신청정보');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [userId, setUserId] = useState('');
   const [userScrappedPolicies, setUserScrappedPolicies] = useState([]);
+  const [isLiked, setIsLiked] = useState(false);
+  const [likes, setLikes] = useState(0);
 
   useEffect(() => {
     const storedUserId = M.data.storage('id');
@@ -81,19 +84,66 @@ const Detail = () => {
     }
   };
 
+  const toggleLike = () => {
+    if (!isLiked) {
+      axios.put(`/v1/subsidies-review/increment-likes?id=${id}`)
+        .then((response) => {
+          setIsLiked(true);
+          setLikes(likes + 1);
+          console.log("좋아요 증가 성공:", response);
+        })
+        .catch((error) => {
+          console.error("좋아요 증가 실패:", error);
+        });
+    }
+  };  
+
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
 
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
+    return new Date(dateString).toLocaleString('ko-KR', options);
+  };
+
   useEffect(() => {
-    axios
-      .get(`/v1/subsidies/id?id=${id}`)
-      .then((response) => {
-        setPolicy(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    const isReview = searchParams.get('review');
+
+    if (isReview !== null) {
+      axios
+        .get(`/v1/subsidies-review/all`)
+        .then((response) => {
+          console.log(response.data)
+          setReview(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else {
+      axios
+        .get(`/v1/subsidies/id?id=${id}`)
+        .then((response) => {
+          setPolicy(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
+      if (!isPageViewed()) {
+        axios.put(`/v1/subsidies/increment-views?id=${id}`)
+          .then((response) => {
+            console.log("조회 수 증가 성공:", response);
+            viewedPages.push(id);
+            M.data.storage({
+              'viewedPages': viewedPages
+            });
+          })
+          .catch((error) => {
+            console.error("조회 수 증가 실패:", error);
+          });
+      }
+    }
   }, [location.search]);
 
   const viewedPages = M.data.storage('viewedPages') || [];
@@ -101,22 +151,6 @@ const Detail = () => {
   const isPageViewed = () => {
     return viewedPages.includes(id);
   };
-
-  useEffect(() => {
-    if (!isPageViewed()) {
-      axios.put(`/v1/subsidies/increment-views?id=${id}`)
-        .then((response) => {
-          console.log("조회 수 증가 성공:", response);
-          viewedPages.push(id);
-          M.data.storage({
-            'viewedPages': viewedPages
-          })
-        })
-        .catch((error) => {
-          console.error("조회 수 증가 실패:", error);
-        });
-    }
-  }, [id]);
 
   return (
     <>
@@ -146,12 +180,60 @@ const Detail = () => {
           </>
         )}
 
+        {review && (
+          <>
+            <div className="header">
+              <div className="policy-date" style={{ maxWidth: "100%", display: "inline-block" }}>
+                {review[0].subsidy.title}
+              </div>
+
+              <div className='views' style={{ float: 'right' }}>
+                <span>
+                  <FaRegEye /> {review.views}
+                </span>
+                <span>
+                  <Link to={`/review?id=${id}`} style={{ color: '#999' }}>
+                    <FaRegCommentDots /> {review[0].views}
+                  </Link>
+                </span>
+                {M.data.storage("name") === review[0].user.name && (
+                  <>
+                    <span>
+                      <Link to="/write"><FaPencilAlt /></Link>
+                    </span>
+                    <span>
+                      <FaRegTrashAlt />
+                    </span>
+                  </>
+                )}
+              </div>
+
+              <div className="detail-title">{review[0].title}</div>
+              <div className="policy-description">작성자: {review[0].user.name}</div>
+              <div className="latest-date">{formatDate(review[0].created_at)} <span style={{ color: "#999" }}>({formatDate(review[0].updated_at)} 수정)</span></div>
+
+              <button className="detail-button" onClick={() => openModal('공유하기')}>
+                <FaExternalLinkAlt /> 공유하기
+              </button>
+              <Link to={`/detail?id=${review[0].subsidy.id}`}>
+                <button className="detail-button">
+                  <FaPencilAlt /> 원본글 가기
+                </button>
+              </Link>
+              <button className="like-button" onClick={toggleLike}>
+                {isLiked ? <FaHeart /> : <FaRegHeart />}
+                {review[0].likes}
+              </button>
+            </div>
+          </>
+        )}
+
         <Modal isOpen={modalOpen} onClose={closeModal}>
           {modalContent}
         </Modal>
       </div>
 
-      {policy ? (
+      {policy && (
         <>
           <div className="tabs">
             <button
@@ -233,8 +315,12 @@ const Detail = () => {
             )}
           </div>
         </>
-      ) : (
-        <div></div>
+      )}
+
+      {review && (
+        <div className="tab-content">
+          {review[0].content}
+        </div>
       )}
     </>
   );

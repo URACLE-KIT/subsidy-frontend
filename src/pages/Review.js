@@ -81,7 +81,7 @@ const Latest = () => {
             <ul className="policy-list">
                 {currentPolicies.map((policy) => (
                     <li key={policy.id} className="policy-item">
-                        <Link to={`/reviewdetail`}>
+                        <Link to={`/detail?id=${policy.id}&review`}>
                             <div className="policy-details">
                                 <div className="policy-info">
                                     <div className="review-count" style={{ float: 'none' }}>{policy.subsidy.title}</div>
@@ -93,9 +93,9 @@ const Latest = () => {
                                         <span style={{ color: "#999" }}>({formatDate(policy.updated_at)} 수정)</span>
                                     </div>
                                     <div className='count views'>
-                                        <span><FaRegEye /> {policy.views}</span>
-                                        <span><FaRegHeart /> {policy.likes}</span>
-                                        <span><FaRegCommentDots /> {policy.comments}</span>
+                                        <span style={{ marginLeft: 0, marginRight: '20px' }}><FaRegEye /> {policy.views}</span>
+                                        <span style={{ marginLeft: 0, marginRight: '20px' }}><FaRegHeart /> {policy.likes}</span>
+                                        <span style={{ marginLeft: 0, marginRight: '20px' }}><FaRegCommentDots /> {policy.comments}</span>
                                     </div>
                                 </div>
                             </div>
