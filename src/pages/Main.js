@@ -53,17 +53,6 @@ const Main = () => {
       });
   }, []);
 
-  useEffect(() => {
-    axios
-      .get("/v1/subsidies/all")
-      .then((response) => {
-        setReviews(response.data);
-      })
-      .catch((error) => {
-        console.error("보조금 데이터 가져오기 실패:", error);
-      });
-  }, []);
-
   return (
     <>
       <div className="category-group">
@@ -107,7 +96,7 @@ const Main = () => {
         <ul className="policy-list">
           {reviews.slice(0, 4).map((review) => (
             <li className="policy-item">
-              <Link to={`/detail?id=${review.id}&latest`}>
+              <Link to={`/detail?id=${review.id}&review`}>
                 <div className="policy-details">
                   <div className="policy-title">
                     {review.title}

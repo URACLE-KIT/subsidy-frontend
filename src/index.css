@@ -900,3 +900,35 @@ header {
   background-color: #e8e6e6;
   margin-top: 0;
 }
+
+/* write */
+.ql-toolbar {
+  background: #f5f8fc;
+  padding: 14px;
+  max-width: 330px;
+  border: 2px solid rgba(0, 0, 0, .1);
+  border-radius: 5px 5px 0 0;
+  box-shadow: inset -3px -3px 6px #fff, inset 2px 2px 5px #e6e6e6;
+}
+
+.ql-container.ql-snow {
+  padding: 14px;
+  max-width: 330px;
+  border: 2px solid rgba(0, 0, 0, .1);
+  border-radius: 0 0 5px 5px;
+  box-shadow: inset -3px -3px 6px #fff, inset 2px 2px 5px #e6e6e6;
+}
+
+.button-container {
+  margin: 100px 0 10px 0;
+}
+
+.button-container button {
+  padding: 20px;
+  width: 40%;
+  margin: 5%;
+}
+
+.button-container .cancel {
+  background-color: #ffdbda;
+}
