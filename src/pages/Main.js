@@ -38,7 +38,7 @@ const Main = () => {
         setPolicies(response.data);
       })
       .catch((error) => {
-        console.error("데이터 가져오기 실패:", error);
+        console.error("맞춤 보조금 데이터 가져오기 실패:", error);
       });
   }, []);
 
@@ -50,6 +50,17 @@ const Main = () => {
       })
       .catch((error) => {
         console.error("후기 데이터 가져오기 실패:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get("/v1/subsidies/all")
+      .then((response) => {
+        setReviews(response.data);
+      })
+      .catch((error) => {
+        console.error("보조금 데이터 가져오기 실패:", error);
       });
   }, []);
 
@@ -117,6 +128,24 @@ const Main = () => {
 
       <div className="container">
         <h2>신규 보조금 20</h2>
+        <ul className="policy-list">
+          {policies.slice(0, 20).map((policy) => (
+            <li key={policy.id} className="policy-item">
+              <Link to={`/detail?id=${policy.id}`}>
+                <div className="policy-details">
+                  <div className="policy-agency">{policy.agency}</div>
+                  <div className="policy-title">{policy.title}</div>
+                  <div className="policy-description">
+                    {policy.description}
+                  </div>
+                  <div className="policy-date" style={{ maxWidth: "100%" ,display: "inline-block" }}>
+                    {policy.application_period}
+                  </div>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
     </>
   );
