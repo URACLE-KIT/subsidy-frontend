@@ -861,3 +861,13 @@ header {
   font-weight: 800;
   color: #000
 }
+
+.ql-toolbar .ql-formats button {
+  border-radius: 0;
+  margin-top: 10px;
+}
+
+.ql-toolbar {
+  background-color: #e8e6e6;
+  margin-top: 0;
+}
