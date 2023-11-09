@@ -96,7 +96,7 @@ const Main = () => {
         <ul className="policy-list">
           {reviews.slice(0, 4).map((review) => (
             <li className="policy-item">
-              <Link to={`/detail?id=${review.id}&latest`}>
+              <Link to={`/detail?id=${review.id}&review`}>
                 <div className="policy-details">
                   <div className="policy-title">
                     {review.title}
