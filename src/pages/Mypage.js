@@ -3,12 +3,10 @@ import axios from "axios";
 import {
   FaBookmark,
   FaRegBookmark,
-  FaExternalLinkAlt,
   FaPencilAlt,
 } from "react-icons/fa";
 import { FiSettings } from "react-icons/fi";
-import { BsPersonFill, BsFileText, BsGift, BsCalendar } from "react-icons/bs";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Mypage = () => {
   const [activeTab, setActiveTab] = useState("스크랩");
@@ -19,6 +17,7 @@ const Mypage = () => {
   const [policies, setPolicies] = useState([]);
   const [policiesAll, setPoliciesAll] = useState([]);
   const [category, setCategory] = useState([]);
+  const [userPosts, setUserPosts] = useState([]);
 
   var total = 0;
   var filteredPolicies = [];
@@ -68,6 +67,15 @@ const Mypage = () => {
       .catch((error) => {
         console.error("스크랩된 보조금 가져오기 실패:", error);
       });
+
+    axios
+      .get(`/v1/subsidies-review/search/user?userId=${userId}`)
+      .then((response) => {
+        setUserPosts(response.data);
+      })
+      .catch((error) => {
+        console.error("사용자의 작성 후기 가져오기 실패:", error);
+      });
   }, [userId]);
 
   useEffect(() => {
@@ -95,11 +103,11 @@ const Mypage = () => {
 
   const toggleBookmark = (id) => {
     const isBookmarked = isScrapped(id);
-  
+
     if (isBookmarked) {
       const updatedUserScrappedPolicies = userScrappedPolicies.filter(policy => policy.id !== id);
       setUserScrappedPolicies(updatedUserScrappedPolicies);
-  
+
       axios.delete(`/v1/subsidyscraps/deleteBySubsidyId?subsidyId=${id}`)
         .then((response) => {
           console.log("스크랩 삭제 성공:", response);
@@ -112,29 +120,12 @@ const Mypage = () => {
         .then((response) => {
           const updatedUserScrappedPolicies = [...userScrappedPolicies, response.data];
           setUserScrappedPolicies(updatedUserScrappedPolicies);
-  
+
           console.log("스크랩 추가 성공:", response);
         })
         .catch((error) => {
           console.error("스크랩 추가 실패:", error);
         });
-    }
-  };
-
-  const location = useLocation();
-
-  const calculateDaysRemaining = (date) => {
-    const currentDate = new Date();
-    const policyDate = new Date(date);
-    const timeDifference = policyDate.getTime() - currentDate.getTime();
-    const daysRemaining = Math.ceil(timeDifference / (1000 * 3600 * 24));
-
-    if (daysRemaining < 0) {
-      return `D+${Math.abs(daysRemaining)}`;
-    } else if (daysRemaining === 0) {
-      return "D-DAY";
-    } else {
-      return `D-${daysRemaining}`;
     }
   };
 
@@ -157,7 +148,7 @@ const Mypage = () => {
         <div className="mycount">
           <Link to="/custom">
             <span>
-              맞춤 정책
+              맞춤정책
               <br />
               <p className="num">{total}</p>
             </span>
@@ -167,13 +158,13 @@ const Mypage = () => {
             <br />
             <p className="num">{userScrappedPolicies.length}</p>
           </span>
-          <span style={{ borderLeft: '1px solid #999' }} onClick={() => handleTabClick("작성 글")}>
-            작성 글
+          <span style={{ borderLeft: '1px solid #999' }} onClick={() => handleTabClick("작성 후기")}>
+            작성후기
             <br />
-            <p className="num">{userScrappedPolicies.length}</p>
+            <p className="num">{userPosts.length}</p>
           </span>
           <span style={{ borderLeft: '1px solid #999' }} onClick={() => handleTabClick("작성 댓글")}>
-            작성 댓글
+            작성댓글
             <br />
             <p className="num">0</p>
           </span>
@@ -203,10 +194,10 @@ const Mypage = () => {
             marginTop: 0,
             borderRadius: 0,
           }}
-          className={`tab ${activeTab === "작성 글" ? "active" : ""}`}
-          onClick={() => handleTabClick("작성 글")}
+          className={`tab ${activeTab === "작성 후기" ? "active" : ""}`}
+          onClick={() => handleTabClick("작성 후기")}
         >
-          작성 글
+          작성 후기
         </button>
         <button
           style={{
@@ -228,29 +219,42 @@ const Mypage = () => {
             <ul className="policy-list">
               {policies.map((policy) => (
                 <li key={policy.id} className="policy-item">
-                <Link to={`/detail?id=${policy.id}`}>
-                  <button
-                    style={{ boxShadow: "none", width: "auto", marginTop: 0 }}
-                    className="bookmark-button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      toggleBookmark(policy.id);
-                    }}
-                  >
-                    {isScrapped(policy.id) ? <FaBookmark /> : <FaRegBookmark />}
-                  </button>
-                  <div className="policy-details">
-                    <div className="policy-title">{policy.title}</div>
-                    <div className="policy-description">{policy.description}</div>
-                  </div>
-                </Link>
-              </li>
+                  <Link to={`/detail?id=${policy.id}`}>
+                    <button
+                      style={{ boxShadow: "none", width: "auto", marginTop: 0 }}
+                      className="bookmark-button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        toggleBookmark(policy.id);
+                      }}
+                    >
+                      {isScrapped(policy.id) ? <FaBookmark /> : <FaRegBookmark />}
+                    </button>
+                    <div className="policy-details">
+                      <div className="policy-title">{policy.title}</div>
+                      <div className="policy-description">{policy.description}</div>
+                    </div>
+                  </Link>
+                </li>
               ))}
             </ul>
           </div>
         )}
-        {activeTab === "작성 글" && (
-          <div className="tab-panel">작성 글 내용</div>
+        {activeTab === "작성 후기" && (
+          <div className="tab-panel">
+            <ul className="policy-list">
+              {userPosts.map((post) => (
+                <li key={post.id} className="policy-item">
+                  <Link to={`/detail?id=${post.id}`}>
+                    <div className="policy-details">
+                      <div className="policy-title">{post.title}</div>
+                      <div className="policy-description">{post.content}</div>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
         {activeTab === "작성 댓글" && (
           <div className="tab-panel">작성 댓글 내용</div>
