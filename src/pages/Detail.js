@@ -176,10 +176,6 @@ const Detail = () => {
                   <FaPencilAlt /> 후기글 작성
                 </button>
               </Link>
-              <button className="like-button" onClick={toggleLike}>
-                {isLiked ? <FaHeart /> : <FaRegHeart />}
-                {review[0].likes}
-              </button>
             </div>
           </>
         )}
