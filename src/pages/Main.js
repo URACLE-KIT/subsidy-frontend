@@ -53,17 +53,6 @@ const Main = () => {
       });
   }, []);
 
-  useEffect(() => {
-    axios
-      .get("/v1/subsidies/all")
-      .then((response) => {
-        setReviews(response.data);
-      })
-      .catch((error) => {
-        console.error("보조금 데이터 가져오기 실패:", error);
-      });
-  }, []);
-
   return (
     <>
       <div className="category-group">
