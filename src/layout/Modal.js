@@ -25,7 +25,8 @@ const Modal = ({ isOpen, onClose, children }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [resetEmail, setResetEmail] = useState("");
-    const shareableLink = `${window.location.origin}/detail?id=${policy.id}`;
+    const shareableLink = window.location.href;
+    // const shareableLink = `${window.location.origin}/detail?id=${policy.id}`;
     const navigate = useNavigate();
 
     useEffect(() => {
