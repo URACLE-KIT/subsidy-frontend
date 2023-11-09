@@ -46,14 +46,21 @@ const Write = () => {
     };
 
     try {
-      const url = `/v1/subsidies-review/create?userId=${userId}&subsidyId=${id}`;
-      const response = await axios.post(url, reviewData);
+      if (type === 'reviewedit') {
+        const url = `/v1/subsidies-review/update?reviewId=${id}`;
+        await axios.patch(url, reviewData);
 
-      alert('후기 작성 완료');
-      navigate(`/detail?id=${response.data.id}&review`);
+        alert('후기 수정 완료');
+        navigate(`/detail?id=${id}&review`);
+      } else {
+        const url = `/v1/subsidies-review/create?userId=${userId}&subsidyId=${id}`;
+        const response = await axios.post(url, reviewData);
+
+        alert('후기 작성 완료');
+        navigate(`/detail?id=${response.data.id}&review`);
+      }
     } catch (error) {
       console.error('오류:', error);
-      alert('후기 작성 중 오류 발생');
     }
   };
 
@@ -87,13 +94,9 @@ const Write = () => {
         modules={modules}
       />
 
-      <br />
-      <br />
-      <br />
-
       <div className="button-container">
         <button onClick={saveReview}>{buttonText}</button>
-        <button onClick={handleCancel}>취소</button>
+        <button className='cancel' onClick={handleCancel}>취소</button>
       </div>
     </div>
   );
