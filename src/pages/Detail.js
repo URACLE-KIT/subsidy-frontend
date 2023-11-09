@@ -22,7 +22,7 @@ const Detail = () => {
   }, []);
 
   useEffect(() => {
-    axios.get(`/v1/subsidyscraps/find/subsidyinfo?userId=${userId}`)
+    axios.get(`/v1/subsidyscraps/search/subsidyinfo?userId=${userId}`)
       .then((response) => {
         setUserScrappedPolicies(response.data);
       })
@@ -62,7 +62,7 @@ const Detail = () => {
 
     if (isBookmarked) {
       axios
-        .delete(`/v1/subsidyscraps/deleteBySubsidyId?subsidyId=${id}`)
+        .delete(`/v1/subsidyscraps/delete?subsidyId=${id}`)
         .then((response) => {
           console.log("스크랩 삭제 성공:", response);
         })

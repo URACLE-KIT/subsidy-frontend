@@ -81,7 +81,7 @@ const Latest = () => {
             <ul className="policy-list">
                 {currentPolicies.map((policy) => (
                     <li key={policy.id} className="policy-item">
-                        <Link to={`/detail?id=${policy.id}&latest`}>
+                        <Link to={`/reviewdetail`}>
                             <div className="policy-details">
                                 <div className="policy-info">
                                     <div className="review-count" style={{ float: 'none' }}>{policy.subsidy.title}</div>
