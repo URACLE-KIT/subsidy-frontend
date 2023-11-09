@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { FaRegHeart, FaRegEye, FaRegCommentDots } from 'react-icons/fa';
 import axios from 'axios';
 
@@ -8,16 +8,31 @@ const Latest = () => {
     const [sortOption, setSortOption] = useState("최신순");
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const id = queryParams.get("id");
+
+    const h3Title = id ? `${subsidiesData[0]?.subsidy?.title} 후기글 모음` : '전체 후기글 모음';
 
     useEffect(() => {
-        axios.get('/v1/subsidies-review/all')
-            .then((response) => {
-                setSubsidiesData(response.data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }, []);
+        if (id) {
+            axios.get(`/v1/subsidies-review/search/subsidy?subsidyId=${id}`)
+                .then((response) => {
+                    setSubsidiesData(response.data);
+                })
+                .catch((error) => {
+                    console.error("특정 후기 데이터 가져오기 실패:", error);
+                });
+        } else {
+            axios.get('/v1/subsidies-review/all')
+                .then((response) => {
+                    setSubsidiesData(response.data);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+    }, [location, id]);
 
     const handleSortChange = (event) => {
         setSortOption(event.target.value);
@@ -65,7 +80,7 @@ const Latest = () => {
 
     return (
         <div className="container">
-            <h3>후기글 모음</h3>
+            <h3>{h3Title}</h3>
             <select
                 id="filterSelect"
                 value={sortOption}
