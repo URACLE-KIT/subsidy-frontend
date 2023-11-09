@@ -81,7 +81,7 @@ const Main = () => {
                   <div className="policy-description">
                     {top4Items.description}
                   </div>
-                  <div className="policy-date">
+                  <div className="policy-date" style={{ maxWidth: "100%" ,display: "inline-block" }}>
                     {top4Items.application_period}
                   </div>
                 </div>
