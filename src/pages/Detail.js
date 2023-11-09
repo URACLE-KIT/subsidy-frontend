@@ -22,7 +22,7 @@ const Detail = () => {
   }, []);
 
   useEffect(() => {
-    axios.get(`/v1/subsidyscraps/find/subsidyinfo?userId=${userId}`)
+    axios.get(`/v1/subsidyscraps/search/subsidyinfo?userId=${userId}`)
       .then((response) => {
         setUserScrappedPolicies(response.data);
       })

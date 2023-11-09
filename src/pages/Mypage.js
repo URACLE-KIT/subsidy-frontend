@@ -61,7 +61,7 @@ const Mypage = () => {
 
   useEffect(() => {
     axios
-      .get(`/v1/subsidyscraps/find/subsidyinfo?userId=${userId}`)
+      .get(`/v1/subsidyscraps/search/subsidyinfo?userId=${userId}`)
       .then((response) => {
         setUserScrappedPolicies(response.data);
       })
