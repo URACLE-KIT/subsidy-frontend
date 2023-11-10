@@ -351,17 +351,7 @@ header {
   font-weight: 800;
   height: 30px;
 }
-.like-button{
-  background: transparent;
-  border: 1px solid #6675fc;
-  border-radius: 50px;
-  width: 30%;
-  margin: 10px 10px 0 10px;
-  padding: 5px 0;
-  color: #6675fc;
-  font-weight: 800;
-}
-.like-button:hover{
+.detail-button:hover{
   opacity: 1;
 }
 .detail-button-group{

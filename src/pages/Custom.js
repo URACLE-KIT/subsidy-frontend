@@ -7,7 +7,7 @@ const Custom = () => {
   const location = useLocation();
   const search = new URLSearchParams(location.search).get("search");
   const option = new URLSearchParams(location.search).get("option");
-  const [filter, setFilter] = useState("전체");
+  const [filter, setFilter] = useState([]);
   const [policies, setPolicies] = useState([]);
   const [name, setName] = useState('');
   const [userId, setUserId] = useState('');
@@ -17,6 +17,8 @@ const Custom = () => {
   const [sortOption, setSortOption] = useState("기본순");
   const [userScrappedPolicies, setUserScrappedPolicies] = useState([]);
 
+  const storedCategory = M.data.storage("category");
+  
   useEffect(() => {
     const storedName = M.data.storage('name');
     if (storedName) {
@@ -27,6 +29,11 @@ const Custom = () => {
     if (storedUserId) {
       setUserId(storedUserId);
     }
+    
+    if (storedCategory) {
+      setFilter(storedCategory[0]);
+    }
+
   }, []);
 
   useEffect(() => {
@@ -56,9 +63,7 @@ const Custom = () => {
   }, [search, option]);
 
   useEffect(() => {
-    const updatedPolicies =
-      filter === "전체" ? policies : policies.filter((policy) => policy.category === filter);
-
+    const updatedPolicies = policies.filter((policy) => policy.category === filter);
     setFilteredPolicies(updatedPolicies);
   }, [filter, policies]);
 
@@ -66,12 +71,6 @@ const Custom = () => {
     setSortOption(event.target.value);
     setCurrentPage(1);
   };
-
-  const storedCategory = M.data.storage("category");
-  const filterOptions = ["전체"];
-  if (storedCategory) {
-    filterOptions.push(...storedCategory);
-  }
 
   const handlePreviousPage = () => {
     if (currentPage > 1) {
@@ -171,7 +170,7 @@ const Custom = () => {
     <div className="container">
       <h3>{name}님을 위한 맞춤 보조금</h3>
       <div className="filter-container">
-        {filterOptions.map((option) => (
+        {storedCategory.map((option) => (
           <div
             key={option}
             className={`filter-option ${filter === option ? "active" : ""}`}
