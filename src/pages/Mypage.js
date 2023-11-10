@@ -205,8 +205,14 @@ const Mypage = () => {
 
       <div className="tab-content">
         {activeTab === "스크랩" && (
-          <div className="tab-panel">
-            <ul className="policy-list">
+          <div className="tab-panel" style={{ textAlign: 'center' }}>
+            {userScrappedPolicies.length === 0 ? (
+              <>
+              <p>관심 정책의 스크랩 버튼을 누르면 <br /> 원하는 정책을 저장하고 관리할 수 있어요.</p>
+              <img src="/image2.jpg" style={{ width: '300px', height: '400px' }}/>
+              </>
+            ) : (
+              <ul className="policy-list">
               {policies.map((policy) => (
                 <li key={policy.id} className="policy-item">
                 <Link to={`/detail?id=${policy.id}`}>
@@ -228,6 +234,7 @@ const Mypage = () => {
               </li>
               ))}
             </ul>
+            )}
           </div>
         )}
         {activeTab === "작성 글" && (
