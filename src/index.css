@@ -336,8 +336,6 @@ header {
 }
 
 .bookmark-button {
-  width: 30%;
-  min-width: 108px;
   background: none;
   border: none;
   cursor: pointer;
