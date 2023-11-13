@@ -14,6 +14,7 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const [ugender, setUgender] = useState("");
+  const [uwedding, setUwedding] = useState("");
   const [year, setYear] = useState("2023");
   const [month, setMonth] = useState("01");
   const [day, setDay] = useState("01");
@@ -21,7 +22,12 @@ const Signup = () => {
     { value: "M", backgroundColor: "initial", textColor: "black" },
     { value: "F", backgroundColor: "initial", textColor: "black" },
   ];
+  const wButtonInitialState = [
+    { value: "M", backgroundColor: "initial", textColor: "black" },
+    { value: "S", backgroundColor: "initial", textColor: "black" },
+  ];
   const [genderButtons, setGenderButtons] = useState(gButtonInitialState);
+  const [weddingButtons, setWeddingButtons] = useState(wButtonInitialState);
 
   const checkEmailExistence = async (email) => {
     try {
@@ -82,6 +88,7 @@ const Signup = () => {
   const handleSignup = async () => {
     const name = document.getElementById("name").value;
     const gender = ugender;
+    const wedding = uwedding;
     const birthday = year + "-" + month + "-" + day;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -108,6 +115,7 @@ const Signup = () => {
       email,
       name,
       gender,
+      wedding,
       birthday,
       password,
       created_at,
@@ -174,6 +182,24 @@ const Signup = () => {
     }
   };
 
+  const handleWeddingClick = (selectedWedding) => {
+    setUwedding(selectedWedding);
+  
+    if (selectedWedding === "M") {
+      const updatedButtons = [
+        { value: "M", backgroundColor: "#dae0ff", textColor: "black" },
+        { value: "S", backgroundColor: "initial", textColor: "black" },
+      ];
+      setWeddingButtons(updatedButtons);
+    } else if (selectedWedding === "S") {
+      const updatedButtons = [
+        { value: "M", backgroundColor: "initial", textColor: "black" },
+        { value: "S", backgroundColor: "#dae0ff", textColor: "black" },
+      ];
+      setWeddingButtons(updatedButtons);
+    }
+  };
+
   return (
     <div className="container">
       <h3>회원가입</h3>
@@ -205,6 +231,32 @@ const Signup = () => {
           }}
         >
           여자
+        </button>
+      </div>
+      <label htmlFor="name">
+        결혼 여부
+        <br />
+      </label>
+      <div className="wedding">
+        <button
+          className="married"
+          onClick={() => handleWeddingClick("M")}
+          style={{
+            backgroundColor: weddingButtons[0].backgroundColor,
+            color: weddingButtons[0].textColor,
+          }}
+        >
+          기혼
+        </button>
+        <button
+          className="sigle"
+          onClick={() => handleWeddingClick("S")}
+          style={{
+            backgroundColor: weddingButtons[1].backgroundColor,
+            color: weddingButtons[1].textColor,
+          }}
+        >
+          미혼
         </button>
       </div>
       <label htmlFor="name">

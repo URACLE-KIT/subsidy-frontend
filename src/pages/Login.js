@@ -28,6 +28,7 @@ const Login = () => {
                 'name': response.data.name,
                 'email': response.data.email,
                 'gender': response.data.gender,
+                'wedding': response.data.wedding,
                 'birthday': response.data.birthday
             })
 
