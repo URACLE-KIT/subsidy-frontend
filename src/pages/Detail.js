@@ -426,7 +426,9 @@ const Detail = () => {
         </>
       )}
 
-      {review && <div className="tab-content">{review.content}</div>}
+      {review && (
+        <div className="tab-content" dangerouslySetInnerHTML={{ __html: review.content }} />
+      )}
     </>
   );
 };

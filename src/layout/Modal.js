@@ -49,14 +49,15 @@ const Modal = ({ isOpen, onClose, children }) => {
     };
 
     const handleCopyLink = () => {
-      const input = document.createElement('input');
-      input.value = shareableLink;
-      document.body.appendChild(input);
-      input.select();
-      document.execCommand('copy');
-      document.body.removeChild(input);
-      M.pop.alert('링크가 복사되었습니다.');
-    };
+        const input = document.createElement('input');
+        const link = shareableLink;
+        input.value = link;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+        M.pop.alert('링크가 복사되었습니다.');
+      };      
 
     const handleWithdrawal = async () => {
         try {
