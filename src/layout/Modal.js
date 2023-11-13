@@ -48,17 +48,17 @@ const Modal = ({ isOpen, onClose, children }) => {
         setFaqOpen(updatedFaqOpen);
     };
 
-    const handleCopyLink = () => {
-        const input = document.createElement('input');
-        const link = shareableLink;
-        input.value = link;
-        document.body.appendChild(input);
-        input.select();
-        document.execCommand('copy');
-        document.body.removeChild(input);
-        M.pop.alert('링크가 복사되었습니다.');
-      };      
-
+    const handleCopyLink = (linkToCopy) => {
+        navigator.clipboard.writeText(linkToCopy)
+          .then(() => {
+            M.pop.alert('링크가 복사되었습니다.');
+          })
+          .catch((error) => {
+            console.error('Error copying link:', error);
+            M.pop.alert('링크 복사 중 문제가 발생했습니다.');
+          });
+    };      
+      
     const handleWithdrawal = async () => {
         try {
             const data = {
@@ -264,7 +264,7 @@ const Modal = ({ isOpen, onClose, children }) => {
     } else if (children === '공유하기') {
         modalContent = (
             <div className="content">
-                <div className='copy' onClick={handleCopyLink}>{shareableLink}</div>
+                <div className='copy' onClick={() => handleCopyLink(shareableLink)}>{shareableLink}</div>
             </div>
         );
     } else {
