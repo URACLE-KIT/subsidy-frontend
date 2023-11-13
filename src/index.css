@@ -204,23 +204,6 @@ button:hover {
   margin: 3px 0;
 }
 
-.bookmark-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 20px;
-  float: right;
-  margin-top: 19px;
-}
-
-.bookmark-button:focus {
-  outline: none;
-}
-
-.bookmark-button:hover {
-  color: #555;
-}
-
 /* 헤더 */
 header {
   background: #f5f8fc;
@@ -343,14 +326,34 @@ header {
   background: transparent;
   border: 1px solid #6675fc;
   border-radius: 50px;
-  width: 30%;
-  min-width: 108px;
+  width: calc(50% - 20px);
+  min-width: 98px;
   margin: 10px 10px 0 10px;
   padding: 5px 0;
   color: #6675fc;
   font-weight: 800;
   height: 30px;
 }
+
+.bookmark-button {
+  width: 30%;
+  min-width: 108px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  float: right;
+  margin-top: 19px;
+}
+
+.bookmark-button:focus {
+  outline: none;
+}
+
+.bookmark-button:hover {
+  color: #555;
+}
+
 .like-button{
   background: transparent;
   border: 1px solid #6675fc;
@@ -762,6 +765,8 @@ header {
   border: 2px solid rgba(0, 0, 0, .1);
   border-radius: 5px;
   box-shadow: inset -3px -3px 6px #fff, inset 2px 2px 5px #e6e6e6;
+  white-space: nowrap;
+  overflow-x: auto;
 }
 
 .modal button {
