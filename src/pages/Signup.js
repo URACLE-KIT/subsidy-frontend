@@ -3,6 +3,8 @@ import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import emailjs from "emailjs-com";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { margin } from "@mui/system";
+import { gray } from "d3-color";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -112,6 +114,18 @@ const Signup = () => {
       updated_at,
     };
 
+    const birthdate = new Date(`${year}-${month}-${day}`);
+    const today = new Date();
+    const age = today.getFullYear() - birthdate.getFullYear() - 1 +
+        ((today.getMonth() > birthdate.getMonth ||
+            (today.getMonth() === birthdate.getMonth() &&
+                today.getDate() >= birthdate.getDate())) ? 1 : 0);
+
+    if (age < 13) {
+        alert("만 13세 이상만 가입할 수 있습니다.");
+        return;
+    }
+
     try {
       const response = await axios.post("/v1/users/signup", userData);
 
@@ -196,6 +210,7 @@ const Signup = () => {
       <label htmlFor="name">
         생년월일
         <br />
+        <h5 style={{ margin: "0", color: "#808080"}}>*만 13세 이상만 가입할 수 있습니다.</h5>
       </label>
       <div className="birthday">
         <select value={year} onChange={(e) => setYear(e.target.value)}>
@@ -206,7 +221,7 @@ const Signup = () => {
           ))}
         </select>
         &nbsp;년&nbsp;&nbsp;&nbsp;
-        <select value={month} onChange={(e) => setMonth(e.target.value)}>
+        <select value={month} onChange={(e) => setMonth(e.target.value)} style={{ width: "70px" }}>
           {monthOptions.map((option) => (
             <option key={option} value={option}>
               {option}
@@ -214,7 +229,7 @@ const Signup = () => {
           ))}
         </select>
         &nbsp;월&nbsp;&nbsp;&nbsp;
-        <select value={day} onChange={(e) => setDay(e.target.value)}>
+        <select value={day} onChange={(e) => setDay(e.target.value)} style={{ width: "70px" }}>
           {dayOptions.map((option) => (
             <option key={option} value={option}>
               {option}
@@ -222,7 +237,9 @@ const Signup = () => {
           ))}
         </select>
         일
+        
       </div>
+
       <div>
         <label htmlFor="email">이메일</label>
         <br />
