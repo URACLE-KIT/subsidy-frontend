@@ -106,40 +106,6 @@ const Modal = ({ isOpen, onClose, children }) => {
     }
   };
 
-  const handleResetPassword = async () => {
-    try {
-      const email = resetEmail;
-
-      const response = await axios.get(`/auth/find/${email}`);
-      const id = response.data.id;
-
-      if (id) {
-        const resetLink = `/reset?id=${id}`;
-
-        const templateParams = {
-          to_email: email,
-          to_name: email.split("@")[0],
-          reset_link: resetLink,
-        };
-
-        await emailjs.send(
-          "service_6ivehyn",
-          "template_fwqamhr",
-          templateParams,
-          "3YYSEIx_1W94_6PHN"
-        );
-        M.pop.alert(
-          "비밀번호 재설정 링크를 전송했습니다. 메일함을 확인해주세요."
-        );
-      } else {
-        M.pop.alert("사용자를 찾을 수 없습니다.");
-      }
-    } catch (error) {
-      console.log(error);
-      M.pop.alert("사용자를 찾을 수 없습니다.");
-    }
-  };
-
   const faqItems = [
     {
       question: "1. 보조알리미는 어떤 앱인가요?",
