@@ -178,6 +178,20 @@ const Detail = () => {
           .catch((error) => {
             console.error("조회 수 증가 실패:", error);
           });
+
+        
+        axios
+          .post(`/v1/subsidyViewRankings/increment-views?subsidyId=${id}`)
+          .then((response) => {
+            console.log("조회 수 증가 성공:", response);
+            viewedPages.push(id);
+            M.data.storage({
+              viewedPages: viewedPages,
+            });
+          })
+          .catch((error) => {
+            console.error("조회 수 증가 실패:", error);
+          });
       }
     }
   }, [location.search]);
