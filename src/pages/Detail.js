@@ -200,7 +200,6 @@ const Detail = () => {
   };
 
   useEffect(() => {
-
     const isReview = searchParams.get("review");
 
     if (isReview !== null) {
@@ -213,6 +212,19 @@ const Detail = () => {
         .catch((error) => {
           console.error(error);
         });
+
+        axios
+          .put(`/v1/subsidies-review/increment-views?id=${id}`)
+          .then((response) => {
+            console.log("조회 수 증가 성공:", response);
+            viewedPages.push(id);
+            M.data.storage({
+              viewedPages: viewedPages,
+            });
+          })
+          .catch((error) => {
+            console.error("조회 수 증가 실패:", error);
+          });
     } else {
       setReview(null);
       axios
@@ -224,34 +236,31 @@ const Detail = () => {
           console.error(error);
         });
 
-      if (!isPageViewed()) {
-        axios
-          .put(`/v1/subsidies/increment-views?id=${id}`)
-          .then((response) => {
-            console.log("조회 수 증가 성공:", response);
-            viewedPages.push(id);
-            M.data.storage({
-              viewedPages: viewedPages,
-            });
-          })
-          .catch((error) => {
-            console.error("조회 수 증가 실패:", error);
+      axios
+        .put(`/v1/subsidies/increment-views?id=${id}`)
+        .then((response) => {
+          console.log("조회 수 증가 성공:", response);
+          viewedPages.push(id);
+          M.data.storage({
+            viewedPages: viewedPages,
           });
+        })
+        .catch((error) => {
+          console.error("조회 수 증가 실패:", error);
+        });
 
-
-        axios
-          .post(`/v1/subsidyViewRankings/increment-views?subsidyId=${id}`)
-          .then((response) => {
-            console.log("조회 수 증가 성공:", response);
-            viewedPages.push(id);
-            M.data.storage({
-              viewedPages: viewedPages,
-            });
-          })
-          .catch((error) => {
-            console.error("조회 수 증가 실패:", error);
+      axios
+        .post(`/v1/subsidyViewRankings/increment-views?subsidyId=${id}`)
+        .then((response) => {
+          console.log("조회 수 증가 성공:", response);
+          viewedPages.push(id);
+          M.data.storage({
+            viewedPages: viewedPages,
           });
-      }
+        })
+        .catch((error) => {
+          console.error("조회 수 증가 실패:", error);
+        });
     }
   }, [location.search]);
 
@@ -312,7 +321,7 @@ const Detail = () => {
                 </span>
                 <span>
                   <Link to={`/review?id=${id}`} style={{ color: "#999" }}>
-                    <FaRegCommentDots /> {review.views}
+                    <FaRegCommentDots /> {comments.length}
                   </Link>
                 </span>
                 {M.data.storage("name") === review.user.name && (
@@ -535,10 +544,10 @@ const Detail = () => {
                   .map((comment) => (
                     <div className="comments" key={comment.id}>
                       {comment.id === editCommentId && (
-                        <>
-                          <button onClick={() => handleEdit(comment.id)}>수정</button>
-                          <button onClick={() => handleDelete(comment.id)}>삭제</button>
-                        </>
+                        <div className="comment-edit">
+                          <button className="comment-modify" onClick={() => handleEdit(comment.id)}>수정</button>
+                          <button className="comment-delete" onClick={() => handleDelete(comment.id)}>삭제</button>
+                        </div>
                       )}
                       <div>
                         <FaEllipsisV className="comment-option" onClick={() => showOptions(comment.id)} />
