@@ -60,32 +60,32 @@ const Ranking = () => {
                 console.error("후기 데이터 가져오기 실패:", error);
             });
     }, []);
-    
+
     useEffect(() => {
         const fetchData = async () => {
-          await axios.get("http://localhost:8080/v1/subsidyViewRankings/create");
-      
-          axios.get("http://localhost:8080/v1/subsidyViewRankings/subsidyRanking_Info")
-            .then((response) => {
-                console.log(response);
-              const updatedPolicies = response.data.map((item) => {
-                return {
-                  id: item.subsidyId,
-                  title: item.title,
-                  description: item.description,
-                  views: item.views,
-                };
-              });
-              console.log(updatedPolicies);
-              setPolicies(updatedPolicies);
-            })
-            .catch((error) => {
-              console.error("저번주 많이 조회한 보조금 가져오기 실패:", error);
-            });
+            await axios.get("/v1/subsidyViewRankings/create");
+
+            axios.get("/v1/subsidyViewRankings/subsidyRanking_Info")
+                .then((response) => {
+                    console.log(response);
+                    const updatedPolicies = response.data.map((item) => {
+                        return {
+                            id: item.subsidyId,
+                            title: item.title,
+                            description: item.description,
+                            views: item.views,
+                        };
+                    });
+                    console.log(updatedPolicies);
+                    setPolicies(updatedPolicies);
+                })
+                .catch((error) => {
+                    console.error("저번주 많이 조회한 보조금 가져오기 실패:", error);
+                });
         };
-      
+
         fetchData();
-      }, []);           
+    }, []);
 
     return (
         <>
