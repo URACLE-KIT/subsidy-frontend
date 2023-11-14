@@ -87,6 +87,7 @@ const Detail = () => {
     if (storedUserId) {
       setUserId(storedUserId);
     }
+    console.log(id);
   }, []);
 
   useEffect(() => {
@@ -213,6 +214,21 @@ const Detail = () => {
         .catch((error) => {
           console.error(error);
         });
+        
+        if (!isReviewViewed()) {
+          axios
+            .put(`/v1/subsidies-review/increment-views?id=${id}`)
+            .then((response) => {
+              console.log("조회 수 증가 성공:", response);
+              reviewedPages.push(id);
+              M.data.storage({
+                reviewedPages: reviewedPages,
+              });
+            })
+            .catch((error) => {
+              console.error("조회 수 증가 실패:", error);
+            });
+        }
     } else {
       setReview(null);
       axios
@@ -252,13 +268,18 @@ const Detail = () => {
             console.error("조회 수 증가 실패:", error);
           });
       }
+      
     }
   }, [location.search]);
 
   const viewedPages = M.data.storage("viewedPages") || [];
-
   const isPageViewed = () => {
     return viewedPages.includes(id);
+  };
+
+  const reviewedPages = M.data.storage("reviewedPages") || [];
+  const isReviewViewed = () => {
+    return reviewedPages.includes(id);
   };
 
   return (
@@ -287,6 +308,7 @@ const Detail = () => {
               >
                 <FaExternalLinkAlt /> 공유하기
               </button>
+
               <Link to={`/write?type=review&id=${id}`}>
                 <button className="detail-button">
                   <FaPencilAlt /> 후기글 작성
@@ -341,8 +363,10 @@ const Detail = () => {
               </div>
 
               <div className="detail-button-group">
+
                 <button className="like-button" onClick={toggleLike}>
                   {isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}&nbsp;
+
                   {review.likes}
                 </button>
                 <button

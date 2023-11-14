@@ -11,6 +11,7 @@ import {
   FcGlobe,
   FcLandscape,
 } from "react-icons/fc";
+import axios from "axios";
 
 const Mycustom = () => {
   const [selectedCategory, setSelectedCategory] = useState([]);
@@ -77,14 +78,34 @@ const Mycustom = () => {
     },
   ];
   const [buttons, setButtons] = useState(buttonsInitialState);
+  const [userId, setUserId] = useState("");
+  const [storedCategory, setStoredCategory] = useState([]);
 
   const toggleCategory = (button) => {
     const updatedButtons = buttons.map((btn) => {
       if (btn === button) {
         if (selectedCategory.includes(button.value)) {
-          setSelectedCategory(selectedCategory.filter((category) => category !== button.value));
+          setSelectedCategory(
+            selectedCategory.filter((category) => category !== button.value)
+          );
+          axios
+            .delete(`/v1/users/delete-category?userId=${userId}&category=${button.value}`)
+            .then((response) => {
+              console.log(response.data);
+            })
+            .catch((error) => {
+              console.error("카테고리 삭제 실패:", error);
+            });
         } else {
           setSelectedCategory([...selectedCategory, button.value]);
+          axios
+            .post(`/v1/users/add-category?userId=${userId}&category=${button.value}`)
+            .then((response) => {
+              console.log(response.data);
+            })
+            .catch((error) => {
+              console.error("카테고리 추가 실패:", error);
+            });
         }
         btn.backgroundColor =
           btn.backgroundColor === "initial" ? "#6675fc" : "initial";
@@ -98,8 +119,25 @@ const Mycustom = () => {
   };
 
   useEffect(() => {
-    const storedCategory = M.data.storage("category");
+    const storedUserId = M.data.storage("id");
+    if (storedUserId) {
+      setUserId(storedUserId);
+    }
+  }, []);
 
+  useEffect(() => {
+    axios
+      .get(`/v1/users/category-list?userId=${userId}`)
+      .then((response) => {
+        console.log(response.data);
+        setStoredCategory(response.data);
+      })
+      .catch((error) => {
+        console.error("카테고리 가져오기 실패:", error);
+      });
+  }, [userId]);
+
+  useEffect(() => {
     if (storedCategory) {
       setSelectedCategory(storedCategory);
       const updatedButtons = buttons.map((button) => {
@@ -111,11 +149,11 @@ const Mycustom = () => {
       });
       setButtons(updatedButtons);
     }
-  }, []);
+  }, [storedCategory]);
 
   useEffect(() => {
     M.data.storage({
-      'category': selectedCategory,
+      category: selectedCategory,
     });
   }, [selectedCategory]);
 
