@@ -28,6 +28,7 @@ const Main = () => {
 
   useEffect(() => {
     var storedCategory = M.data.storage("category");
+    
     if (!storedCategory) {
       storedCategory = [];
     }
