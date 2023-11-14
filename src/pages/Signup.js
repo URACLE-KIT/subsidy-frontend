@@ -3,6 +3,8 @@ import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import emailjs from "emailjs-com";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { margin } from "@mui/system";
+import { gray } from "d3-color";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,6 +14,7 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const [ugender, setUgender] = useState("");
+  const [uwedding, setUwedding] = useState("");
   const [year, setYear] = useState("2023");
   const [month, setMonth] = useState("01");
   const [day, setDay] = useState("01");
@@ -19,7 +22,12 @@ const Signup = () => {
     { value: "M", backgroundColor: "initial", textColor: "black" },
     { value: "F", backgroundColor: "initial", textColor: "black" },
   ];
+  const wButtonInitialState = [
+    { value: "M", backgroundColor: "initial", textColor: "black" },
+    { value: "S", backgroundColor: "initial", textColor: "black" },
+  ];
   const [genderButtons, setGenderButtons] = useState(gButtonInitialState);
+  const [weddingButtons, setWeddingButtons] = useState(wButtonInitialState);
 
   const checkEmailExistence = async (email) => {
     try {
@@ -80,6 +88,7 @@ const Signup = () => {
   const handleSignup = async () => {
     const name = document.getElementById("name").value;
     const gender = ugender;
+    const wedding = uwedding;
     const birthday = year + "-" + month + "-" + day;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -106,11 +115,24 @@ const Signup = () => {
       email,
       name,
       gender,
+      wedding,
       birthday,
       password,
       created_at,
       updated_at,
     };
+
+    const birthdate = new Date(`${year}-${month}-${day}`);
+    const today = new Date();
+    const age = today.getFullYear() - birthdate.getFullYear() - 1 +
+        ((today.getMonth() > birthdate.getMonth ||
+            (today.getMonth() === birthdate.getMonth() &&
+                today.getDate() >= birthdate.getDate())) ? 1 : 0);
+
+    if (age < 13) {
+        alert("만 13세 이상만 가입할 수 있습니다.");
+        return;
+    }
 
     try {
       const response = await axios.post("/v1/users/signup", userData);
@@ -160,6 +182,24 @@ const Signup = () => {
     }
   };
 
+  const handleWeddingClick = (selectedWedding) => {
+    setUwedding(selectedWedding);
+  
+    if (selectedWedding === "M") {
+      const updatedButtons = [
+        { value: "M", backgroundColor: "#dae0ff", textColor: "black" },
+        { value: "S", backgroundColor: "initial", textColor: "black" },
+      ];
+      setWeddingButtons(updatedButtons);
+    } else if (selectedWedding === "S") {
+      const updatedButtons = [
+        { value: "M", backgroundColor: "initial", textColor: "black" },
+        { value: "S", backgroundColor: "#dae0ff", textColor: "black" },
+      ];
+      setWeddingButtons(updatedButtons);
+    }
+  };
+
   return (
     <div className="container">
       <h3>회원가입</h3>
@@ -194,8 +234,35 @@ const Signup = () => {
         </button>
       </div>
       <label htmlFor="name">
+        결혼 여부
+        <br />
+      </label>
+      <div className="wedding">
+        <button
+          className="married"
+          onClick={() => handleWeddingClick("M")}
+          style={{
+            backgroundColor: weddingButtons[0].backgroundColor,
+            color: weddingButtons[0].textColor,
+          }}
+        >
+          기혼
+        </button>
+        <button
+          className="sigle"
+          onClick={() => handleWeddingClick("S")}
+          style={{
+            backgroundColor: weddingButtons[1].backgroundColor,
+            color: weddingButtons[1].textColor,
+          }}
+        >
+          미혼
+        </button>
+      </div>
+      <label htmlFor="name">
         생년월일
         <br />
+        <h5 style={{ margin: "0", color: "#808080"}}>*만 13세 이상만 가입할 수 있습니다.</h5>
       </label>
       <div className="birthday">
         <select value={year} onChange={(e) => setYear(e.target.value)}>
@@ -206,7 +273,7 @@ const Signup = () => {
           ))}
         </select>
         &nbsp;년&nbsp;&nbsp;&nbsp;
-        <select value={month} onChange={(e) => setMonth(e.target.value)}>
+        <select value={month} onChange={(e) => setMonth(e.target.value)} style={{ width: "70px" }}>
           {monthOptions.map((option) => (
             <option key={option} value={option}>
               {option}
@@ -214,7 +281,7 @@ const Signup = () => {
           ))}
         </select>
         &nbsp;월&nbsp;&nbsp;&nbsp;
-        <select value={day} onChange={(e) => setDay(e.target.value)}>
+        <select value={day} onChange={(e) => setDay(e.target.value)} style={{ width: "70px" }}>
           {dayOptions.map((option) => (
             <option key={option} value={option}>
               {option}
@@ -222,7 +289,9 @@ const Signup = () => {
           ))}
         </select>
         일
+        
       </div>
+
       <div>
         <label htmlFor="email">이메일</label>
         <br />
