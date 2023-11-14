@@ -69,13 +69,23 @@ const Detail = () => {
   };
 
   const submitComment = () => {
+    const subsidyReviewId = searchParams.get("id");
+    
     axios
-      .post(`http://localhost:8080/v1/subsidy-reviewcomments/create?userId=${localStorage.getItem('id')}&reviewId=${id}`, {
+      .post(`/v1/subsidy-reviewcomments/create?userId=${M.data.storage('id')}&reviewId=${id}`, {
         content: comment
       })
       .then((response) => {
         console.log(response);
         setComment("");
+        axios
+          .get(`/v1/subsidy-reviewcomments/search/subsidyReviewId?subsidyReviewId=${subsidyReviewId}`)
+          .then((response) => {
+            setComments(response.data);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       })
       .catch((error) => {
         console.error(error);
