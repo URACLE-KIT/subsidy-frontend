@@ -6,7 +6,9 @@ const Main = () => {
   const [policies, setPolicies] = useState([]);
   const [category, setCategory] = useState([]);
   const [reviews, setReviews] = useState([]);
-
+  const [userId, setUserId] = useState("");
+  const isMember = M.data.storage("id") !== "";
+  
   var total = 0;
   var filteredPolicies = [];
   var count = [];
@@ -27,11 +29,11 @@ const Main = () => {
   const top4Items = sumPolicies.slice(0, 4);
 
   useEffect(() => {
-    var storedCategory = M.data.storage("category");
-    if (!storedCategory) {
-      storedCategory = [];
+    const storedUserId = M.data.storage("id");
+    if (storedUserId) {
+      setUserId(storedUserId);
     }
-    setCategory(storedCategory);
+
     axios
       .get("/v1/subsidies/all")
       .then((response) => {
@@ -53,12 +55,28 @@ const Main = () => {
       });
   }, []);
 
+  useEffect(() => {
+    axios
+      .get(`/v1/users/category-list?userId=${userId}`)
+      .then((response) => {
+        setCategory(response.data);
+      })
+      .catch((error) => {
+        console.error("카테고리 가져오기 실패:", error);
+      });
+  }, [userId]);
+
+  const sanitizeHtml = (html) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent || "";
+  };
+
   return (
     <>
       <div className="category-group">
         <div className="category">
           <h3>맞춤보조금</h3>
-          <p>{total}건</p>
+          {isMember ? <p>{total}건</p> : <p>???건</p>}
         </div>
 
         {category.map((category, index) => (
@@ -71,24 +89,33 @@ const Main = () => {
 
       <div className="container">
         <h2>맞춤보조금</h2>
-        <ul className="policy-list">
-          {top4Items.map((top4Items) => (
-            <li key={top4Items.id} className="policy-item">
-              <Link to={`/detail?id=${top4Items.id}`}>
-                <div className="policy-details">
-                  <div className="policy-agency">{top4Items.agency}</div>
-                  <div className="policy-title">{top4Items.title}</div>
-                  <div className="policy-description">
-                    {top4Items.description}
+        {isMember ? (
+          <ul className="policy-list">
+            {top4Items.map((top4Items) => (
+              <li key={top4Items.id} className="policy-item">
+                <Link to={`/detail?id=${top4Items.id}`}>
+                  <div className="policy-details">
+                    <div className="policy-agency">{top4Items.agency}</div>
+                    <div className="policy-title">{top4Items.title}</div>
+                    <div className="policy-description">
+                      {top4Items.description}
+                    </div>
+                    <div
+                      className="policy-date"
+                      style={{ maxWidth: "100%", display: "inline-block" }}
+                    >
+                      {top4Items.application_period}
+                    </div>
                   </div>
-                  <div className="policy-date" style={{ maxWidth: "100%" ,display: "inline-block" }}>
-                    {top4Items.application_period}
-                  </div>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p style={{ textAlign: "center" }}>
+            로그인해서 맞춤 보조금을 확인하세요!
+          </p>
+        )}
       </div>
 
       <div className="container">
@@ -98,11 +125,9 @@ const Main = () => {
             <li className="policy-item">
               <Link to={`/detail?id=${review.id}&review`}>
                 <div className="policy-details">
-                  <div className="policy-title">
-                    {review.title}
-                  </div>
+                  <div className="policy-title">{review.title}</div>
                   <div className="policy-description">
-                    {review.content}
+                    {sanitizeHtml(review.content)}
                   </div>
                 </div>
               </Link>
@@ -124,10 +149,11 @@ const Main = () => {
                 <div className="policy-details">
                   <div className="policy-agency">{policy.agency}</div>
                   <div className="policy-title">{policy.title}</div>
-                  <div className="policy-description">
-                    {policy.description}
-                  </div>
-                  <div className="policy-date" style={{ maxWidth: "100%" ,display: "inline-block" }}>
+                  <div className="policy-description">{policy.description}</div>
+                  <div
+                    className="policy-date"
+                    style={{ maxWidth: "100%", display: "inline-block" }}
+                  >
                     {policy.application_period}
                   </div>
                 </div>

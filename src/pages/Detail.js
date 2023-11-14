@@ -10,6 +10,7 @@ import {
   FaRegTrashAlt,
   FaHeart,
   FaRegHeart,
+  FaEllipsisV
 } from "react-icons/fa";
 import {
   BsBriefcase,
@@ -20,6 +21,8 @@ import {
   BsFileText,
   BsGift,
   BsCalendar,
+  BsArrowUp,
+  BsArrowDown,
 } from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
 
@@ -35,12 +38,69 @@ const Detail = () => {
   const [userScrappedPolicies, setUserScrappedPolicies] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState(0);
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
+  const [sortOrder, setSortOrder] = useState("desc");
+  const [editCommentId, setEditCommentId] = useState(null);
+  const [deleteCommentId, setDeleteCommentId] = useState(null);
+
+  const showOptions = (commentId) => {
+    if (commentId === editCommentId) {
+      setEditCommentId(null);
+      setDeleteCommentId(null);
+    } else {
+      setEditCommentId(commentId);
+      setDeleteCommentId(commentId);
+    }
+  };  
+
+  const handleCommentChange = (event) => {
+    setComment(event.target.value);
+  };
+
+  const handleSortOrderChange = (order) => {
+    setSortOrder(order);
+  };
+  
+  const handleEdit = (commentId) => {
+  };
+  
+  const handleDelete = (commentId) => {
+  };
+
+  const submitComment = () => {
+    axios
+      .post(`http://localhost:8080/v1/subsidy-reviewcomments/create?userId=${localStorage.getItem('id')}&reviewId=${id}`, {
+        content: comment
+      })
+      .then((response) => {
+        console.log(response);
+        setComment("");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   useEffect(() => {
     const storedUserId = M.data.storage("id");
     if (storedUserId) {
       setUserId(storedUserId);
     }
+    console.log(id);
+  }, []);
+
+  useEffect(() => {
+    const subsidyReviewId = searchParams.get("id");
+
+    axios
+      .get(`/v1/subsidy-reviewcomments/search/subsidyReviewId?subsidyReviewId=${subsidyReviewId}`)
+      .then((response) => {
+        setComments(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
 
   useEffect(() => {
@@ -154,6 +214,21 @@ const Detail = () => {
         .catch((error) => {
           console.error(error);
         });
+        
+        if (!isReviewViewed()) {
+          axios
+            .put(`/v1/subsidies-review/increment-views?id=${id}`)
+            .then((response) => {
+              console.log("조회 수 증가 성공:", response);
+              reviewedPages.push(id);
+              M.data.storage({
+                reviewedPages: reviewedPages,
+              });
+            })
+            .catch((error) => {
+              console.error("조회 수 증가 실패:", error);
+            });
+        }
     } else {
       setReview(null);
       axios
@@ -178,14 +253,33 @@ const Detail = () => {
           .catch((error) => {
             console.error("조회 수 증가 실패:", error);
           });
+
+
+        axios
+          .post(`/v1/subsidyViewRankings/increment-views?subsidyId=${id}`)
+          .then((response) => {
+            console.log("조회 수 증가 성공:", response);
+            viewedPages.push(id);
+            M.data.storage({
+              viewedPages: viewedPages,
+            });
+          })
+          .catch((error) => {
+            console.error("조회 수 증가 실패:", error);
+          });
       }
+      
     }
   }, [location.search]);
 
   const viewedPages = M.data.storage("viewedPages") || [];
-
   const isPageViewed = () => {
     return viewedPages.includes(id);
+  };
+
+  const reviewedPages = M.data.storage("reviewedPages") || [];
+  const isReviewViewed = () => {
+    return reviewedPages.includes(id);
   };
 
   return (
@@ -214,6 +308,7 @@ const Detail = () => {
               >
                 <FaExternalLinkAlt /> 공유하기
               </button>
+
               <Link to={`/write?type=review&id=${id}`}>
                 <button className="detail-button">
                   <FaPencilAlt /> 후기글 작성
@@ -268,8 +363,10 @@ const Detail = () => {
               </div>
 
               <div className="detail-button-group">
+
                 <button className="like-button" onClick={toggleLike}>
                   {isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}&nbsp;
+
                   {review.likes}
                 </button>
                 <button
@@ -428,6 +525,58 @@ const Detail = () => {
 
       {review && (
         <div className="tab-content" dangerouslySetInnerHTML={{ __html: review.content }} />
+      )}
+
+      {review && (
+        <div className="comment-list">
+          <input
+            className="comment-input"
+            placeholder="댓글을 입력해주세요."
+            value={comment}
+            onChange={handleCommentChange}
+          />
+
+          <button className="comment-btn" onClick={submitComment}>
+            전송
+          </button>
+
+          {comments.length > 0 && (
+            <>
+              <p>{comments.length}개의 댓글</p>
+              <div className="comment-sort">
+                <button onClick={() => handleSortOrderChange("desc")} className={sortOrder === "desc" ? "active" : ""}>
+                  <BsArrowUp /> 최신순
+                </button>
+                <button onClick={() => handleSortOrderChange("asc")} className={sortOrder === "asc" ? "active" : ""}>
+                  <BsArrowDown /> 오래된순
+                </button>
+              </div>
+              
+              <div>
+              {
+                comments
+                  .sort((a, b) => (sortOrder === "desc" ? new Date(b.created_at) - new Date(a.created_at) : new Date(a.created_at) - new Date(b.created_at)))
+                  .map((comment) => (
+                    <div className="comments" key={comment.id}>
+                      {comment.id === editCommentId && (
+                        <>
+                          <button onClick={() => handleEdit(comment.id)}>수정</button>
+                          <button onClick={() => handleDelete(comment.id)}>삭제</button>
+                        </>
+                      )}
+                      <div>
+                        <FaEllipsisV className="comment-option" onClick={() => showOptions(comment.id)} />
+                        <p>{comment.user.name}</p>
+                        <p>{comment.content}</p>
+                        <p>{formatDate(comment.created_at)}</p>
+                      </div>
+                    </div>
+                  ))
+              }
+            </div>
+            </>
+          )}
+        </div>
       )}
     </>
   );

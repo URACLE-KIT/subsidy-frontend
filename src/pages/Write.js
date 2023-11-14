@@ -16,7 +16,8 @@ const Write = () => {
     const fetchData = async () => {
       try {
         if (type === 'reviewedit') {
-          const response = await axios.get(`http://localhost:8080/v1/subsidies-review/all`);
+          const response = await axios.get(`/v1/subsidies-review/all`);
+          console.log(response);
           const filteredData = response.data.filter(item => item.id === parseInt(id));
           if (filteredData.length > 0) {
             const { title, content } = filteredData[0];

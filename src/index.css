@@ -430,8 +430,51 @@ header {
   padding: 30px;
 }
 
+/* 상세페이지 댓글 */
+.comments {
+  border-bottom: 1px solid #eee;
+  padding: 20px 10px;
+}
 
+.comments:last-child {
+  border:none;
+}
 
+.comment-option {
+  float: right;
+}
+
+.comment-input {
+  display: inline;
+  width: calc(100% - 100px);
+  border-radius: 3px 0 0 3px;
+}
+
+.comment-list {
+  background: #fff;
+  padding: 30px;
+  margin-top: 15px;
+}
+
+.comment-btn {
+  width: 65px;
+  height: 43px;
+  border-radius: 0 3px 3px 0;
+}
+
+.comment-sort {
+  text-align: right;
+}
+
+.comment-sort button {
+  background: none;
+  box-shadow: none;
+  width: 80px;
+}
+
+.comment-sort .active {
+  color: #6675fc;
+}
 
 /* 정책소식 */
 .policy-image img {
