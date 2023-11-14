@@ -69,13 +69,23 @@ const Detail = () => {
   };
 
   const submitComment = () => {
+    const subsidyReviewId = searchParams.get("id");
+    
     axios
-      .post(`http://localhost:8080/v1/subsidy-reviewcomments/create?userId=${localStorage.getItem('id')}&reviewId=${id}`, {
+      .post(`/v1/subsidy-reviewcomments/create?userId=${M.data.storage('id')}&reviewId=${id}`, {
         content: comment
       })
       .then((response) => {
         console.log(response);
         setComment("");
+        axios
+          .get(`/v1/subsidy-reviewcomments/search/subsidyReviewId?subsidyReviewId=${subsidyReviewId}`)
+          .then((response) => {
+            setComments(response.data);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       })
       .catch((error) => {
         console.error(error);
@@ -87,7 +97,6 @@ const Detail = () => {
     if (storedUserId) {
       setUserId(storedUserId);
     }
-    console.log(id);
   }, []);
 
   useEffect(() => {
@@ -201,7 +210,6 @@ const Detail = () => {
   };
 
   useEffect(() => {
-
     const isReview = searchParams.get("review");
 
     if (isReview !== null) {
@@ -214,21 +222,19 @@ const Detail = () => {
         .catch((error) => {
           console.error(error);
         });
-        
-        if (!isReviewViewed()) {
-          axios
-            .put(`/v1/subsidies-review/increment-views?id=${id}`)
-            .then((response) => {
-              console.log("조회 수 증가 성공:", response);
-              reviewedPages.push(id);
-              M.data.storage({
-                reviewedPages: reviewedPages,
-              });
-            })
-            .catch((error) => {
-              console.error("조회 수 증가 실패:", error);
+
+        axios
+          .put(`/v1/subsidies-review/increment-views?id=${id}`)
+          .then((response) => {
+            console.log("조회 수 증가 성공:", response);
+            viewedPages.push(id);
+            M.data.storage({
+              viewedPages: viewedPages,
             });
-        }
+          })
+          .catch((error) => {
+            console.error("조회 수 증가 실패:", error);
+          });
     } else {
       setReview(null);
       axios
@@ -240,46 +246,38 @@ const Detail = () => {
           console.error(error);
         });
 
-      if (!isPageViewed()) {
-        axios
-          .put(`/v1/subsidies/increment-views?id=${id}`)
-          .then((response) => {
-            console.log("조회 수 증가 성공:", response);
-            viewedPages.push(id);
-            M.data.storage({
-              viewedPages: viewedPages,
-            });
-          })
-          .catch((error) => {
-            console.error("조회 수 증가 실패:", error);
+      axios
+        .put(`/v1/subsidies/increment-views?id=${id}`)
+        .then((response) => {
+          console.log("조회 수 증가 성공:", response);
+          viewedPages.push(id);
+          M.data.storage({
+            viewedPages: viewedPages,
           });
+        })
+        .catch((error) => {
+          console.error("조회 수 증가 실패:", error);
+        });
 
-
-        axios
-          .post(`/v1/subsidyViewRankings/increment-views?subsidyId=${id}`)
-          .then((response) => {
-            console.log("조회 수 증가 성공:", response);
-            viewedPages.push(id);
-            M.data.storage({
-              viewedPages: viewedPages,
-            });
-          })
-          .catch((error) => {
-            console.error("조회 수 증가 실패:", error);
+      axios
+        .post(`/v1/subsidyViewRankings/increment-views?subsidyId=${id}`)
+        .then((response) => {
+          console.log("조회 수 증가 성공:", response);
+          viewedPages.push(id);
+          M.data.storage({
+            viewedPages: viewedPages,
           });
-      }
-      
+        })
+        .catch((error) => {
+          console.error("조회 수 증가 실패:", error);
+        });
     }
   }, [location.search]);
 
   const viewedPages = M.data.storage("viewedPages") || [];
+
   const isPageViewed = () => {
     return viewedPages.includes(id);
-  };
-
-  const reviewedPages = M.data.storage("reviewedPages") || [];
-  const isReviewViewed = () => {
-    return reviewedPages.includes(id);
   };
 
   return (
@@ -308,7 +306,6 @@ const Detail = () => {
               >
                 <FaExternalLinkAlt /> 공유하기
               </button>
-
               <Link to={`/write?type=review&id=${id}`}>
                 <button className="detail-button">
                   <FaPencilAlt /> 후기글 작성
@@ -334,7 +331,7 @@ const Detail = () => {
                 </span>
                 <span>
                   <Link to={`/review?id=${id}`} style={{ color: "#999" }}>
-                    <FaRegCommentDots /> {review.views}
+                    <FaRegCommentDots /> {comments.length}
                   </Link>
                 </span>
                 {M.data.storage("name") === review.user.name && (
@@ -363,10 +360,8 @@ const Detail = () => {
               </div>
 
               <div className="detail-button-group">
-
                 <button className="like-button" onClick={toggleLike}>
                   {isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}&nbsp;
-
                   {review.likes}
                 </button>
                 <button
@@ -559,10 +554,10 @@ const Detail = () => {
                   .map((comment) => (
                     <div className="comments" key={comment.id}>
                       {comment.id === editCommentId && (
-                        <>
-                          <button onClick={() => handleEdit(comment.id)}>수정</button>
-                          <button onClick={() => handleDelete(comment.id)}>삭제</button>
-                        </>
+                        <div className="comment-edit">
+                          <button className="comment-modify" onClick={() => handleEdit(comment.id)}>수정</button>
+                          <button className="comment-delete" onClick={() => handleDelete(comment.id)}>삭제</button>
+                        </div>
                       )}
                       <div>
                         <FaEllipsisV className="comment-option" onClick={() => showOptions(comment.id)} />
