@@ -95,7 +95,7 @@ const Latest = () => {
                                     <div className='count views'>
                                         <span style={{ marginLeft: 0, marginRight: '20px' }}><FaRegEye /> {policy.views}</span>
                                         <span style={{ marginLeft: 0, marginRight: '20px' }}><FaRegHeart /> {policy.likes}</span>
-                                        <span style={{ marginLeft: 0, marginRight: '20px' }}><FaRegCommentDots /> {policy.comments}</span>
+                                        <span style={{ marginLeft: 0, marginRight: '20px' }}><FaRegCommentDots /> {policy.numComments}</span>
                                     </div>
                                 </div>
                             </div>

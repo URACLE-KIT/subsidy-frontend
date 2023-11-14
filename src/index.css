@@ -464,6 +464,7 @@ header {
 
 .comment-sort {
   text-align: right;
+  margin-top: -30px;
 }
 
 .comment-sort button {
@@ -474,6 +475,27 @@ header {
 
 .comment-sort .active {
   color: #6675fc;
+}
+
+.comment-edit {
+  position: absolute;
+  right: 60px;
+}
+
+.comment-edit button {
+  border-radius: 3px;
+  background-color: #fff;
+  width: 40px;
+  padding: 5px;
+  margin: 10px 0;
+}
+
+.comment-modify {
+  color: #6675fc;
+}
+
+.comment-delete {
+  color: #fc6666;
 }
 
 /* 정책소식 */
