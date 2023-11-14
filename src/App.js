@@ -16,6 +16,9 @@ import Required from './pages/Required';
 import Setting from './pages/Setting';
 import Mycustom from './pages/Mycustom';
 import Reset from './pages/Reset';
+import Ranking from './pages/Ranking';
+import Reviewdetail from './pages/Reviewdetail';
+
 
 function App() {
   return (
@@ -37,6 +40,8 @@ function App() {
           <Route path="/setting" element={<Setting />}></Route>
           <Route path="/mycustom" element={<Mycustom />}></Route>
           <Route path="/reset" element={<Reset />}></Route>
+          <Route path="/reviewdetail" element={<Reviewdetail />}></Route>
+          <Route path="/ranking" element={<Ranking />}></Route>
         </Routes>
         <Menu />
         <Footer />

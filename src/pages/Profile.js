@@ -8,6 +8,7 @@ const Profile = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState('');
+  const [wedding, setWedding] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -25,6 +26,7 @@ const Profile = () => {
     const storedName = M.data.storage('name');
     const storedEmail = M.data.storage('email');
     const storedGender = M.data.storage('gender');
+    const storedWedding = M.data.storage('wedding');
     const storedBirthday = M.data.storage('birthday');
 
     if (storedId) {
@@ -38,6 +40,9 @@ const Profile = () => {
     }
     if (storedGender) {
       setGender(storedGender);
+    }
+    if (storedWedding) {
+      setWedding(storedWedding);
     }
     if (storedBirthday) {
       const [year, month, day] = storedBirthday.split('-');
@@ -147,6 +152,31 @@ const Profile = () => {
           value={gender}
           disabled
         />
+      </div>
+      <div className="profile-field">
+        <label htmlFor="wedding">결혼 여부</label>
+        <div className="wedding-options">
+          <label>
+            <input
+              type="radio"
+              value="M"
+              checked={wedding === "M"}
+              onChange={() => setWedding("M")}
+              style={{ width: "auto", marginRight: "5px" }}
+            />
+            기혼
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="S"
+              checked={wedding === "S"}
+              onChange={() => setWedding("S")}
+              style={{ width: "auto", marginLeft: "100px" }}
+            />
+            미혼
+          </label>
+        </div>
       </div>
       <div className="profile-field">
         <label htmlFor="birth">생년월일</label>
