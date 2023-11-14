@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const Write = () => {
   const location = useLocation();
@@ -10,30 +10,43 @@ const Write = () => {
   const id = queryParams.get('id');
   const type = queryParams.get('type');
   const userId = M.data.storage("id");
-  const [content, setContent] = useState("");
+  const [quillValue, setQuillValue] = useState("");
 
-  const commonToolbar = [
-    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-    [{ 'color': ['#000000', '#e60000', '#ff9900', '#ffff00', '#008a00', '#0066cc', '#9933ff', '#ffffff', '#facccc', '#ffebcc', '#ffffcc', '#cce8cc', '#cce0f5', '#ebd6ff', '#bbbbbb', '#f06666', '#ffc266', '#ffff66', '#66b966', '#66a3e0', '#c285ff', '#888888', '#a10000', '#b26b00', '#b2b200', '#006100', '#0047b2', '#6b24b2', '#444444', '#5c0000', '#663d00', '#666600', '#003700', '#002966', '#3d1466', 'custom-color'] }, { 'background': [] }],
-    [{ 'align': [] }],
-    ['image'],
-    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-    [{ 'list': 'ordered' }, { 'list': 'bullet' }, 'clean']
-  ];
-
-  const reviewToolbar = [
-    ...commonToolbar.slice(0, commonToolbar.findIndex(item => item.includes('image'))),
-    ...commonToolbar.slice(commonToolbar.findIndex(item => item.includes('image')) + 1),
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (type === 'reviewedit') {
+          const response = await axios.get(`/v1/subsidies-review/all`);
+          console.log(response);
+          const filteredData = response.data.filter(item => item.id === parseInt(id));
+          if (filteredData.length > 0) {
+            const { title, content } = filteredData[0];
+            setQuillValue(content || '');
+            document.getElementById('title').value = title || '';
+          }
+        }
+      } catch (error) {
+        console.error('오류:', error);
+      }
+    };
+  
+    fetchData();
+  }, [id, type]);
 
   const modules = {
     toolbar: {
-      container: type === 'review' ? reviewToolbar : commonToolbar,
-    },
+      container: [
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        [{ 'color': ['#000000', '#e60000', '#ff9900', '#ffff00', '#008a00', '#0066cc', '#9933ff', '#ffffff', '#facccc', '#ffebcc', '#ffffcc', '#cce8cc', '#cce0f5', '#ebd6ff', '#bbbbbb', '#f06666', '#ffc266', '#ffff66', '#66b966', '#66a3e0', '#c285ff', '#888888', '#a10000', '#b26b00', '#b2b200', '#006100', '#0047b2', '#6b24b2', '#444444', '#5c0000', '#663d00', '#666600', '#003700', '#002966', '#3d1466', 'custom-color'] }, { 'background': [] }],
+        [{ 'align': [] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }, 'clean'],
+      ],
+    }
   };
 
-  const onChangeContents = (content) => {
-    setContent(content);
+  const onChangeContents = (value) => {
+    setQuillValue(value);
   };
 
   const navigate = useNavigate();
@@ -42,7 +55,7 @@ const Write = () => {
     const title = document.getElementById('title').value;
     const reviewData = {
       title: title,
-      content: content,
+      content: quillValue,
     };
 
     try {
@@ -68,18 +81,15 @@ const Write = () => {
     navigate(-1);
   };
 
-  let title = '후기 작성';
-  let buttonText = '후기 작성 완료';
+  let title = '후기 수정';
+  let buttonText = '수정';
 
-  if (type === 'review') {
-    title = '후기 작성';
-    buttonText = '완료';
-  } else if (type == "reviewedit") {
+  if (type === 'reviewedit') {
     title = '후기 수정';
     buttonText = '수정';
   } else {
-    title = id ? '정책 소식 수정' : '정책 소식 작성';
-    buttonText = id ? '수정' : '완료';
+    title = '후기 작성';
+    buttonText = '완료';
   }
 
   return (
@@ -90,6 +100,7 @@ const Write = () => {
       <ReactQuill
         id="content"
         style={{ height: "200px" }}
+        value={quillValue}
         onChange={onChangeContents}
         modules={modules}
       />

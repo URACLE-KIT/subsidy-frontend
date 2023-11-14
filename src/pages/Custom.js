@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  FaBookmark,
-  FaRegBookmark,
-  FaRegEye,
-  FaRegCommentDots,
-} from "react-icons/fa";
-import { Link, useLocation } from "react-router-dom";
+
+import { FaBookmark, FaRegBookmark, FaRegEye, FaRegCommentDots } from "react-icons/fa";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
 
 const Custom = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const search = new URLSearchParams(location.search).get("search");
   const option = new URLSearchParams(location.search).get("option");
@@ -24,7 +22,16 @@ const Custom = () => {
   const [storedCategory, setStoredCategory] = useState([]);
 
   useEffect(() => {
-    const storedName = M.data.storage("name");
+
+    const storedToken = M.data.storage("token");
+    if (!storedToken) {
+      navigate("/required");
+      
+      return;
+    }
+
+    const storedName = M.data.storage('name');
+
     if (storedName) {
       setName(storedName);
     }
@@ -34,7 +41,8 @@ const Custom = () => {
       setUserId(storedUserId);
     }
 
-  }, []);
+  }, [navigate]);
+
 
   useEffect(() => {
     axios
