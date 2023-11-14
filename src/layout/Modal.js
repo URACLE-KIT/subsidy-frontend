@@ -83,11 +83,11 @@ const Modal = ({ isOpen, onClose, children }) => {
         try {
             const email = resetEmail;
     
-            const response = await axios.get(`/auth/find/${email}`);
+            const response = await axios.get(`/v1/users/find/userId?email=${email}`);
             const id = response.data.id;
     
             if (id) {
-                const resetLink = `/reset?id=${id}`;
+                const resetLink = `http://localhost:3000/reset?id=${id}`;
     
                 const templateParams = {
                     to_email: email,
