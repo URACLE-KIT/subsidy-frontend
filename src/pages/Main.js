@@ -6,6 +6,7 @@ const Main = () => {
   const [policies, setPolicies] = useState([]);
   const [category, setCategory] = useState([]);
   const [reviews, setReviews] = useState([]);
+  const [userId, setUserId] = useState("");
 
   var total = 0;
   var filteredPolicies = [];
@@ -27,12 +28,11 @@ const Main = () => {
   const top4Items = sumPolicies.slice(0, 4);
 
   useEffect(() => {
-    var storedCategory = M.data.storage("category");
-    
-    if (!storedCategory) {
-      storedCategory = [];
+    const storedUserId = M.data.storage("id");
+    if (storedUserId) {
+      setUserId(storedUserId);
     }
-    setCategory(storedCategory);
+    
     axios
       .get("/v1/subsidies/all")
       .then((response) => {
@@ -53,6 +53,17 @@ const Main = () => {
         console.error("후기 데이터 가져오기 실패:", error);
       });
   }, []);
+
+  useEffect(() => {
+    axios
+      .get(`/v1/users/category-list?userId=${userId}`)
+      .then((response) => {
+        setCategory(response.data);
+      })
+      .catch((error) => {
+        console.error("카테고리 가져오기 실패:", error);
+      });
+  }, [userId]);
 
   return (
     <>

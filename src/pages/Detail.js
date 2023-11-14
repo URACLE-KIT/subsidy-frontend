@@ -235,7 +235,8 @@ const Detail = () => {
               >
                 <FaExternalLinkAlt /> 공유하기
               </button>
-              <Link to="/write?type=review">
+              
+              <Link to={`/write?type=review&id=${id}`}>
                 <button className="detail-button">
                   <FaPencilAlt /> 후기글 작성
                 </button>
