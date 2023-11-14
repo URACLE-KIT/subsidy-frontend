@@ -60,6 +60,32 @@ const Ranking = () => {
                 console.error("후기 데이터 가져오기 실패:", error);
             });
     }, []);
+    
+    useEffect(() => {
+        const fetchData = async () => {
+          await axios.get("http://localhost:8080/v1/subsidyViewRankings/create");
+      
+          axios.get("http://localhost:8080/v1/subsidyViewRankings/subsidyRanking_Info")
+            .then((response) => {
+                console.log(response);
+              const updatedPolicies = response.data.map((item) => {
+                return {
+                  id: item.subsidyId,
+                  title: item.title,
+                  description: item.description,
+                  views: item.views,
+                };
+              });
+              console.log(updatedPolicies);
+              setPolicies(updatedPolicies);
+            })
+            .catch((error) => {
+              console.error("저번주 많이 조회한 보조금 가져오기 실패:", error);
+            });
+        };
+      
+        fetchData();
+      }, []);           
 
     return (
         <>
@@ -77,19 +103,19 @@ const Ranking = () => {
             </div>
 
             <div className="container">
-                <h2>저번주 많이 조회한 보조금</h2>
+                <h2>이번주 많이 조회한 보조금</h2>
                 <ul className="policy-list">
-                    {policies.slice(0, 3).map((policy) => (
+                    {policies.map((policy) => (
                         <li key={policy.id} className="policy-item">
                             <Link to={`/detail?id=${policy.id}`}>
                                 <div className="policy-details">
-                                    <div className="policy-agency">{policy.agency}</div>
-                                    <span style={{ float: 'right' }} className="policy-description">
+                                    <span style={{ float: 'right', paddingTop: '10px' }} className="policy-description">
                                         <FaRegEye /> {policy.views}
                                     </span>
                                     <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                         {policy.id}&nbsp; {policy.title.length > 17 ? `${policy.title.slice(0, 17)}...` : policy.title}
                                     </span>
+                                    <div className="policy-agency">{policy.description.length > 23 ? `${policy.description.slice(0, 23)}...` : policy.description}</div>
                                 </div>
                             </Link>
                         </li>
@@ -100,17 +126,17 @@ const Ranking = () => {
             <div className="container">
                 <h2>청년이 많이 조회한 보조금</h2>
                 <ul className="policy-list">
-                    {policies.slice(0, 3).map((policy) => (
+                    {policies.map((policy) => (
                         <li key={policy.id} className="policy-item">
                             <Link to={`/detail?id=${policy.id}`}>
                                 <div className="policy-details">
-                                    <div className="policy-agency">{policy.agency}</div>
-                                    <span style={{ float: 'right' }} className="policy-description">
+                                    <span style={{ float: 'right', paddingTop: '10px' }} className="policy-description">
                                         <FaRegEye /> {policy.views}
                                     </span>
                                     <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                         {policy.id}&nbsp; {policy.title.length > 17 ? `${policy.title.slice(0, 17)}...` : policy.title}
                                     </span>
+                                    <div className="policy-agency">{policy.description.length > 23 ? `${policy.description.slice(0, 23)}...` : policy.description}</div>
                                 </div>
                             </Link>
                         </li>
@@ -121,17 +147,17 @@ const Ranking = () => {
             <div className="container">
                 <h2>남성이 많이 조회한 보조금</h2>
                 <ul className="policy-list">
-                    {policies.slice(0, 3).map((policy) => (
+                    {policies.map((policy) => (
                         <li key={policy.id} className="policy-item">
                             <Link to={`/detail?id=${policy.id}`}>
                                 <div className="policy-details">
-                                    <div className="policy-agency">{policy.agency}</div>
-                                    <span style={{ float: 'right' }} className="policy-description">
+                                    <span style={{ float: 'right', paddingTop: '10px' }} className="policy-description">
                                         <FaRegEye /> {policy.views}
                                     </span>
                                     <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                         {policy.id}&nbsp; {policy.title.length > 17 ? `${policy.title.slice(0, 17)}...` : policy.title}
                                     </span>
+                                    <div className="policy-agency">{policy.description.length > 23 ? `${policy.description.slice(0, 23)}...` : policy.description}</div>
                                 </div>
                             </Link>
                         </li>
