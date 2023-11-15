@@ -407,14 +407,15 @@ const Detail = () => {
                   ({formatDate(review.updated_at)} 수정)
                 </span>
               </div>
-
               <div className="detail-button-group">
+
                 {userId && (
-                  <button className="like-button" onClick={toggleLike}>
-                    {isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}&nbsp;
-                    {review.likes}
-                  </button>
+                <button className="like-button" onClick={toggleLike}>
+                  {isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}&nbsp;
+                  {isLiked ? review.likes+1 : review.likes}
+                </button>
                 )}
+
                 <button
                   className="detail-button"
                   onClick={() => openModal("공유하기")}
