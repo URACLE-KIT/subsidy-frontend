@@ -9,11 +9,17 @@ const Profile = () => {
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState('');
   const [wedding, setWedding] = useState('');
+  const [uwedding, setUwedding] = useState("");
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
+  const wButtonInitialState = [
+    { value: "M", backgroundColor: "initial", textColor: "black" },
+    { value: "S", backgroundColor: "initial", textColor: "black" },
+  ];
+  const [weddingButtons, setWeddingButtons] = useState(wButtonInitialState);
 
   const [birthday, setBirthday] = useState({
     year: "2023",
@@ -26,7 +32,7 @@ const Profile = () => {
     const storedName = M.data.storage('name');
     const storedEmail = M.data.storage('email');
     const storedGender = M.data.storage('gender');
-    const storedWedding = M.data.storage('wedding');
+    const storedWedding = M.data.storage('maritalStatus');
     const storedBirthday = M.data.storage('birthday');
 
     if (storedId) {
@@ -87,6 +93,10 @@ const Profile = () => {
         data.password = passwordInput.value;
       }
 
+      if (uwedding) {
+        data.maritalStatus = uwedding;
+      }
+
       const response = await axios.patch(`/v1/users/update?id=${id}`, data);
 
       if (response.status === 200) {
@@ -94,6 +104,7 @@ const Profile = () => {
         M.pop.alert('프로필이 업데이트되었습니다.');
         M.data.storage({ 'name': updatedName });
         M.data.storage({ 'birthday': updatedBirthday });
+        M.data.storage({ 'maritalStatus': uwedding });
 
         navigate('/mypage');
       }
@@ -132,6 +143,25 @@ const Profile = () => {
     dayOptions.push(dayString);
   }
 
+  const handleWeddingClick = async (selectedWedding) => {
+    setUwedding(selectedWedding);
+  
+    if (selectedWedding === "M") {
+      const updatedButtons = [
+        { value: "M", backgroundColor: "#dae0ff", textColor: "black" },
+        { value: "S", backgroundColor: "initial", textColor: "black" },
+      ];
+      setWeddingButtons(updatedButtons);
+    } else if (selectedWedding === "S") {
+      const updatedButtons = [
+        { value: "M", backgroundColor: "initial", textColor: "black" },
+        { value: "S", backgroundColor: "#dae0ff", textColor: "black" },
+      ];
+      setWeddingButtons(updatedButtons);
+    }
+  };
+
+
   return (
     <div className="container">
       <div className="profile-field">
@@ -156,26 +186,26 @@ const Profile = () => {
       <div className="profile-field">
         <label htmlFor="wedding">결혼 여부</label>
         <div className="wedding-options">
-          <label>
-            <input
-              type="radio"
-              value="M"
-              checked={wedding === "M"}
-              onChange={() => setWedding("M")}
-              style={{ width: "auto", marginRight: "5px" }}
-            />
-            기혼
-          </label>
-          <label>
-            <input
-              type="radio"
-              value="S"
-              checked={wedding === "S"}
-              onChange={() => setWedding("S")}
-              style={{ width: "auto", marginLeft: "100px" }}
-            />
-            미혼
-          </label>
+        <button
+          className="married"
+          onClick={() => handleWeddingClick("M")}
+          style={{
+            backgroundColor: weddingButtons[0].backgroundColor,
+            color: weddingButtons[0].textColor,
+          }}
+        >
+          기혼
+        </button>
+        <button
+          className="sigle"
+          onClick={() => handleWeddingClick("S")}
+          style={{
+            backgroundColor: weddingButtons[1].backgroundColor,
+            color: weddingButtons[1].textColor,
+          }}
+        >
+          미혼
+        </button>
         </div>
       </div>
       <div className="profile-field">
