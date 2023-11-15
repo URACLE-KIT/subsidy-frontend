@@ -8,7 +8,7 @@ const Main = () => {
   const [reviews, setReviews] = useState([]);
   const [userId, setUserId] = useState("");
   const isMember = M.data.storage("id") !== "";
-  
+
   var total = 0;
   var filteredPolicies = [];
   var count = [];
@@ -137,13 +137,9 @@ const Main = () => {
       </div>
 
       <div className="container">
-        <h2>홍보 소식</h2>
-      </div>
-
-      <div className="container">
-        <h2>신규 보조금 20</h2>
+        <h2>신규 보조금 5</h2>
         <ul className="policy-list">
-          {policies.slice(0, 20).map((policy) => (
+          {policies.slice(0, 5).map((policy) => (
             <li key={policy.id} className="policy-item">
               <Link to={`/detail?id=${policy.id}`}>
                 <div className="policy-details">
