@@ -8,8 +8,6 @@ const Ranking = () => {
     const [policies, setPolicies] = useState([]);
     const [females, setFemales] = useState([]);
     const [males, setMales] = useState([]);
-    const [category, setCategory] = useState([]);
-    const [reviews, setReviews] = useState([]);
     const data = [
         { id: '생활안정', label: '생활안정', value: 20 },
         { id: '주거자립', label: '주거자립', value: 40 },
@@ -17,57 +15,12 @@ const Ranking = () => {
         { id: '기타', label: '기타', value: 15 },
     ];
 
-    var total = 0;
-    var filteredPolicies = [];
-    var count = [];
-
-    category.map((c) =>
-        filteredPolicies.push(policies.filter((policy) => policy.category === c))
-    );
-
-    filteredPolicies.map((fp) => count.push(fp.length));
-    count.map((count) => (total += count));
-
-    const sumPolicies = filteredPolicies.reduce((accumulator, currentArray) => {
-        return accumulator.concat(currentArray);
-    }, []);
-
-    sumPolicies.sort((a, b) => b.id - a.id);
-
-    useEffect(() => {
-        var storedCategory = M.data.storage("category");
-        if (!storedCategory) {
-            storedCategory = [];
-        }
-        setCategory(storedCategory);
-
-        axios
-            .get("/v1/subsidies/all")
-            .then((response) => {
-                setPolicies(response.data);
-            })
-            .catch((error) => {
-                console.error("맞춤 보조금 데이터 가져오기 실패:", error);
-            });
-    }, []);
-
-    useEffect(() => {
-        axios
-            .get("/v1/subsidies-review/all")
-            .then((response) => {
-                setReviews(response.data);
-            })
-            .catch((error) => {
-                console.error("후기 데이터 가져오기 실패:", error);
-            });
-    }, []);
-
     // 이번주
     useEffect(() => {
         const fetchWeekPolicies = async () => {
-            const hasFemaleFetched = M.data.storage("hasWeekViewed");
+            const hasWeekFetched = M.data.storage("hasWeekViewed");
 
-            if (!hasFemaleFetched || hasFemaleFetched === 'false') {
+            if (!hasWeekFetched || hasWeekFetched === 'false') {
                 await axios.get("/v1/subsidyViewRankings/create");
                 M.data.storage({
                     hasWeekViewed: 'true',
@@ -134,7 +87,7 @@ const Ranking = () => {
 
     // 남성
     useEffect(() => {
-        const fetchFemaleViewedPolicies = async () => {
+        const fetchMaleViewedPolicies = async () => {
             const hasMaleFetched = M.data.storage("hasMaleViewed");
 
             if (!hasMaleFetched || hasMaleFetched === 'false') {
@@ -164,7 +117,7 @@ const Ranking = () => {
                 });
         };
 
-        fetchFemaleViewedPolicies();
+        fetchMaleViewedPolicies();
     }, []);
 
     // 월요일 초기화
@@ -174,6 +127,7 @@ const Ranking = () => {
             const dayOfWeek = today.getDay();
 
             if (dayOfWeek === 1) {
+                M.data.removeStorage("hasMaleViewed");
                 M.data.removeStorage("hasFemaleViewed");
                 M.data.removeStorage("hasWeekViewed");
             }
