@@ -10,7 +10,8 @@ import {
   FaRegTrashAlt,
   FaHeart,
   FaRegHeart,
-  FaEllipsisV
+  FaEllipsisV,
+  FaTimes
 } from "react-icons/fa";
 import {
   BsBriefcase,
@@ -25,7 +26,6 @@ import {
   BsArrowDown,
 } from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
-
 import Modal from "../layout/Modal";
 
 const Detail = () => {
@@ -43,16 +43,15 @@ const Detail = () => {
   const [sortOrder, setSortOrder] = useState("desc");
   const [editCommentId, setEditCommentId] = useState(null);
   const [deleteCommentId, setDeleteCommentId] = useState(null);
+  const [editedComment, setEditedComment] = useState("");
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [commentOptionsVisible, setCommentOptionsVisible] = useState(false);
 
-  const showOptions = (commentId) => {
-    if (commentId === editCommentId) {
-      setEditCommentId(null);
-      setDeleteCommentId(null);
-    } else {
-      setEditCommentId(commentId);
-      setDeleteCommentId(commentId);
-    }
-  };  
+  const handleToggleCommentOptions = (commentId) => {
+    setCommentOptionsVisible((prevCommentId) =>
+      prevCommentId === commentId ? null : commentId
+    );
+  };
 
   const handleCommentChange = (event) => {
     setComment(event.target.value);
@@ -61,16 +60,73 @@ const Detail = () => {
   const handleSortOrderChange = (order) => {
     setSortOrder(order);
   };
-  
-  const handleEdit = (commentId) => {
+
+  const handleGetComment = () => {
+    const subsidyReviewId = searchParams.get("id");
+
+    axios
+      .get(`/v1/subsidy-reviewcomments/search/subsidyReviewId?subsidyReviewId=${subsidyReviewId}`)
+      .then((response) => {
+        setComments(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  const handleEdit = (commentId, commentContent) => {
+    setEditingCommentId(commentId);
+    setEditedComment(commentContent);
   };
-  
+
+  const handleCancelEdit = (commentId) => {
+    setEditingCommentId(null);
+    setEditedComment("");
+    setCommentOptionsVisible(false);
+  };
+
+  const handleSaveEdit = (commentId) => {
+    axios
+      .patch(`/v1/subsidy-reviewcomments/update?commentId=${commentId}`, {
+        content: editedComment,
+      })
+      .then((response) => {
+        console.log("댓글 수정 성공:", response);
+        setEditCommentId(null);
+        setEditedComment("");
+        handleGetComment();
+        M.pop.alert("댓글 수정이 완료되었습니다.");
+        handleCancelEdit();
+      })
+      .catch((error) => {
+        console.error("댓글 수정 실패:", error);
+      })
+  };
+
   const handleDelete = (commentId) => {
+    axios
+      .delete(`/v1/subsidy-reviewcomments/delete?commentId=${commentId}`)
+      .then((response) => {
+        M.pop.alert("댓글 삭제가 완료되었습니다.");
+        handleGetComment();
+      })
+      .catch((error) => {
+        M.pop.alert("실패");
+        console.error(error);
+      });
+
+    axios
+      .put(`/v1/subsidies-review/decrement-numComments?id=${id}`)
+      .then((response) => {
+        console.log("댓글수 감소 성공:", response);
+        handleGetComment();
+      })
+      .catch((error) => {
+        console.error("댓글수 감소 실패:", error);
+      });
   };
 
   const submitComment = () => {
-    const subsidyReviewId = searchParams.get("id");
-    
     axios
       .post(`/v1/subsidy-reviewcomments/create?userId=${M.data.storage('id')}&reviewId=${id}`, {
         content: comment
@@ -78,17 +134,19 @@ const Detail = () => {
       .then((response) => {
         console.log(response);
         setComment("");
-        axios
-          .get(`/v1/subsidy-reviewcomments/search/subsidyReviewId?subsidyReviewId=${subsidyReviewId}`)
-          .then((response) => {
-            setComments(response.data);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+        handleGetComment();
       })
       .catch((error) => {
         console.error(error);
+      });
+
+    axios
+      .put(`/v1/subsidies-review/increment-numComments?id=${id}`)
+      .then((response) => {
+        console.log("댓글수 증가 성공:", response);
+      })
+      .catch((error) => {
+        console.error("댓글수 증가 실패:", error);
       });
   };
 
@@ -100,16 +158,7 @@ const Detail = () => {
   }, []);
 
   useEffect(() => {
-    const subsidyReviewId = searchParams.get("id");
-
-    axios
-      .get(`/v1/subsidy-reviewcomments/search/subsidyReviewId?subsidyReviewId=${subsidyReviewId}`)
-      .then((response) => {
-        setComments(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    handleGetComment();
   }, []);
 
   useEffect(() => {
@@ -223,20 +272,18 @@ const Detail = () => {
           console.error(error);
         });
 
-        axios
-          .put(`/v1/subsidies-review/increment-views?id=${id}`)
-          .then((response) => {
-            console.log("조회 수 증가 성공:", response);
-            viewedPages.push(id);
-            M.data.storage({
-              viewedPages: viewedPages,
-            });
-          })
-          .catch((error) => {
-            console.error("조회 수 증가 실패:", error);
-          });
+      // 리뷰 조회수 증가
+      axios
+        .put(`/v1/subsidies-review/increment-views?id=${id}`)
+        .then((response) => {
+          console.log("조회 수 증가 성공:", response);
+        })
+        .catch((error) => {
+          console.error("조회 수 증가 실패:", error);
+        });
     } else {
       setReview(null);
+
       axios
         .get(`/v1/subsidies/subsidyId?id=${id}`)
         .then((response) => {
@@ -246,39 +293,113 @@ const Detail = () => {
           console.error(error);
         });
 
+      // 보조금 조회수 증가 - 일반
       axios
         .put(`/v1/subsidies/increment-views?id=${id}`)
         .then((response) => {
           console.log("조회 수 증가 성공:", response);
-          viewedPages.push(id);
-          M.data.storage({
-            viewedPages: viewedPages,
-          });
         })
         .catch((error) => {
           console.error("조회 수 증가 실패:", error);
         });
 
+      // 보조금 조회수 증가 - 이번주
       axios
         .post(`/v1/subsidyViewRankings/increment-views?subsidyId=${id}`)
         .then((response) => {
-          console.log("조회 수 증가 성공:", response);
-          viewedPages.push(id);
-          M.data.storage({
-            viewedPages: viewedPages,
-          });
+          console.log("이번주 조회 수 증가 성공:", response);
         })
         .catch((error) => {
-          console.error("조회 수 증가 실패:", error);
+          console.error("이번주 조회 수 증가 실패:", error);
         });
+
+      const lifecycle = M.data.storage("lifecycle");
+      // 보조금 조회수 증가 - 청소년
+      if (lifecycle === "Teenager") {
+        axios
+          .post(`/v1/subsidyTeenagerViewRankings/increment-views?subsidyId=${id}`)
+          .then((response) => {
+            console.log("청소년 조회 수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청소년 조회 수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 조회수 증가 - 청년
+      if (lifecycle === "Youth") {
+        axios
+          .post(`/v1/subsidyYouthViewRankings/increment-views?subsidyId=${id}`)
+          .then((response) => {
+            console.log("청년 조회 수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청년 조회 수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 조회수 증가 - 중년
+      if (lifecycle === "MiddleAge") {
+        axios
+          .post(`/v1/subsidyMiddleAgeViewRankings/increment-views?subsidyId=${id}`)
+          .then((response) => {
+            console.log("청년 조회 수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청년 조회 수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 조회수 증가 - 장년
+      if (lifecycle === "Senior") {
+        axios
+          .post(`/v1/subsidySeniorViewRankings/increment-views?subsidyId=${id}`)
+          .then((response) => {
+            console.log("장년 조회 수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("장년 조회 수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 조회수 증가 - 노년
+      if (lifecycle === "Elderly") {
+        axios
+          .post(`/v1/subsidyElderlyViewRankings/increment-views?subsidyId=${id}`)
+          .then((response) => {
+            console.log("노년 조회 수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("노년 조회 수 증가 실패:", error);
+          });
+      }
+
+      const gender = M.data.storage("gender");
+      // 보조금 조회수 증가 - 여성
+      if (gender === "F") {
+        axios
+          .post(`/v1/subsidyFemaleViewRankings/increment-views?subsidyId=${id}`)
+          .then((response) => {
+            console.log("여성 조회 수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("여성 조회 수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 조회수 증가 - 남성
+      if (gender === "M") {
+        axios
+          .post(`/v1/subsidyMaleViewRankings/increment-views?subsidyId=${id}`)
+          .then((response) => {
+            console.log("남성 조회 수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("남성 조회 수 증가 실패:", error);
+          });
+      }
     }
   }, [location.search]);
-
-  const viewedPages = M.data.storage("viewedPages") || [];
-
-  const isPageViewed = () => {
-    return viewedPages.includes(id);
-  };
 
   return (
     <>
@@ -358,12 +479,15 @@ const Detail = () => {
                   ({formatDate(review.updated_at)} 수정)
                 </span>
               </div>
-
               <div className="detail-button-group">
+
+                {userId && (
                 <button className="like-button" onClick={toggleLike}>
                   {isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}&nbsp;
-                  {review.likes}
+                  {isLiked ? review.likes+1 : review.likes}
                 </button>
+                )}
+
                 <button
                   className="detail-button"
                   onClick={() => openModal("공유하기")}
@@ -524,16 +648,20 @@ const Detail = () => {
 
       {review && (
         <div className="comment-list">
-          <input
-            className="comment-input"
-            placeholder="댓글을 입력해주세요."
-            value={comment}
-            onChange={handleCommentChange}
-          />
+          {userId && (
+            <>
+              <input
+                className="comment-input"
+                placeholder="댓글을 입력해주세요."
+                value={comment}
+                onChange={handleCommentChange}
+              />
 
-          <button className="comment-btn" onClick={submitComment}>
-            전송
-          </button>
+              <button className="comment-btn" onClick={submitComment}>
+                전송
+              </button>
+            </>
+          )}
 
           {comments.length > 0 && (
             <>
@@ -546,29 +674,61 @@ const Detail = () => {
                   <BsArrowDown /> 오래된순
                 </button>
               </div>
-              
+
               <div>
-              {
-                comments
-                  .sort((a, b) => (sortOrder === "desc" ? new Date(b.created_at) - new Date(a.created_at) : new Date(a.created_at) - new Date(b.created_at)))
+                {comments
+                  .sort((a, b) =>
+                    sortOrder === "desc"
+                      ? new Date(b.created_at) - new Date(a.created_at)
+                      : new Date(a.created_at) - new Date(b.created_at)
+                  )
                   .map((comment) => (
                     <div className="comments" key={comment.id}>
-                      {comment.id === editCommentId && (
+                      {comment.id === editingCommentId && (
+                        <div className="comment-modal">
+                          <div className="blur" />
+                          <div className="modal">
+                            <button className="close-button" onClick={() => handleCancelEdit(comment.id)}>
+                              <FaTimes />
+                            </button>
+                            <p style={{ marginTop: '20px', marginBottom: '5px' }}>
+                              <input
+                                type="text"
+                                placeholder="수정할 댓글을 입력해주세요."
+                                value={editedComment}
+                                onChange={(e) => setEditedComment(e.target.value)}
+                              />
+                            </p>
+                            <button className="comment-save" onClick={() => handleSaveEdit(comment.id)}>
+                              완료
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                      {commentOptionsVisible === comment.id && (
                         <div className="comment-edit">
-                          <button className="comment-modify" onClick={() => handleEdit(comment.id)}>수정</button>
-                          <button className="comment-delete" onClick={() => handleDelete(comment.id)}>삭제</button>
+                          <button className="comment-modify" onClick={() => handleEdit(comment.id, comment.content)}>
+                            수정
+                          </button>
+                          <button className="comment-delete" onClick={() => handleDelete(comment.id)}>
+                            삭제
+                          </button>
                         </div>
                       )}
                       <div>
-                        <FaEllipsisV className="comment-option" onClick={() => showOptions(comment.id)} />
+                        {comment.user.name === M.data.storage('name') && (
+                          <FaEllipsisV
+                            className="comment-option"
+                            onClick={() => handleToggleCommentOptions(comment.id)}
+                          />
+                        )}
                         <p>{comment.user.name}</p>
                         <p>{comment.content}</p>
                         <p>{formatDate(comment.created_at)}</p>
                       </div>
                     </div>
-                  ))
-              }
-            </div>
+                  ))}
+              </div>
             </>
           )}
         </div>
