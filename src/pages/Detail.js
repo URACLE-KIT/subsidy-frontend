@@ -420,11 +420,10 @@ const Detail = () => {
                   ({formatDate(review.updated_at)} 수정)
                 </span>
               </div>
-
               <div className="detail-button-group">
                 <button className="like-button" onClick={toggleLike}>
                   {isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}&nbsp;
-                  {review.likes}
+                  {isLiked ? review.likes+1 : review.likes}
                 </button>
                 <button
                   className="detail-button"

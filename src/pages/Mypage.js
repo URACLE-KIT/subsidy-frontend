@@ -13,6 +13,8 @@ const Mypage = () => {
   const [policies, setPolicies] = useState([]);
   const [policiesAll, setPoliciesAll] = useState([]);
   const [category, setCategory] = useState([]);
+  const [userReview, setUserReview] = useState([]);
+  const [userComments, setUserComments] = useState([]);
 
   var total = 0;
   var filteredPolicies = [];
@@ -61,12 +63,30 @@ const Mypage = () => {
     axios
       .get(`/v1/users/category-list?userId=${userId}`)
       .then((response) => {
-        console.log(response.data);
         setCategory(response.data);
       })
       .catch((error) => {
         console.error("카테고리 가져오기 실패:", error);
       });
+
+    axios
+    .get(`/v1/subsidies-review/search/userId?userId=${userId}`)
+    .then((response) => {
+      setUserReview(response.data);
+    })
+    .catch((error) => {
+      console.error("리뷰 가져오기 실패:", error);
+    });
+
+    axios
+    .get(`/v1/subsidy-reviewcomments/search/userId?userId=${userId}`)
+    .then((response) => {
+      setUserComments(response.data);
+    })
+    .catch((error) => {
+      console.error("댓글 가져오기 실패:", error);
+    });
+
   }, [userId]);
 
   useEffect(() => {
@@ -165,7 +185,7 @@ const Mypage = () => {
           >
             작성 글
             <br />
-            <p className="num">{userScrappedPolicies.length}</p>
+            <p className="num">{userReview.length}</p>
           </span>
           <span
             style={{ borderLeft: "1px solid #999" }}
@@ -173,7 +193,7 @@ const Mypage = () => {
           >
             작성 댓글
             <br />
-            <p className="num">0</p>
+            <p className="num">{userComments.length}</p>
           </span>
         </div>
         <button className="custom-button">
