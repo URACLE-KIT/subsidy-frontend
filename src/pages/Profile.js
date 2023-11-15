@@ -97,6 +97,8 @@ const Profile = () => {
         data.maritalStatus = uwedding;
       }
 
+      console.log(data);
+
       const response = await axios.patch(`/v1/users/update?id=${id}`, data);
 
       if (response.status === 200) {
@@ -179,7 +181,7 @@ const Profile = () => {
         <input
           type="text"
           id="gender"
-          value={gender}
+          value={gender === 'M' ? '남자' : '여자'}
           disabled
         />
       </div>
