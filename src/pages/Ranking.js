@@ -161,7 +161,9 @@ const Ranking = () => {
                                         <FaRegEye /> {policy.views}
                                     </span>
                                     <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+
                                         {index + 1}&nbsp; {policy.title.length > 17 ? `${policy.title.slice(0, 17)}...` : policy.title}
+
                                     </span>
                                     <div className="policy-agency">{policy.description.length > 23 ? `${policy.description.slice(0, 23)}...` : policy.description}</div>
                                 </div>
@@ -182,7 +184,9 @@ const Ranking = () => {
                                         <FaRegEye /> {policy.views}
                                     </span>
                                     <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+
                                         {index + 1}&nbsp; {policy.title.length > 17 ? `${policy.title.slice(0, 17)}...` : policy.title}
+
                                     </span>
                                     <div className="policy-agency">{policy.description.length > 23 ? `${policy.description.slice(0, 23)}...` : policy.description}</div>
                                 </div>
@@ -198,12 +202,14 @@ const Ranking = () => {
                     {males.map((male, index) => (
                         <li key={male.id} className="policy-item">
                             <Link to={`/detail?id=${male.id}`}>
+
                                 <div className="policy-details">
                                     <span style={{ float: 'right', paddingTop: '10px' }} className="policy-description">
                                         <FaRegEye /> {male.views}
                                     </span>
                                     <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                         {index + 1}&nbsp; {male.title.length > 17 ? `${male.title.slice(0, 17)}...` : male.title}
+
                                     </span>
                                     <div className="policy-agency">{male.description.length > 23 ? `${male.description.slice(0, 23)}...` : male.description}</div>
                                 </div>
