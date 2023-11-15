@@ -10,7 +10,8 @@ import {
   FaRegTrashAlt,
   FaHeart,
   FaRegHeart,
-  FaEllipsisV
+  FaEllipsisV,
+  FaTimes
 } from "react-icons/fa";
 import {
   BsBriefcase,
@@ -619,17 +620,21 @@ const Detail = () => {
                     <div className="comments" key={comment.id}>
                       {comment.id === editingCommentId && (
                         <div className="comment-modal">
-                          <div className="comment-modal">
-                            <input
-                              type="text"
-                              value={editedComment}
-                              onChange={(e) => setEditedComment(e.target.value)}
-                            />
-                            <button className="comment-save" onClick={() => handleSaveEdit(comment.id)}>
-                              저장
+                          <div className="blur" />
+                          <div className="modal">
+                            <button className="close-button" onClick={() => handleCancelEdit(comment.id)}>
+                              <FaTimes />
                             </button>
-                            <button className="comment-cancel" onClick={() => handleCancelEdit(comment.id)}>
-                              취소
+                            <p style={{ marginTop: '20px', marginBottom: '5px' }}>
+                              <input
+                                type="text"
+                                placeholder="수정할 댓글을 입력해주세요."
+                                value={editedComment}
+                                onChange={(e) => setEditedComment(e.target.value)}
+                              />
+                            </p>
+                            <button className="comment-save" onClick={() => handleSaveEdit(comment.id)}>
+                              완료
                             </button>
                           </div>
                         </div>
