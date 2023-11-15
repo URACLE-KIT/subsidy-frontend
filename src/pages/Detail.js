@@ -25,7 +25,6 @@ import {
   BsArrowDown,
 } from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
-
 import Modal from "../layout/Modal";
 
 const Detail = () => {
@@ -43,6 +42,9 @@ const Detail = () => {
   const [sortOrder, setSortOrder] = useState("desc");
   const [editCommentId, setEditCommentId] = useState(null);
   const [deleteCommentId, setDeleteCommentId] = useState(null);
+  const [editedComment, setEditedComment] = useState("");
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [commentOptionsVisible, setCommentOptionsVisible] = useState(false);
 
   const showOptions = (commentId) => {
     if (commentId === editCommentId) {
@@ -52,7 +54,16 @@ const Detail = () => {
       setEditCommentId(commentId);
       setDeleteCommentId(commentId);
     }
-  };  
+  };
+
+  const handleToggleCommentOptions = (commentId) => {
+    setCommentOptionsVisible((prevVisibility) => {
+      return {
+        ...prevVisibility,
+        [commentId]: !prevVisibility[commentId],
+      };
+    });
+  };
 
   const handleCommentChange = (event) => {
     setComment(event.target.value);
@@ -74,15 +85,42 @@ const Detail = () => {
         console.error(error);
       });
   }
-  
-  const handleEdit = (commentId) => {
+
+  const handleEdit = (commentId, commentContent) => {
+    setEditingCommentId(commentId);
+    setEditedComment(commentContent);
   };
-  
+
+  const handleCancelEdit = (commentId) => {
+    setEditingCommentId(null);
+    setEditedComment("");
+    setCommentOptionsVisible(false);
+  };
+
+  const handleSaveEdit = (commentId) => {
+    axios
+      .patch(`/v1/subsidy-reviewcomments/update?commentId=${commentId}`, {
+        content: editedComment,
+      })
+      .then((response) => {
+        console.log("댓글 수정 성공:", response);
+        setEditCommentId(null);
+        setEditedComment("");
+        handleGetComment();
+        M.pop.alert("댓글 수정이 완료되었습니다.");
+        handleCancelEdit();
+      })
+      .catch((error) => {
+        console.error("댓글 수정 실패:", error);
+      })
+  };
+
   const handleDelete = (commentId) => {
     axios
       .delete(`/v1/subsidy-reviewcomments/delete?commentId=${commentId}`)
       .then((response) => {
         M.pop.alert("댓글 삭제가 완료되었습니다.");
+        handleGetComment();
       })
       .catch((error) => {
         M.pop.alert("실패");
@@ -98,8 +136,7 @@ const Detail = () => {
       .catch((error) => {
         console.error("댓글수 감소 실패:", error);
       });
-};
-
+  };
 
   const submitComment = () => {
     axios
@@ -247,14 +284,14 @@ const Detail = () => {
           console.error(error);
         });
 
-        axios
-          .put(`/v1/subsidies-review/increment-views?id=${id}`)
-          .then((response) => {
-            console.log("조회 수 증가 성공:", response);
-          })
-          .catch((error) => {
-            console.error("조회 수 증가 실패:", error);
-          });
+      axios
+        .put(`/v1/subsidies-review/increment-views?id=${id}`)
+        .then((response) => {
+          console.log("조회 수 증가 성공:", response);
+        })
+        .catch((error) => {
+          console.error("조회 수 증가 실패:", error);
+        });
     } else {
       setReview(null);
       axios
@@ -570,29 +607,57 @@ const Detail = () => {
                   <BsArrowDown /> 오래된순
                 </button>
               </div>
-              
+
               <div>
-              {
-                comments
-                  .sort((a, b) => (sortOrder === "desc" ? new Date(b.created_at) - new Date(a.created_at) : new Date(a.created_at) - new Date(b.created_at)))
+                {comments
+                  .sort((a, b) =>
+                    sortOrder === "desc"
+                      ? new Date(b.created_at) - new Date(a.created_at)
+                      : new Date(a.created_at) - new Date(b.created_at)
+                  )
                   .map((comment) => (
                     <div className="comments" key={comment.id}>
-                      {comment.id === editCommentId && (
-                        <div className="comment-edit">
-                          <button className="comment-modify" onClick={() => handleEdit(comment.id)}>수정</button>
-                          <button className="comment-delete" onClick={() => handleDelete(comment.id)}>삭제</button>
+                      {comment.id === editingCommentId && (
+                        <div className="comment-modal">
+                          <div className="comment-modal">
+                            <input
+                              type="text"
+                              value={editedComment}
+                              onChange={(e) => setEditedComment(e.target.value)}
+                            />
+                            <button className="comment-save" onClick={() => handleSaveEdit(comment.id)}>
+                              저장
+                            </button>
+                            <button className="comment-cancel" onClick={() => handleCancelEdit(comment.id)}>
+                              취소
+                            </button>
+                          </div>
                         </div>
                       )}
                       <div>
-                        <FaEllipsisV className="comment-option" onClick={() => showOptions(comment.id)} />
-                        <p>{comment.user.name}</p>
-                        <p>{comment.content}</p>
-                        <p>{formatDate(comment.created_at)}</p>
+                        {commentOptionsVisible && (
+                          <div className="comment-edit">
+                            <button className="comment-modify" onClick={() => handleEdit(comment.id, comment.content)}>
+                              수정
+                            </button>
+                            <button className="comment-delete" onClick={() => handleDelete(comment.id)}>
+                              삭제
+                            </button>
+                          </div>
+                        )}
+                        <div>
+                          <FaEllipsisV
+                            className="comment-option"
+                            onClick={() => handleToggleCommentOptions(comment.id)}
+                          />
+                          <p>{comment.user.name}</p>
+                          <p>{comment.content}</p>
+                          <p>{formatDate(comment.created_at)}</p>
+                        </div>
                       </div>
                     </div>
-                  ))
-              }
-            </div>
+                  ))}
+              </div>
             </>
           )}
         </div>
