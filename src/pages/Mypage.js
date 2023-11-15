@@ -16,6 +16,7 @@ const Mypage = () => {
   const [reviews, setReviews] = useState([]);
   const [reviewcomments, setReviewcomments] = useState([]);
 
+
   var total = 0;
   var filteredPolicies = [];
   var count = [];
@@ -63,12 +64,12 @@ const Mypage = () => {
     axios
       .get(`/v1/users/category-list?userId=${userId}`)
       .then((response) => {
-        console.log(response.data);
         setCategory(response.data);
       })
       .catch((error) => {
         console.error("카테고리 가져오기 실패:", error);
       });
+
 
       axios
       .get(`/v1/subsidies-review/search/userId?userId=${userId}`)
@@ -87,6 +88,7 @@ const Mypage = () => {
       .catch((error) => {
         console.error("내가 작성한 댓글 데이터 가져오기 실패:", error);
       });
+
   }, [userId]);
 
   useEffect(() => {
@@ -190,7 +192,7 @@ const Mypage = () => {
           >
             작성 글
             <br />
-            <p className="num">{userScrappedPolicies.length}</p>
+            <p className="num">{userReview.length}</p>
           </span>
           <span
             style={{ borderLeft: "1px solid #999" }}
@@ -198,7 +200,7 @@ const Mypage = () => {
           >
             작성 댓글
             <br />
-            <p className="num">0</p>
+            <p className="num">{userComments.length}</p>
           </span>
         </div>
         <button className="custom-button">
