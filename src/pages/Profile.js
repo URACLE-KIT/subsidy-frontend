@@ -49,6 +49,18 @@ const Profile = () => {
     }
     if (storedWedding) {
       setWedding(storedWedding);
+
+      const updatedButtons = storedWedding === 'M'
+      ? [
+          { value: "M", backgroundColor: "#dae0ff", textColor: "black" },
+          { value: "S", backgroundColor: "initial", textColor: "black" },
+        ]
+      : [
+          { value: "M", backgroundColor: "initial", textColor: "black" },
+          { value: "S", backgroundColor: "#dae0ff", textColor: "black" },
+        ];
+
+      setWeddingButtons(updatedButtons);
     }
     if (storedBirthday) {
       const [year, month, day] = storedBirthday.split('-');
