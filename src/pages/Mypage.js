@@ -13,8 +13,9 @@ const Mypage = () => {
   const [policies, setPolicies] = useState([]);
   const [policiesAll, setPoliciesAll] = useState([]);
   const [category, setCategory] = useState([]);
-  const [userReview, setUserReview] = useState([]);
-  const [userComments, setUserComments] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [reviewcomments, setReviewcomments] = useState([]);
+
 
   var total = 0;
   var filteredPolicies = [];
@@ -69,23 +70,24 @@ const Mypage = () => {
         console.error("카테고리 가져오기 실패:", error);
       });
 
-    axios
-    .get(`/v1/subsidies-review/search/userId?userId=${userId}`)
-    .then((response) => {
-      setUserReview(response.data);
-    })
-    .catch((error) => {
-      console.error("리뷰 가져오기 실패:", error);
-    });
 
-    axios
-    .get(`/v1/subsidy-reviewcomments/search/userId?userId=${userId}`)
-    .then((response) => {
-      setUserComments(response.data);
-    })
-    .catch((error) => {
-      console.error("댓글 가져오기 실패:", error);
-    });
+      axios
+      .get(`/v1/subsidies-review/search/userId?userId=${userId}`)
+      .then((response) => {
+        setReviews(response.data);
+      })
+      .catch((error) => {
+        console.error("내가 작성한 후기 데이터 가져오기 실패:", error);
+      });
+
+      axios
+      .get(`/v1/subsidy-reviewcomments/search/userId?userId=${userId}`)
+      .then((response) => {
+        setReviewcomments(response.data);
+      })
+      .catch((error) => {
+        console.error("내가 작성한 댓글 데이터 가져오기 실패:", error);
+      });
 
   }, [userId]);
 
@@ -145,6 +147,11 @@ const Mypage = () => {
           console.error("스크랩 추가 실패:", error);
         });
     }
+  };
+
+  const sanitizeHtml = (html) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent || "";
   };
 
   return (
@@ -291,10 +298,59 @@ const Mypage = () => {
           </div>
         )}
         {activeTab === "작성 글" && (
-          <div className="tab-panel">작성 글 내용</div>
+          <div className="tab-panel" style={{ textAlign: "center" }}>
+            <h3>내가 작성한 후기</h3>
+            {reviews.length === 0 ? (
+              <>
+              <p>작성한 후기가 없습니다.<br />
+              지원금을 받고 후기를 남겨주세요.</p>
+              <img
+                src="/image3.jpg"
+                style={{ width: "300px", height: "400px" }}
+              />
+            </>
+            ) : (
+              <ul className="review-list">
+                {reviews.map((review) => (
+                  <li key={review.id} className="review-item">
+                    <Link to={`/detail?id=${review.id}&review`}>
+                      <div className="review-details">
+                        <div className="review-title">{review.title}</div>
+                        <div className="review-content">{sanitizeHtml(review.content)}</div>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         )}
         {activeTab === "작성 댓글" && (
-          <div className="tab-panel">작성 댓글 내용</div>
+          <div className="tab-panel" style={{ textAlign: "center" }}>
+            <h3>내가 작성한 댓글</h3>
+            {reviewcomments.length === 0 ? (
+              <>
+              <p>작성한 댓글이 없습니다.<br />
+              마음에 드는 후기글에 댓글을 남겨주세요.</p>
+              <img
+                src="/image4.jpg"
+                style={{ width: "300px", height: "250px" }}
+              />
+            </>
+            ) : (
+              <ul className="reviewcomment-list">
+                {reviewcomments.map((comment) => (
+              <div key={comment.id}>
+                <Link to={`/detail?id=${comment.id}&review`}>
+                  <div className="comment-details">
+                    <div className="comment-content">{sanitizeHtml(comment.content)}</div>
+                  </div>
+                </Link>
+              </div>
+            ))}
+              </ul>
+            )}
+          </div>
         )}
       </div>
     </>

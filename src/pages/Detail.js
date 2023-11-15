@@ -47,23 +47,10 @@ const Detail = () => {
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [commentOptionsVisible, setCommentOptionsVisible] = useState(false);
 
-  const showOptions = (commentId) => {
-    if (commentId === editCommentId) {
-      setEditCommentId(null);
-      setDeleteCommentId(null);
-    } else {
-      setEditCommentId(commentId);
-      setDeleteCommentId(commentId);
-    }
-  };
-
   const handleToggleCommentOptions = (commentId) => {
-    setCommentOptionsVisible((prevVisibility) => {
-      return {
-        ...prevVisibility,
-        [commentId]: !prevVisibility[commentId],
-      };
-    });
+    setCommentOptionsVisible((prevCommentId) =>
+      prevCommentId === commentId ? null : commentId
+    );
   };
 
   const handleCommentChange = (event) => {
@@ -421,10 +408,14 @@ const Detail = () => {
                 </span>
               </div>
               <div className="detail-button-group">
+
+                {userId && (
                 <button className="like-button" onClick={toggleLike}>
                   {isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}&nbsp;
                   {isLiked ? review.likes+1 : review.likes}
                 </button>
+                )}
+
                 <button
                   className="detail-button"
                   onClick={() => openModal("공유하기")}
@@ -585,16 +576,20 @@ const Detail = () => {
 
       {review && (
         <div className="comment-list">
-          <input
-            className="comment-input"
-            placeholder="댓글을 입력해주세요."
-            value={comment}
-            onChange={handleCommentChange}
-          />
+          {userId && (
+            <>
+              <input
+                className="comment-input"
+                placeholder="댓글을 입력해주세요."
+                value={comment}
+                onChange={handleCommentChange}
+              />
 
-          <button className="comment-btn" onClick={submitComment}>
-            전송
-          </button>
+              <button className="comment-btn" onClick={submitComment}>
+                전송
+              </button>
+            </>
+          )}
 
           {comments.length > 0 && (
             <>
@@ -638,26 +633,26 @@ const Detail = () => {
                           </div>
                         </div>
                       )}
+                      {commentOptionsVisible === comment.id && (
+                        <div className="comment-edit">
+                          <button className="comment-modify" onClick={() => handleEdit(comment.id, comment.content)}>
+                            수정
+                          </button>
+                          <button className="comment-delete" onClick={() => handleDelete(comment.id)}>
+                            삭제
+                          </button>
+                        </div>
+                      )}
                       <div>
-                        {commentOptionsVisible && (
-                          <div className="comment-edit">
-                            <button className="comment-modify" onClick={() => handleEdit(comment.id, comment.content)}>
-                              수정
-                            </button>
-                            <button className="comment-delete" onClick={() => handleDelete(comment.id)}>
-                              삭제
-                            </button>
-                          </div>
-                        )}
-                        <div>
+                        {comment.user.name === M.data.storage('name') && (
                           <FaEllipsisV
                             className="comment-option"
                             onClick={() => handleToggleCommentOptions(comment.id)}
                           />
-                          <p>{comment.user.name}</p>
-                          <p>{comment.content}</p>
-                          <p>{formatDate(comment.created_at)}</p>
-                        </div>
+                        )}
+                        <p>{comment.user.name}</p>
+                        <p>{comment.content}</p>
+                        <p>{formatDate(comment.created_at)}</p>
                       </div>
                     </div>
                   ))}
