@@ -61,16 +61,47 @@ const Detail = () => {
   const handleSortOrderChange = (order) => {
     setSortOrder(order);
   };
+
+  const handleGetComment = () => {
+    const subsidyReviewId = searchParams.get("id");
+
+    axios
+      .get(`/v1/subsidy-reviewcomments/search/subsidyReviewId?subsidyReviewId=${subsidyReviewId}`)
+      .then((response) => {
+        setComments(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
   
   const handleEdit = (commentId) => {
   };
   
   const handleDelete = (commentId) => {
-  };
+    axios
+      .delete(`/v1/subsidy-reviewcomments/delete?commentId=${commentId}`)
+      .then((response) => {
+        M.pop.alert("댓글 삭제가 완료되었습니다.");
+      })
+      .catch((error) => {
+        M.pop.alert("실패");
+        console.error(error);
+      });
+
+    axios
+      .put(`/v1/subsidies-review/decrement-numComments?id=${id}`)
+      .then((response) => {
+        console.log("댓글수 감소 성공:", response);
+        handleGetComment();
+      })
+      .catch((error) => {
+        console.error("댓글수 감소 실패:", error);
+      });
+};
+
 
   const submitComment = () => {
-    const subsidyReviewId = searchParams.get("id");
-    
     axios
       .post(`/v1/subsidy-reviewcomments/create?userId=${M.data.storage('id')}&reviewId=${id}`, {
         content: comment
@@ -78,17 +109,19 @@ const Detail = () => {
       .then((response) => {
         console.log(response);
         setComment("");
-        axios
-          .get(`/v1/subsidy-reviewcomments/search/subsidyReviewId?subsidyReviewId=${subsidyReviewId}`)
-          .then((response) => {
-            setComments(response.data);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+        handleGetComment();
       })
       .catch((error) => {
         console.error(error);
+      });
+
+    axios
+      .put(`/v1/subsidies-review/increment-numComments?id=${id}`)
+      .then((response) => {
+        console.log("댓글수 증가 성공:", response);
+      })
+      .catch((error) => {
+        console.error("댓글수 증가 실패:", error);
       });
   };
 
@@ -100,16 +133,7 @@ const Detail = () => {
   }, []);
 
   useEffect(() => {
-    const subsidyReviewId = searchParams.get("id");
-
-    axios
-      .get(`/v1/subsidy-reviewcomments/search/subsidyReviewId?subsidyReviewId=${subsidyReviewId}`)
-      .then((response) => {
-        setComments(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    handleGetComment();
   }, []);
 
   useEffect(() => {
@@ -227,10 +251,6 @@ const Detail = () => {
           .put(`/v1/subsidies-review/increment-views?id=${id}`)
           .then((response) => {
             console.log("조회 수 증가 성공:", response);
-            viewedPages.push(id);
-            M.data.storage({
-              viewedPages: viewedPages,
-            });
           })
           .catch((error) => {
             console.error("조회 수 증가 실패:", error);
@@ -250,10 +270,6 @@ const Detail = () => {
         .put(`/v1/subsidies/increment-views?id=${id}`)
         .then((response) => {
           console.log("조회 수 증가 성공:", response);
-          viewedPages.push(id);
-          M.data.storage({
-            viewedPages: viewedPages,
-          });
         })
         .catch((error) => {
           console.error("조회 수 증가 실패:", error);
@@ -262,23 +278,31 @@ const Detail = () => {
       axios
         .post(`/v1/subsidyViewRankings/increment-views?subsidyId=${id}`)
         .then((response) => {
-          console.log("조회 수 증가 성공:", response);
-          viewedPages.push(id);
-          M.data.storage({
-            viewedPages: viewedPages,
-          });
+          console.log("이번주 조회 수 증가 성공:", response);
         })
         .catch((error) => {
-          console.error("조회 수 증가 실패:", error);
+          console.error("이번주 조회 수 증가 실패:", error);
+        });
+
+      axios
+        .post(`/v1/subsidyFemaleViewRankings/increment-views?subsidyId=${id}`)
+        .then((response) => {
+          console.log("여성 조회 수 증가 성공:", response);
+        })
+        .catch((error) => {
+          console.error("여성 조회 수 증가 실패:", error);
+        });
+
+      axios
+        .post(`/v1/subsidyMaleViewRankings/increment-views?subsidyId=${id}`)
+        .then((response) => {
+          console.log("남성 조회 수 증가 성공:", response);
+        })
+        .catch((error) => {
+          console.error("남성 조회 수 증가 실패:", error);
         });
     }
   }, [location.search]);
-
-  const viewedPages = M.data.storage("viewedPages") || [];
-
-  const isPageViewed = () => {
-    return viewedPages.includes(id);
-  };
 
   return (
     <>
