@@ -80,18 +80,18 @@ const Detail = () => {
     setEditedComment(commentContent);
   };
 
-  const handleDeleteReview = () => {
+  const handleDeleteReview = async () => {
     const subsidyReviewId = searchParams.get("id");
-    axios.delete(`/v1/subsidies-review/delete?reviewId=${subsidyReviewId}`)
-      .then((response) => {
-        M.pop.alert("삭제가 완료되었습니다.");
-        console.log(response);
-        navigate("/review");
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+    try {
+      await axios.delete(`/v1/subsidies-review/delete?reviewId=${subsidyReviewId}`);;
+      await axios.put(`/v1/subsidies/decrement-numReviews?id=${review.subsidy.id}`);
+      
+      M.pop.alert("삭제가 완료되었습니다.");
+      navigate("/review");
+    } catch (error) {
+      console.error(error);
+    }
+  };  
 
   const handleCancelEdit = (commentId) => {
     setEditingCommentId(null);
