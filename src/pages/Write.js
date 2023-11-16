@@ -113,16 +113,9 @@ const Write = () => {
         const url = `/v1/subsidies-review/create?userId=${userId}&subsidyId=${id}`;
         const response = await axios.post(url, reviewData);
 
-        axios
-          .put(`/v1/subsidies/increment-numReviews?id=${id}`)
-          .then((response) => {
-            console.log("리뷰수 증가 성공:", response);
-          })
-          .catch((error) => {
-            console.error("리뷰수 증가 실패:", error);
-          });
-
-        alert("후기 작성 완료");
+        await axios.put(`/v1/subsidies/increment-numReviews?id=${id}`);
+        alert('후기 작성 완료');
+        
         navigate(`/detail?id=${response.data.id}&review`);
       }
     } catch (error) {

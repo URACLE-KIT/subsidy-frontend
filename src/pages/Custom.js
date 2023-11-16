@@ -248,7 +248,7 @@ const Custom = () => {
                   </div>
                   <div className="policy-description">
                     <FaRegEye /> {policy.views}&nbsp;&nbsp;&nbsp;
-                    <FaRegCommentDots /> {policy.numReviews}{}
+                    <FaRegCommentDots /> {policy.numReviews}
                   </div>
                 </div>
               </Link>

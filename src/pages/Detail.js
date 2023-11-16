@@ -25,7 +25,7 @@ import {
   BsArrowUp,
   BsArrowDown,
 } from "react-icons/bs";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Modal from "../layout/Modal";
 
 const Detail = () => {
@@ -46,6 +46,7 @@ const Detail = () => {
   const [editedComment, setEditedComment] = useState("");
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [commentOptionsVisible, setCommentOptionsVisible] = useState(false);
+  const navigate = useNavigate();
 
   const handleToggleCommentOptions = (commentId) => {
     setCommentOptionsVisible((prevCommentId) =>
@@ -78,6 +79,19 @@ const Detail = () => {
     setEditingCommentId(commentId);
     setEditedComment(commentContent);
   };
+
+  const handleDeleteReview = async () => {
+    const subsidyReviewId = searchParams.get("id");
+    try {
+      await axios.delete(`/v1/subsidies-review/delete?reviewId=${subsidyReviewId}`);;
+      await axios.put(`/v1/subsidies/decrement-numReviews?id=${review.subsidy.id}`);
+      
+      M.pop.alert("삭제가 완료되었습니다.");
+      navigate("/review");
+    } catch (error) {
+      console.error(error);
+    }
+  };  
 
   const handleCancelEdit = (commentId) => {
     setEditingCommentId(null);
@@ -230,16 +244,20 @@ const Detail = () => {
 
   const toggleLike = () => {
     if (!isLiked) {
-      axios
-        .put(`/v1/subsidies-review/increment-likes?id=${id}`)
-        .then((response) => {
-          setIsLiked(true);
-          setLikes(likes + 1);
-          console.log("좋아요 증가 성공:", response);
-        })
-        .catch((error) => {
-          console.error("좋아요 증가 실패:", error);
-        });
+      if (userId) {
+        axios
+          .put(`/v1/subsidies-review/increment-likes?id=${id}`)
+          .then((response) => {
+            setIsLiked(true);
+            setLikes(likes + 1);
+            console.log("좋아요 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("좋아요 증가 실패:", error);
+          });
+      } else {
+        M.pop.alert("로그인한 사용자만 이용할 수 있는 기능입니다.");
+      }
     }
   };
 
@@ -272,6 +290,7 @@ const Detail = () => {
           console.error(error);
         });
 
+      // 리뷰 조회수 증가
       axios
         .put(`/v1/subsidies-review/increment-views?id=${id}`)
         .then((response) => {
@@ -282,6 +301,7 @@ const Detail = () => {
         });
     } else {
       setReview(null);
+
       axios
         .get(`/v1/subsidies/subsidyId?id=${id}`)
         .then((response) => {
@@ -291,6 +311,7 @@ const Detail = () => {
           console.error(error);
         });
 
+      // 보조금 조회수 증가 - 일반
       axios
         .put(`/v1/subsidies/increment-views?id=${id}`)
         .then((response) => {
@@ -300,6 +321,7 @@ const Detail = () => {
           console.error("조회 수 증가 실패:", error);
         });
 
+      // 보조금 조회수 증가 - 이번주
       axios
         .post(`/v1/subsidyViewRankings/increment-views?subsidyId=${id}`)
         .then((response) => {
@@ -309,23 +331,91 @@ const Detail = () => {
           console.error("이번주 조회 수 증가 실패:", error);
         });
 
-      axios
-        .post(`/v1/subsidyFemaleViewRankings/increment-views?subsidyId=${id}`)
-        .then((response) => {
-          console.log("여성 조회 수 증가 성공:", response);
-        })
-        .catch((error) => {
-          console.error("여성 조회 수 증가 실패:", error);
-        });
+      const lifecycle = M.data.storage("lifecycle");
+      // 보조금 조회수 증가 - 청소년
+      if (lifecycle === "Teenager") {
+        axios
+          .post(`/v1/subsidyTeenagerViewRankings/increment-views?subsidyId=${id}`)
+          .then((response) => {
+            console.log("청소년 조회 수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청소년 조회 수 증가 실패:", error);
+          });
+      }
 
-      axios
-        .post(`/v1/subsidyMaleViewRankings/increment-views?subsidyId=${id}`)
-        .then((response) => {
-          console.log("남성 조회 수 증가 성공:", response);
-        })
-        .catch((error) => {
-          console.error("남성 조회 수 증가 실패:", error);
-        });
+      // 보조금 조회수 증가 - 청년
+      if (lifecycle === "Youth") {
+        axios
+          .post(`/v1/subsidyYouthViewRankings/increment-views?subsidyId=${id}`)
+          .then((response) => {
+            console.log("청년 조회 수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청년 조회 수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 조회수 증가 - 중년
+      if (lifecycle === "MiddleAge") {
+        axios
+          .post(`/v1/subsidyMiddleAgeViewRankings/increment-views?subsidyId=${id}`)
+          .then((response) => {
+            console.log("청년 조회 수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청년 조회 수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 조회수 증가 - 장년
+      if (lifecycle === "Senior") {
+        axios
+          .post(`/v1/subsidySeniorViewRankings/increment-views?subsidyId=${id}`)
+          .then((response) => {
+            console.log("장년 조회 수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("장년 조회 수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 조회수 증가 - 노년
+      if (lifecycle === "Elderly") {
+        axios
+          .post(`/v1/subsidyElderlyViewRankings/increment-views?subsidyId=${id}`)
+          .then((response) => {
+            console.log("노년 조회 수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("노년 조회 수 증가 실패:", error);
+          });
+      }
+
+      const gender = M.data.storage("gender");
+      // 보조금 조회수 증가 - 여성
+      if (gender === "F") {
+        axios
+          .post(`/v1/subsidyFemaleViewRankings/increment-views?subsidyId=${id}`)
+          .then((response) => {
+            console.log("여성 조회 수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("여성 조회 수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 조회수 증가 - 남성
+      if (gender === "M") {
+        axios
+          .post(`/v1/subsidyMaleViewRankings/increment-views?subsidyId=${id}`)
+          .then((response) => {
+            console.log("남성 조회 수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("남성 조회 수 증가 실패:", error);
+          });
+      }
     }
   }, [location.search]);
 
@@ -390,7 +480,7 @@ const Detail = () => {
                         <FaPencilAlt />
                       </Link>
                     </span>
-                    <span>
+                    <span onClick={handleDeleteReview}>
                       <FaRegTrashAlt />
                     </span>
                   </>
@@ -409,12 +499,10 @@ const Detail = () => {
               </div>
               <div className="detail-button-group">
 
-                {userId && (
                 <button className="like-button" onClick={toggleLike}>
                   {isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}&nbsp;
-                  {isLiked ? review.likes+1 : review.likes}
+                  {isLiked ? review.likes + 1 : review.likes}
                 </button>
-                )}
 
                 <button
                   className="detail-button"
@@ -652,7 +740,7 @@ const Detail = () => {
                         )}
                         <p>{comment.user.name}</p>
                         <p>{comment.content}</p>
-                        <p>{formatDate(comment.created_at)}</p>
+                        <span className="policy-description">{formatDate(comment.created_at)}</span>
                       </div>
                     </div>
                   ))}
