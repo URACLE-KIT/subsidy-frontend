@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { FaSearch, FaBell, FaRegTimesCircle } from 'react-icons/fa';
+import { FaSearch, FaRegTimesCircle } from 'react-icons/fa';
 import { RiCloseFill } from 'react-icons/ri';
 import { useState } from 'react';
 
@@ -8,6 +8,14 @@ const Header = () => {
     const [searchText, setSearchText] = useState('');
     const [searchOption, setSearchOption] = useState('title');
     const navigate = useNavigate();
+
+    M.onBack(function (e) {
+        if (window.location.pathname === '/') {
+            M.sys.exit();
+        } else {
+            navigate(-1);
+        }
+    });
 
     const toggleSearch = () => {
         setSearchOpen(!isSearchOpen);
@@ -32,7 +40,6 @@ const Header = () => {
         setSearchOpen(false);
         setSearchText('');
     };
-
     
     return (
         <header>
@@ -46,27 +53,14 @@ const Header = () => {
                 <div className="util-btn" onClick={toggleSearch}>
                     <FaSearch />
                 </div>
-                {/* <div className="util-btn">
-                    <FaBell />
-                </div> */}
             </div>
             {isSearchOpen && (
-                <div
-                    className={`search-modal ${isSearchOpen ? 'open' : ''}`}
-                // onClick={(e) => {
-                //     if (e.target.classList.contains('search-modal')) {
-                //         closeSearch();
-                //     }
-                // }}
-                >
+                <div className={`search-modal ${isSearchOpen ? 'open' : ''}`}>
                     <div className="search-content">
-                        <button onClick={closeSearch} className="close-search"
-                            style={{ boxShadow: 'none', width: 'auto', marginTop: 0 }}>
+                        <button onClick={closeSearch} className="close-search">
                             <RiCloseFill />
                         </button>
-
                         <h3 style={{ textAlign: 'center' }}>궁금한 정책을 검색해 보세요!</h3>
-
                         <div className="search-input">
                             <select
                                 value={searchOption}
@@ -86,11 +80,8 @@ const Header = () => {
                             <div>
                                 <FaRegTimesCircle
                                     className="close-icon"
-                                    onClick={() => {
-                                        setSearchText('');
-                                    }}
+                                    onClick={() => setSearchText('')}
                                 />
-                                {/* <FaSearch className="search-icon" onClick={handleSearch} /> */}
                             </div>
                         </div>
                     </div>
