@@ -222,24 +222,28 @@ const Ranking = () => {
 
     // 기혼
     useEffect(() => {
-        axios.get("/v1/subsidyMarriedViewRankings/subsidyRanking_Info")
-            .then((response) => {
-                console.log(response);
-                const updatedPolicies = response.data.map((item) => {
-                    return {
-                        id: item.subsidyId,
-                        title: item.title,
-                        description: item.description,
-                        views: item.views,
-                    };
-                });
-                console.log(updatedPolicies);
-                setMarried(updatedPolicies);
+        const maritalStatus = M.data.storage("maritalStatus");
 
-            })
-            .catch((error) => {
-                console.error("기혼이 많이 조회한 보조금 가져오기 실패:", error);
-            });
+        if (maritalStatus === "M") {
+            axios.get("/v1/subsidyMarriedViewRankings/subsidyRanking_Info")
+                .then((response) => {
+                    console.log(response);
+                    const updatedPolicies = response.data.map((item) => {
+                        return {
+                            id: item.subsidyId,
+                            title: item.title,
+                            description: item.description,
+                            views: item.views,
+                        };
+                    });
+                    console.log(updatedPolicies);
+                    setMarried(updatedPolicies);
+
+                })
+                .catch((error) => {
+                    console.error("기혼이 많이 조회한 보조금 가져오기 실패:", error);
+                });
+        }
     }, []);
 
     return (
@@ -423,23 +427,25 @@ const Ranking = () => {
                 </div>
             )}
 
-            <div className="container">
-                <h2>기혼이 많이 조회한 보조금</h2>
-                <ul className="policy-list">
-                    {married.map((marry, index) => (
-                        <li key={marry.id} className="policy-item">
-                            <Link to={`/detail?id=${marry.id}`}>
-                                <div className="policy-details">
-                                    <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                        {index + 1}&nbsp; {marry.title.length > 25 ? `${marry.title.slice(0, 25)}...` : marry.title}
-                                    </span>
-                                    <div className="policy-agency">{marry.description.length > 27 ? `${marry.description.slice(0, 27)}...` : marry.description}</div>
-                                </div>
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            {M.data.storage("maritalStatus") === "M" && (
+                <div className="container">
+                    <h2>기혼이 많이 조회한 보조금</h2>
+                    <ul className="policy-list">
+                        {married.map((marry, index) => (
+                            <li key={marry.id} className="policy-item">
+                                <Link to={`/detail?id=${marry.id}`}>
+                                    <div className="policy-details">
+                                        <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                            {index + 1}&nbsp; {marry.title.length > 25 ? `${marry.title.slice(0, 25)}...` : marry.title}
+                                        </span>
+                                        <div className="policy-agency">{marry.description.length > 27 ? `${marry.description.slice(0, 27)}...` : marry.description}</div>
+                                    </div>
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
 
         </>
     );
