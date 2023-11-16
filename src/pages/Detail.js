@@ -25,7 +25,7 @@ import {
   BsArrowUp,
   BsArrowDown,
 } from "react-icons/bs";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Modal from "../layout/Modal";
 
 const Detail = () => {
@@ -46,6 +46,7 @@ const Detail = () => {
   const [editedComment, setEditedComment] = useState("");
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [commentOptionsVisible, setCommentOptionsVisible] = useState(false);
+  const navigate = useNavigate();
 
   const handleToggleCommentOptions = (commentId) => {
     setCommentOptionsVisible((prevCommentId) =>
@@ -78,6 +79,19 @@ const Detail = () => {
     setEditingCommentId(commentId);
     setEditedComment(commentContent);
   };
+
+  const handleDeleteReview = async () => {
+    const subsidyReviewId = searchParams.get("id");
+    try {
+      await axios.delete(`/v1/subsidies-review/delete?reviewId=${subsidyReviewId}`);;
+      await axios.put(`/v1/subsidies/decrement-numReviews?id=${review.subsidy.id}`);
+      
+      M.pop.alert("삭제가 완료되었습니다.");
+      navigate("/review");
+    } catch (error) {
+      console.error(error);
+    }
+  };  
 
   const handleCancelEdit = (commentId) => {
     setEditingCommentId(null);
@@ -230,16 +244,20 @@ const Detail = () => {
 
   const toggleLike = () => {
     if (!isLiked) {
-      axios
-        .put(`/v1/subsidies-review/increment-likes?id=${id}`)
-        .then((response) => {
-          setIsLiked(true);
-          setLikes(likes + 1);
-          console.log("좋아요 증가 성공:", response);
-        })
-        .catch((error) => {
-          console.error("좋아요 증가 실패:", error);
-        });
+      if (userId) {
+        axios
+          .put(`/v1/subsidies-review/increment-likes?id=${id}`)
+          .then((response) => {
+            setIsLiked(true);
+            setLikes(likes + 1);
+            console.log("좋아요 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("좋아요 증가 실패:", error);
+          });
+      } else {
+        M.pop.alert("로그인한 사용자만 이용할 수 있는 기능입니다.");
+      }
     }
   };
 
@@ -410,7 +428,7 @@ const Detail = () => {
               <div className="views">
                 <FaRegEye /> {policy.views}&nbsp;&nbsp;&nbsp;
                 <Link to={`/review?id=${id}`} style={{ color: "#999" }}>
-                  <FaRegCommentDots /> {policy.views}
+                  <FaRegCommentDots /> {policy.numReviews}
                 </Link>
               </div>
               <button
@@ -462,7 +480,7 @@ const Detail = () => {
                         <FaPencilAlt />
                       </Link>
                     </span>
-                    <span>
+                    <span onClick={handleDeleteReview}>
                       <FaRegTrashAlt />
                     </span>
                   </>
@@ -481,12 +499,10 @@ const Detail = () => {
               </div>
               <div className="detail-button-group">
 
-                {userId && (
                 <button className="like-button" onClick={toggleLike}>
                   {isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}&nbsp;
-                  {isLiked ? review.likes+1 : review.likes}
+                  {isLiked ? review.likes + 1 : review.likes}
                 </button>
-                )}
 
                 <button
                   className="detail-button"
@@ -724,7 +740,7 @@ const Detail = () => {
                         )}
                         <p>{comment.user.name}</p>
                         <p>{comment.content}</p>
-                        <p>{formatDate(comment.created_at)}</p>
+                        <span className="policy-description">{formatDate(comment.created_at)}</span>
                       </div>
                     </div>
                   ))}
