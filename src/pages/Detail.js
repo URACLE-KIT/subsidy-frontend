@@ -338,7 +338,7 @@ const Detail = () => {
               <div className="views">
                 <FaRegEye /> {policy.views}&nbsp;&nbsp;&nbsp;
                 <Link to={`/review?id=${id}`} style={{ color: "#999" }}>
-                  <FaRegCommentDots /> {policy.views}
+                  <FaRegCommentDots /> {policy.numReviews}
                 </Link>
               </div>
               <button
