@@ -112,7 +112,6 @@ const Write = () => {
       } else {
         const url = `/v1/subsidies-review/create?userId=${userId}&subsidyId=${id}`;
         const response = await axios.post(url, reviewData);
-
         await axios.put(`/v1/subsidies/increment-numReviews?id=${id}`);
         alert('후기 작성 완료');
         

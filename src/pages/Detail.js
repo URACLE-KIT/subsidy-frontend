@@ -419,6 +419,19 @@ const Detail = () => {
             console.error("남성 조회 수 증가 실패:", error);
           });
       }
+
+      const maritalStatus = M.data.storage("maritalStatus");
+      // 보조금 조회수 증가 - 기혼
+      if (maritalStatus === "M") {
+        axios
+          .post(`/v1/subsidyMarriedViewRankings/increment-views?subsidyId=${id}`)
+          .then((response) => {
+            console.log("기혼 조회 수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("기혼 조회 수 증가 실패:", error);
+          });
+      }
     }
   }, [location.search]);
 
