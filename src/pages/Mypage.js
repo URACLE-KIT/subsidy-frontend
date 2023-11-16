@@ -192,7 +192,7 @@ const Mypage = () => {
           >
             작성 글
             <br />
-            <p className="num">{userReview.length}</p>
+            <p className="num">{reviews.length}</p>
           </span>
           <span
             style={{ borderLeft: "1px solid #999" }}
@@ -200,7 +200,7 @@ const Mypage = () => {
           >
             작성 댓글
             <br />
-            <p className="num">{userComments.length}</p>
+            <p className="num">{reviewcomments.length}</p>
           </span>
         </div>
         <button className="custom-button">
