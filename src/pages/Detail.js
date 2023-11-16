@@ -25,7 +25,7 @@ import {
   BsArrowUp,
   BsArrowDown,
 } from "react-icons/bs";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Modal from "../layout/Modal";
 
 const Detail = () => {
@@ -46,6 +46,7 @@ const Detail = () => {
   const [editedComment, setEditedComment] = useState("");
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [commentOptionsVisible, setCommentOptionsVisible] = useState(false);
+  const navigate = useNavigate();
 
   const handleToggleCommentOptions = (commentId) => {
     setCommentOptionsVisible((prevCommentId) =>
@@ -77,6 +78,19 @@ const Detail = () => {
   const handleEdit = (commentId, commentContent) => {
     setEditingCommentId(commentId);
     setEditedComment(commentContent);
+  };
+
+  const handleDeleteReview = () => {
+    const subsidyReviewId = searchParams.get("id");
+    axios.delete(`/v1/subsidies-review/delete?reviewId=${subsidyReviewId}`)
+      .then((response) => {
+        M.pop.alert("삭제가 완료되었습니다.");
+        console.log(response);
+        navigate("/review");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const handleCancelEdit = (commentId) => {
@@ -242,7 +256,7 @@ const Detail = () => {
             console.error("좋아요 증가 실패:", error);
           });
       } else {
-        alert("로그인한 사용자만 이용할 수 있는 기능입니다.");
+        M.pop.alert("로그인한 사용자만 이용할 수 있는 기능입니다.");
       }
     }
   };
@@ -466,7 +480,7 @@ const Detail = () => {
                         <FaPencilAlt />
                       </Link>
                     </span>
-                    <span>
+                    <span onClick={handleDeleteReview}>
                       <FaRegTrashAlt />
                     </span>
                   </>
@@ -726,7 +740,7 @@ const Detail = () => {
                         )}
                         <p>{comment.user.name}</p>
                         <p>{comment.content}</p>
-                        <p>{formatDate(comment.created_at)}</p>
+                        <span className="policy-description">{formatDate(comment.created_at)}</span>
                       </div>
                     </div>
                   ))}
