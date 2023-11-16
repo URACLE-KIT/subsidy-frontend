@@ -38,7 +38,7 @@ const Latest = () => {
             case "좋아요순":
                 return policies.sort((a, b) => b.likes - a.likes);
             case "댓글순":
-                return policies.sort((a, b) => b.comments - a.comments);
+                return policies.sort((a, b) => b.numComments - a.numComments);
             default:
                 return policies.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
         }

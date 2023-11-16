@@ -8,7 +8,7 @@ const Main = () => {
   const [reviews, setReviews] = useState([]);
   const [userId, setUserId] = useState("");
   const isMember = M.data.storage("id") !== "";
-  
+
   var total = 0;
   var filteredPolicies = [];
   var count = [];
@@ -24,7 +24,7 @@ const Main = () => {
     return accumulator.concat(currentArray);
   }, []);
 
-  sumPolicies.sort((a, b) => b.id - a.id);
+  sumPolicies.sort((a, b) => b.views - a.views);
 
   const top4Items = sumPolicies.slice(0, 4);
 
@@ -44,16 +44,15 @@ const Main = () => {
       });
   }, []);
 
-  useEffect(() => {
-    axios
-      .get("/v1/subsidies-review/all")
-      .then((response) => {
-        setReviews(response.data);
-      })
-      .catch((error) => {
-        console.error("후기 데이터 가져오기 실패:", error);
-      });
-  }, []);
+  axios
+    .get("/v1/subsidies-review/all")
+    .then((response) => {
+      const sortedReviews = response.data.sort((a, b) => b.views - a.views);
+      setReviews(sortedReviews);
+    })
+    .catch((error) => {
+      console.error("후기 데이터 가져오기 실패:", error);
+    });
 
   useEffect(() => {
     axios
