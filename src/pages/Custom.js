@@ -20,6 +20,7 @@ const Custom = () => {
   const [sortOption, setSortOption] = useState("기본순");
   const [userScrappedPolicies, setUserScrappedPolicies] = useState([]);
   const [storedCategory, setStoredCategory] = useState([]);
+  const [noCategory, setNoCategory] = useState();
 
   useEffect(() => {
 
@@ -58,6 +59,9 @@ const Custom = () => {
       .get(`/v1/users/category-list?userId=${userId}`)
       .then((response) => {
         setStoredCategory(response.data);
+        if(response.data.length===0){
+          setNoCategory(1)
+        }
       })
       .catch((error) => {
         console.error("카테고리 가져오기 실패:", error);
@@ -197,6 +201,13 @@ const Custom = () => {
   useEffect(() => {
     sortPolicies();
   }, [sortOption]);
+
+  useEffect(() => {
+    if(noCategory===1){
+      M.pop.alert("맞춤 카테고리를 설정해주세요.");
+      navigate("/Mycustom");
+    }
+  }, [noCategory]);
 
   return (
     <div className="container">
