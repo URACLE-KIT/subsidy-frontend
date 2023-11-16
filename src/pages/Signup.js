@@ -115,7 +115,7 @@ const Signup = () => {
       email,
       name,
       gender,
-      wedding,
+      maritalStatus : wedding,
       birthday,
       password,
       created_at,

@@ -16,7 +16,6 @@ const Mypage = () => {
   const [reviews, setReviews] = useState([]);
   const [reviewcomments, setReviewcomments] = useState([]);
 
-
   var total = 0;
   var filteredPolicies = [];
   var count = [];
@@ -70,8 +69,7 @@ const Mypage = () => {
         console.error("카테고리 가져오기 실패:", error);
       });
 
-
-      axios
+    axios
       .get(`/v1/subsidies-review/search/userId?userId=${userId}`)
       .then((response) => {
         setReviews(response.data);
@@ -80,7 +78,7 @@ const Mypage = () => {
         console.error("내가 작성한 후기 데이터 가져오기 실패:", error);
       });
 
-      axios
+    axios
       .get(`/v1/subsidy-reviewcomments/search/userId?userId=${userId}`)
       .then((response) => {
         setReviewcomments(response.data);
@@ -88,7 +86,6 @@ const Mypage = () => {
       .catch((error) => {
         console.error("내가 작성한 댓글 데이터 가져오기 실패:", error);
       });
-
   }, [userId]);
 
   useEffect(() => {
@@ -192,7 +189,7 @@ const Mypage = () => {
           >
             작성 글
             <br />
-            <p className="num">{userReview.length}</p>
+            <p className="num">{reviews.length}</p>
           </span>
           <span
             style={{ borderLeft: "1px solid #999" }}
@@ -200,7 +197,7 @@ const Mypage = () => {
           >
             작성 댓글
             <br />
-            <p className="num">{userComments.length}</p>
+            <p className="num">{reviewcomments.length}</p>
           </span>
         </div>
         <button className="custom-button">
@@ -302,21 +299,26 @@ const Mypage = () => {
             <h3>내가 작성한 후기</h3>
             {reviews.length === 0 ? (
               <>
-              <p>작성한 후기가 없습니다.<br />
-              지원금을 받고 후기를 남겨주세요.</p>
-              <img
-                src="/image3.jpg"
-                style={{ width: "300px", height: "400px" }}
-              />
-            </>
+                <p>
+                  작성한 후기가 없습니다.
+                  <br />
+                  지원금을 받고 후기를 남겨주세요.
+                </p>
+                <img
+                  src="/image3.jpg"
+                  style={{ width: "300px", height: "400px" }}
+                />
+              </>
             ) : (
-              <ul className="review-list">
+              <ul className="policy-list">
                 {reviews.map((review) => (
-                  <li key={review.id} className="review-item">
+                  <li key={review.id} className="policy-item">
                     <Link to={`/detail?id=${review.id}&review`}>
-                      <div className="review-details">
-                        <div className="review-title">{review.title}</div>
-                        <div className="review-content">{sanitizeHtml(review.content)}</div>
+                      <div className="policy-details">
+                        <div className="policy-title">{review.title}</div>
+                        <div className="policy-description">
+                          {sanitizeHtml(review.content)}
+                        </div>
                       </div>
                     </Link>
                   </li>
@@ -330,24 +332,29 @@ const Mypage = () => {
             <h3>내가 작성한 댓글</h3>
             {reviewcomments.length === 0 ? (
               <>
-              <p>작성한 댓글이 없습니다.<br />
-              마음에 드는 후기글에 댓글을 남겨주세요.</p>
-              <img
-                src="/image4.jpg"
-                style={{ width: "300px", height: "250px" }}
-              />
-            </>
+                <p>
+                  작성한 댓글이 없습니다.
+                  <br />
+                  마음에 드는 후기글에 댓글을 남겨주세요.
+                </p>
+                <img
+                  src="/image4.jpg"
+                  style={{ width: "300px", height: "250px" }}
+                />
+              </>
             ) : (
-              <ul className="reviewcomment-list">
+              <ul className="policy-list">
                 {reviewcomments.map((comment) => (
-              <div key={comment.id}>
-                <Link to={`/detail?id=${comment.id}&review`}>
-                  <div className="comment-details">
-                    <div className="comment-content">{sanitizeHtml(comment.content)}</div>
+                  <div key={comment.id} className="policy-item">
+                    <Link to={`/detail?id=${comment.reviews.id}&review`}>
+                      <div className="comment-details">
+                        <div className="policy-title">
+                          {sanitizeHtml(comment.content)}
+                        </div>
+                      </div>
+                    </Link>
                   </div>
-                </Link>
-              </div>
-            ))}
+                ))}
               </ul>
             )}
           </div>
