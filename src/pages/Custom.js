@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-import { FaBookmark, FaRegBookmark, FaRegEye, FaRegCommentDots } from "react-icons/fa";
+import {
+  FaBookmark,
+  FaRegBookmark,
+  FaRegEye,
+  FaRegCommentDots,
+} from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
 
 const Custom = () => {
   const navigate = useNavigate();
@@ -21,17 +25,17 @@ const Custom = () => {
   const [userScrappedPolicies, setUserScrappedPolicies] = useState([]);
   const [storedCategory, setStoredCategory] = useState([]);
   const [noCategory, setNoCategory] = useState();
+  const isMember = M.data.storage("id") !== "";
 
   useEffect(() => {
+    // const storedToken = M.data.storage("token");
+    // if (!storedToken) {
+    //   navigate("/required");
 
-    const storedToken = M.data.storage("token");
-    if (!storedToken) {
-      navigate("/required");
-      
-      return;
-    }
+    //   return;
+    // }
 
-    const storedName = M.data.storage('name');
+    const storedName = M.data.storage("name");
 
     if (storedName) {
       setName(storedName);
@@ -41,9 +45,8 @@ const Custom = () => {
     if (storedUserId) {
       setUserId(storedUserId);
     }
-
+    setStoredCategory(["전체"]);
   }, [navigate]);
-
 
   useEffect(() => {
     axios
@@ -58,9 +61,10 @@ const Custom = () => {
     axios
       .get(`/v1/users/category-list?userId=${userId}`)
       .then((response) => {
-        setStoredCategory(response.data);
-        if(response.data.length===0){
-          setNoCategory(1)
+        const categorycopy = ["전체", ...response.data];
+        setStoredCategory(categorycopy);
+        if (response.data.length === 0) {
+          setNoCategory(1);
         }
       })
       .catch((error) => {
@@ -68,12 +72,12 @@ const Custom = () => {
       });
   }, [userId]);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (storedCategory) {
       setFilter(storedCategory[0]);
     }
   }, [storedCategory]);
-  
+
   useEffect(() => {
     let requestURL = "/v1/subsidies/all";
 
@@ -94,10 +98,14 @@ const Custom = () => {
   }, [search, option]);
 
   useEffect(() => {
-    const updatedPolicies = policies.filter(
-      (policy) => policy.category === filter
-    );
-    setFilteredPolicies(updatedPolicies);
+    if (filter === "전체") {
+      setFilteredPolicies(policies);
+    } else {
+      const updatedPolicies = policies.filter(
+        (policy) => policy.category === filter
+      );
+      setFilteredPolicies(updatedPolicies);
+    }
   }, [filter, policies]);
 
   const handleSortChange = (event) => {
@@ -203,15 +211,26 @@ const Custom = () => {
   }, [sortOption]);
 
   useEffect(() => {
-    if(noCategory===1){
+    if (noCategory === 1) {
       M.pop.alert("맞춤 카테고리를 설정해주세요.");
       navigate("/Mycustom");
     }
   }, [noCategory]);
 
+  const linkStyle = {
+    color: 'blue',      
+    textDecoration: 'underline',  
+    cursor: 'pointer',  
+  };
+
   return (
     <div className="container">
-      <h3>{name}님을 위한 맞춤 보조금</h3>
+      <h3>
+        {isMember ? <p>{name}님을 위한 맞춤 보조금</p> : <p>전체 보조금</p>}
+      </h3>
+      <div className="login-link">
+        {isMember ? <></> : <p>카테고리 설정 하시려면 <Link to="/required" style={linkStyle}>로그인</Link>해주세요</p>}
+      </div>
       <div className="filter-container">
         {storedCategory.map((option) => (
           <div
