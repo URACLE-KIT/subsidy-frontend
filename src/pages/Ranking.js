@@ -426,7 +426,7 @@ const Ranking = () => {
                     </ul>
                 </div>
             )}
-
+            
             {M.data.storage("maritalStatus") === "M" && (
                 <div className="container">
                     <h2>기혼이 많이 조회한 보조금</h2>
