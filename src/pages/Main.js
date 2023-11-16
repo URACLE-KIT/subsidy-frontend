@@ -24,7 +24,7 @@ const Main = () => {
     return accumulator.concat(currentArray);
   }, []);
 
-  sumPolicies.sort((a, b) => b.id - a.id);
+  sumPolicies.sort((a, b) => b.views - a.views);
 
   const top4Items = sumPolicies.slice(0, 4);
 

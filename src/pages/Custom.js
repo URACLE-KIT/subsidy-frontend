@@ -187,6 +187,7 @@ const Custom = () => {
       }
 
       if (sortOption === "후기순") {
+        return b.numReviews - a.numReviews;
       }
     });
 
