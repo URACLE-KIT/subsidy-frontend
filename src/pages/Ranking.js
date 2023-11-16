@@ -250,10 +250,55 @@ const Ranking = () => {
         <>
             <h3 style={{ textAlign: 'center' }}>랭킹알리미</h3>
 
-            <div className="container">
-                <h2>청년이 많이 조회한 카테고리</h2>
-                <CategoryChart data={data} />
-            </div>
+
+            {M.data.storage("lifecycle") === "Teenager" && (
+                <div className="container">
+                    <h2>청소년이 많이 조회한 카테고리</h2>
+                    <CategoryChart data={data} />
+                </div>
+            )}
+
+            {M.data.storage("lifecycle") === "Youth" && (
+                <div className="container">
+                    <h2>청년이 많이 조회한 카테고리</h2>
+                    <CategoryChart data={data} />
+                </div>
+            )}
+
+            {M.data.storage("lifecycle") === "MiddleAge" && (
+                <div className="container">
+                    <h2>중년이 많이 조회한 카테고리</h2>
+                    <CategoryChart data={data} />
+                </div>
+            )}
+
+            {M.data.storage("lifecycle") === "Senior" && (
+                <div className="container">
+                    <h2>장년이 많이 조회한 카테고리</h2>
+                    <CategoryChart data={data} />
+                </div>
+            )}
+
+            {M.data.storage("lifecycle") === "Elderly" && (
+                <div className="container">
+                    <h2>노년이 많이 조회한 카테고리</h2>
+                    <CategoryChart data={data} />
+                </div>
+            )}
+
+            {M.data.storage("gender") === "M" && (
+                <div className="container">
+                    <h2>남성이 많이 조회한 카테고리</h2>
+                    <CategoryChart data={data} />
+                </div>
+            )}
+
+            {M.data.storage("gender") === "F" && (
+                <div className="container">
+                    <h2>여성이 많이 조회한 카테고리</h2>
+                    <CategoryChart data={data} />
+                </div>
+            )}
 
             <div className="container">
                 <h2>이번주 많이 조회한 보조금</h2>
@@ -426,7 +471,7 @@ const Ranking = () => {
                     </ul>
                 </div>
             )}
-            
+
             {M.data.storage("maritalStatus") === "M" && (
                 <div className="container">
                     <h2>기혼이 많이 조회한 보조금</h2>
