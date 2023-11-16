@@ -230,16 +230,20 @@ const Detail = () => {
 
   const toggleLike = () => {
     if (!isLiked) {
-      axios
-        .put(`/v1/subsidies-review/increment-likes?id=${id}`)
-        .then((response) => {
-          setIsLiked(true);
-          setLikes(likes + 1);
-          console.log("좋아요 증가 성공:", response);
-        })
-        .catch((error) => {
-          console.error("좋아요 증가 실패:", error);
-        });
+      if (userId) {
+        axios
+          .put(`/v1/subsidies-review/increment-likes?id=${id}`)
+          .then((response) => {
+            setIsLiked(true);
+            setLikes(likes + 1);
+            console.log("좋아요 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("좋아요 증가 실패:", error);
+          });
+      } else {
+        alert("로그인한 사용자만 이용할 수 있는 기능입니다.");
+      }
     }
   };
 
@@ -481,12 +485,10 @@ const Detail = () => {
               </div>
               <div className="detail-button-group">
 
-                {userId && (
                 <button className="like-button" onClick={toggleLike}>
                   {isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}&nbsp;
-                  {isLiked ? review.likes+1 : review.likes}
+                  {isLiked ? review.likes + 1 : review.likes}
                 </button>
-                )}
 
                 <button
                   className="detail-button"
