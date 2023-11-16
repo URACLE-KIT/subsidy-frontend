@@ -203,22 +203,12 @@ button:hover {
   font-size: 15px;
   margin: 3px 0;
 }
-
-.bookmark-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 20px;
-  float: right;
-  margin-top: 19px;
-}
-
-.bookmark-button:focus {
-  outline: none;
-}
-
-.bookmark-button:hover {
-  color: #555;
+.login-link{
+  text-align: center;
+  font-size: 12px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #777;
 }
 
 /* 헤더 */
@@ -344,10 +334,46 @@ header {
   border: 1px solid #6675fc;
   border-radius: 50px;
   width: calc(50% - 20px);
+  min-width: 98px;
   margin: 10px 10px 0 10px;
   padding: 5px 0;
   color: #6675fc;
   font-weight: 800;
+  height: 30px;
+}
+
+.bookmark-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  float: right;
+  margin-top: 19px;
+}
+
+.bookmark-button:focus {
+  outline: none;
+}
+
+.bookmark-button:hover {
+  color: #555;
+}
+
+.like-button{
+  background: transparent;
+  border: 1px solid #6675fc;
+  border-radius: 50px;
+  width: 30%;
+  margin: 10px 10px 0 10px;
+  padding: 5px 0;
+  color: #6675fc;
+  font-weight: 800;
+}
+.like-button:hover{
+  opacity: 1;
+}
+.detail-button-group{
+  display: flex;
 }
 
 .sub-title {
@@ -409,6 +435,74 @@ header {
 .tab-content {
   background: #fff;
   padding: 30px;
+}
+
+/* 상세페이지 댓글 */
+.comments {
+  border-bottom: 1px solid #eee;
+  padding: 20px 10px;
+}
+
+.comments:last-child {
+  border:none;
+}
+
+.comment-option {
+  float: right;
+}
+
+.comment-input {
+  display: inline;
+  width: calc(100% - 100px);
+  border-radius: 3px 0 0 3px;
+}
+
+.comment-list {
+  background: #fff;
+  padding: 30px;
+  margin-top: 15px;
+}
+
+.comment-btn {
+  width: 65px;
+  height: 43px;
+  border-radius: 0 3px 3px 0;
+}
+
+.comment-sort {
+  text-align: right;
+  margin-top: -30px;
+}
+
+.comment-sort button {
+  background: none;
+  box-shadow: none;
+  width: 80px;
+}
+
+.comment-sort .active {
+  color: #6675fc;
+}
+
+.comment-edit {
+  position: absolute;
+  right: 60px;
+}
+
+.comment-edit button {
+  border-radius: 3px;
+  background-color: #fff;
+  width: 40px;
+  padding: 5px;
+  margin: 10px 0 10px 5px;
+}
+
+.comment-modify {
+  color: #6675fc;
+}
+
+.comment-delete {
+  color: #fc6666;
 }
 
 /* 정책소식 */
@@ -666,6 +760,42 @@ header {
   line-height: 35px;
 }
 
+.wedding {
+  width: 100%;
+  margin-bottom: 10px;
+  display: flex;
+  text-align: center;
+  display: inline-block;
+}
+
+.wedding button {
+  width: calc(50% - 6px);
+  margin: 3px;
+  background-color: white;
+  border: 1px solid rgb(199, 199, 199);
+  border-radius: 8px;
+  height: 35px;
+  line-height: 35px;
+}
+
+.wedding-options {
+  width: 100%;
+  margin-bottom: 10px;
+  display: flex;
+  text-align: center;
+  display: inline-block;
+}
+
+.wedding-options button {
+  width: calc(50% - 6px);
+  margin: 3px;
+  background-color: white;
+  border: 1px solid rgb(199, 199, 199);
+  border-radius: 8px;
+  height: 35px;
+  line-height: 35px;
+}
+
 .birthday select:first-child {
   background-color: white;
   max-width: 90px;
@@ -741,6 +871,8 @@ header {
   border: 2px solid rgba(0, 0, 0, .1);
   border-radius: 5px;
   box-shadow: inset -3px -3px 6px #fff, inset 2px 2px 5px #e6e6e6;
+  white-space: nowrap;
+  overflow-x: auto;
 }
 
 .modal button {

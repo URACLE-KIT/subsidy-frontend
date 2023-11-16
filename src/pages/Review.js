@@ -38,7 +38,7 @@ const Latest = () => {
             case "좋아요순":
                 return policies.sort((a, b) => b.likes - a.likes);
             case "댓글순":
-                return policies.sort((a, b) => b.comments - a.comments);
+                return policies.sort((a, b) => b.numComments - a.numComments);
             default:
                 return policies.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
         }
@@ -95,7 +95,7 @@ const Latest = () => {
                                     <div className='count views'>
                                         <span style={{ marginLeft: 0, marginRight: '20px' }}><FaRegEye /> {policy.views}</span>
                                         <span style={{ marginLeft: 0, marginRight: '20px' }}><FaRegHeart /> {policy.likes}</span>
-                                        <span style={{ marginLeft: 0, marginRight: '20px' }}><FaRegCommentDots /> {policy.comments}</span>
+                                        <span style={{ marginLeft: 0, marginRight: '20px' }}><FaRegCommentDots /> {policy.numComments}</span>
                                     </div>
                                 </div>
                             </div>

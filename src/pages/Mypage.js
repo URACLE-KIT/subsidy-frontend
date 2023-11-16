@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  FaBookmark,
-  FaRegBookmark,
-  FaPencilAlt,
-} from "react-icons/fa";
+import { FaBookmark, FaRegBookmark, FaPencilAlt } from "react-icons/fa";
 import { FiSettings } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -17,6 +13,8 @@ const Mypage = () => {
   const [policies, setPolicies] = useState([]);
   const [policiesAll, setPoliciesAll] = useState([]);
   const [category, setCategory] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [reviewcomments, setReviewcomments] = useState([]);
 
   var total = 0;
   var filteredPolicies = [];
@@ -42,11 +40,6 @@ const Mypage = () => {
       setUserId(storedUserId);
     }
 
-    var storedCategory = M.data.storage("category");
-    if (!storedCategory) {
-      storedCategory = [];
-    }
-    setCategory(storedCategory);
     axios
       .get("/v1/subsidies/all")
       .then((response) => {
@@ -65,6 +58,33 @@ const Mypage = () => {
       })
       .catch((error) => {
         console.error("스크랩된 보조금 가져오기 실패:", error);
+      });
+
+    axios
+      .get(`/v1/users/category-list?userId=${userId}`)
+      .then((response) => {
+        setCategory(response.data);
+      })
+      .catch((error) => {
+        console.error("카테고리 가져오기 실패:", error);
+      });
+
+    axios
+      .get(`/v1/subsidies-review/search/userId?userId=${userId}`)
+      .then((response) => {
+        setReviews(response.data);
+      })
+      .catch((error) => {
+        console.error("내가 작성한 후기 데이터 가져오기 실패:", error);
+      });
+
+    axios
+      .get(`/v1/subsidy-reviewcomments/search/userId?userId=${userId}`)
+      .then((response) => {
+        setReviewcomments(response.data);
+      })
+      .catch((error) => {
+        console.error("내가 작성한 댓글 데이터 가져오기 실패:", error);
       });
   }, [userId]);
 
@@ -93,12 +113,15 @@ const Mypage = () => {
 
   const toggleBookmark = (id) => {
     const isBookmarked = isScrapped(id);
-  
+
     if (isBookmarked) {
-      const updatedUserScrappedPolicies = userScrappedPolicies.filter(policy => policy.id !== id);
+      const updatedUserScrappedPolicies = userScrappedPolicies.filter(
+        (policy) => policy.id !== id
+      );
       setUserScrappedPolicies(updatedUserScrappedPolicies);
-  
-      axios.delete(`/v1/subsidyscraps/delete?subsidyId=${id}`)
+
+      axios
+        .delete(`/v1/subsidyscraps/delete?subsidyId=${id}`)
         .then((response) => {
           console.log("스크랩 삭제 성공:", response);
         })
@@ -106,17 +129,26 @@ const Mypage = () => {
           console.error("스크랩 삭제 실패:", error);
         });
     } else {
-      axios.post(`/v1/subsidyscraps/create?userId=${userId}&subsidyId=${id}`)
+      axios
+        .post(`/v1/subsidyscraps/create?userId=${userId}&subsidyId=${id}`)
         .then((response) => {
-          const updatedUserScrappedPolicies = [...userScrappedPolicies, response.data];
+          const updatedUserScrappedPolicies = [
+            ...userScrappedPolicies,
+            response.data,
+          ];
           setUserScrappedPolicies(updatedUserScrappedPolicies);
-  
+
           console.log("스크랩 추가 성공:", response);
         })
         .catch((error) => {
           console.error("스크랩 추가 실패:", error);
         });
     }
+  };
+
+  const sanitizeHtml = (html) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent || "";
   };
 
   return (
@@ -143,20 +175,29 @@ const Mypage = () => {
               <p className="num">{total}</p>
             </span>
           </Link>
-          <span style={{ borderLeft: '1px solid #999' }} onClick={() => handleTabClick("스크랩")}>
+          <span
+            style={{ borderLeft: "1px solid #999" }}
+            onClick={() => handleTabClick("스크랩")}
+          >
             스크랩
             <br />
             <p className="num">{userScrappedPolicies.length}</p>
           </span>
-          <span style={{ borderLeft: '1px solid #999' }} onClick={() => handleTabClick("작성 글")}>
+          <span
+            style={{ borderLeft: "1px solid #999" }}
+            onClick={() => handleTabClick("작성 글")}
+          >
             작성 글
             <br />
-            <p className="num">{userScrappedPolicies.length}</p>
+            <p className="num">{reviews.length}</p>
           </span>
-          <span style={{ borderLeft: '1px solid #999' }} onClick={() => handleTabClick("작성 댓글")}>
+          <span
+            style={{ borderLeft: "1px solid #999" }}
+            onClick={() => handleTabClick("작성 댓글")}
+          >
             작성 댓글
             <br />
-            <p className="num">0</p>
+            <p className="num">{reviewcomments.length}</p>
           </span>
         </div>
         <button className="custom-button">
@@ -206,35 +247,121 @@ const Mypage = () => {
       <div className="tab-content">
         {activeTab === "스크랩" && (
           <div className="tab-panel">
-            <ul className="policy-list">
-              {policies.map((policy) => (
-                <li key={policy.id} className="policy-item">
-                <Link to={`/detail?id=${policy.id}`}>
-                  <button
-                    style={{ boxShadow: "none", width: "auto", marginTop: 0 }}
-                    className="bookmark-button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      toggleBookmark(policy.id);
-                    }}
-                  >
-                    {isScrapped(policy.id) ? <FaBookmark /> : <FaRegBookmark />}
-                  </button>
-                  <div className="policy-details">
-                    <div className="policy-title">{policy.title}</div>
-                    <div className="policy-description">{policy.description}</div>
-                  </div>
-                </Link>
-              </li>
-              ))}
-            </ul>
+            {userScrappedPolicies.length === 0 ? (
+              <>
+                <p style={{textAlign:"center"}}>
+                  관심 정책의 스크랩 버튼을 누르면 <br /> 원하는 정책을 저장하고
+                  관리할 수 있어요.
+                </p>
+                <div style={{ textAlign: "center" }}>
+                  <img
+                    src="/image2.jpg"
+                    style={{ width: "300px", height: "400px" }}
+                  />
+                </div>
+              </>
+            ) : (
+              <ul className="policy-list">
+                {policies.map((policy) => (
+                  <li key={policy.id} className="policy-item">
+                    <Link to={`/detail?id=${policy.id}`}>
+                      <button
+                        style={{
+                          boxShadow: "none",
+                          width: "auto",
+                          marginTop: 0,
+                        }}
+                        className="bookmark-button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          toggleBookmark(policy.id);
+                        }}
+                      >
+                        {isScrapped(policy.id) ? (
+                          <FaBookmark />
+                        ) : (
+                          <FaRegBookmark />
+                        )}
+                      </button>
+                      <div className="policy-details">
+                        <div className="policy-title">{policy.title}</div>
+                        <div className="policy-description">
+                          {policy.description}
+                        </div>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         )}
         {activeTab === "작성 글" && (
-          <div className="tab-panel">작성 글 내용</div>
+          <div className="tab-panel">
+            {reviews.length === 0 ? (
+              <>
+                <p style={{ textAlign: "center" }}>
+                  작성한 후기가 없습니다.
+                  <br />
+                  지원금을 받고 후기를 남겨주세요.
+                </p>
+                <div style={{ textAlign: "center" }}>
+                  <img
+                    src="/image3.jpg"
+                    style={{ width: "300px", height: "400px" }}
+                  />
+                </div>
+              </>
+            ) : (
+              <ul className="policy-list" style={{textAlign: "left"}}>
+                {reviews.map((review) => (
+                  <li key={review.id} className="policy-item">
+                    <Link to={`/detail?id=${review.id}&review`}>
+                      <div className="policy-details">
+                        <div className="policy-title">{review.title}</div>
+                        <div className="policy-description">
+                          {sanitizeHtml(review.content)}
+                        </div>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         )}
         {activeTab === "작성 댓글" && (
-          <div className="tab-panel">작성 댓글 내용</div>
+          <div className="tab-panel">
+            {reviewcomments.length === 0 ? (
+              <>
+                <p style={{ textAlign: "center" }}>
+                  작성한 댓글이 없습니다.
+                  <br />
+                  마음에 드는 후기글에 댓글을 남겨주세요.
+                </p>
+                <div style={{ textAlign: "center" }}>
+                  <img
+                    src="/image4.jpg"
+                    style={{ width: "300px", height: "250px" }}
+                  />
+                </div>
+              </>
+            ) : (
+              <ul className="policy-list" style={{textAlign: "left"}}>
+                {reviewcomments.map((comment) => (
+                  <div key={comment.id} className="policy-item">
+                    <Link to={`/detail?id=${comment.reviews.id}&review`}>
+                      <div className="comment-details">
+                        <div className="policy-title">
+                          {sanitizeHtml(comment.content)}
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                ))}
+              </ul>
+            )}
+          </div>
         )}
       </div>
     </>
