@@ -246,17 +246,19 @@ const Mypage = () => {
 
       <div className="tab-content">
         {activeTab === "스크랩" && (
-          <div className="tab-panel" style={{ textAlign: "center" }}>
+          <div className="tab-panel">
             {userScrappedPolicies.length === 0 ? (
               <>
-                <p>
+                <p style={{textAlign:"center"}}>
                   관심 정책의 스크랩 버튼을 누르면 <br /> 원하는 정책을 저장하고
                   관리할 수 있어요.
                 </p>
-                <img
-                  src="/image2.jpg"
-                  style={{ width: "300px", height: "400px" }}
-                />
+                <div style={{ textAlign: "center" }}>
+                  <img
+                    src="/image2.jpg"
+                    style={{ width: "300px", height: "400px" }}
+                  />
+                </div>
               </>
             ) : (
               <ul className="policy-list">
@@ -295,22 +297,23 @@ const Mypage = () => {
           </div>
         )}
         {activeTab === "작성 글" && (
-          <div className="tab-panel" style={{ textAlign: "center" }}>
-            <h3>내가 작성한 후기</h3>
+          <div className="tab-panel">
             {reviews.length === 0 ? (
               <>
-                <p>
+                <p style={{ textAlign: "center" }}>
                   작성한 후기가 없습니다.
                   <br />
                   지원금을 받고 후기를 남겨주세요.
                 </p>
-                <img
-                  src="/image3.jpg"
-                  style={{ width: "300px", height: "400px" }}
-                />
+                <div style={{ textAlign: "center" }}>
+                  <img
+                    src="/image3.jpg"
+                    style={{ width: "300px", height: "400px" }}
+                  />
+                </div>
               </>
             ) : (
-              <ul className="policy-list">
+              <ul className="policy-list" style={{textAlign: "left"}}>
                 {reviews.map((review) => (
                   <li key={review.id} className="policy-item">
                     <Link to={`/detail?id=${review.id}&review`}>
@@ -328,22 +331,23 @@ const Mypage = () => {
           </div>
         )}
         {activeTab === "작성 댓글" && (
-          <div className="tab-panel" style={{ textAlign: "center" }}>
-            <h3>내가 작성한 댓글</h3>
+          <div className="tab-panel">
             {reviewcomments.length === 0 ? (
               <>
-                <p>
+                <p style={{ textAlign: "center" }}>
                   작성한 댓글이 없습니다.
                   <br />
                   마음에 드는 후기글에 댓글을 남겨주세요.
                 </p>
-                <img
-                  src="/image4.jpg"
-                  style={{ width: "300px", height: "250px" }}
-                />
+                <div style={{ textAlign: "center" }}>
+                  <img
+                    src="/image4.jpg"
+                    style={{ width: "300px", height: "250px" }}
+                  />
+                </div>
               </>
             ) : (
-              <ul className="policy-list">
+              <ul className="policy-list" style={{textAlign: "left"}}>
                 {reviewcomments.map((comment) => (
                   <div key={comment.id} className="policy-item">
                     <Link to={`/detail?id=${comment.reviews.id}&review`}>
