@@ -13,13 +13,50 @@ const Ranking = () => {
     const [seniors, setSeniors] = useState([]);
     const [elderlies, setElderlies] = useState([]);
     const [married, setMarried] = useState([]);
+    const [categoryData, setCategoryData] = useState([]);
 
-    const data = [
-        { id: '생활안정', label: '생활안정', value: 20 },
-        { id: '주거자립', label: '주거자립', value: 40 },
-        { id: '문화환경', label: '문화환경', value: 30 },
-        { id: '기타', label: '기타', value: 15 },
-    ];
+    const toKorean = (englishLabel) => {
+        const translationMap = {
+            PregnancyChildbirth: '임신출산',
+            HousingSelfReliance: '주거자립',
+            EmploymentEntrepreneurship: '고용창업',
+            AdminStrativeSafety: '행정안전',
+            CulturalEnvironment: '문화환경',
+            AgricultureLivestockFisheries: '농림축산어업',
+            ChildCareEducation: '보육교육',
+            DailySafety: '생활안정',
+            ProtectiveCare: '보호돌봄',
+            HealthCare: '보건의료'
+        };
+    
+        // 영어 레이블에서 키워드 추출
+        const keyword = Object.keys(translationMap).find((key) => englishLabel.includes(key));
+    
+        // 번역된 레이블이 있으면 해당 번역 사용, 없으면 원본 레이블 사용
+        const koreanLabel = keyword ? translationMap[keyword] : englishLabel;
+    
+        console.log("테스트: " + koreanLabel);
+        return koreanLabel;
+    };
+
+    const transformDataForChart = (data) => {
+        return Object.keys(data).map((key) => ({
+            id: toKorean(key),
+            label: key,
+            value: data[key],
+        }));
+    };  
+
+    useEffect(() => {
+        axios.get("/v1/subsidyCategoryViewRankings/views?id=1")
+            .then((response) => {
+                const transformedData = transformDataForChart(response.data);
+                setCategoryData(transformedData);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
 
     // 이번주
     useEffect(() => {
@@ -250,10 +287,54 @@ const Ranking = () => {
         <>
             <h3 style={{ textAlign: 'center' }}>랭킹알리미</h3>
 
-            <div className="container">
-                <h2>청년이 많이 조회한 카테고리</h2>
-                <CategoryChart data={data} />
-            </div>
+            {M.data.storage("lifecycle") === "Teenager" && (
+                <div className="container">
+                    <h2>청소년이 많이 조회한 카테고리</h2>
+                    <CategoryChart data={categoryData.filter(item => item.label.includes("teenager"))} />
+                </div>
+            )}
+
+            {M.data.storage("lifecycle") === "Youth" && (
+                <div className="container">
+                    <h2>청년이 많이 조회한 카테고리</h2>
+                    <CategoryChart data={categoryData.filter(item => item.label.includes("youth"))} />
+                </div>
+            )}
+
+            {M.data.storage("lifecycle") === "MiddleAge" && (
+                <div className="container">
+                    <h2>중년이 많이 조회한 카테고리</h2>
+                    <CategoryChart data={categoryData.filter(item => item.label.includes("middleAge"))} />
+                </div>
+            )}
+
+            {M.data.storage("lifecycle") === "Senior" && (
+                <div className="container">
+                    <h2>장년이 많이 조회한 카테고리</h2>
+                    <CategoryChart data={categoryData.filter(item => item.label.includes("senior"))} />
+                </div>
+            )}
+
+            {M.data.storage("lifecycle") === "Elderly" && (
+                <div className="container">
+                    <h2>노년이 많이 조회한 카테고리</h2>
+                    <CategoryChart data={categoryData.filter(item => item.label.includes("elderly"))} />
+                </div>
+            )}
+
+            {M.data.storage("gender") === "M" && (
+                <div className="container">
+                    <h2>남성이 많이 조회한 카테고리</h2>
+                    <CategoryChart data={categoryData.filter(item => item.label.includes("male") && !item.label.includes("female"))} />
+                </div>
+            )}
+
+            {M.data.storage("gender") === "F" && (
+                <div className="container">
+                    <h2>여성이 많이 조회한 카테고리</h2>
+                    <CategoryChart data={categoryData.filter(item => item.label.includes("female"))} />
+                </div>
+            )}
 
             <div className="container">
                 <h2>이번주 많이 조회한 보조금</h2>
@@ -426,7 +507,7 @@ const Ranking = () => {
                     </ul>
                 </div>
             )}
-            
+
             {M.data.storage("maritalStatus") === "M" && (
                 <div className="container">
                     <h2>기혼이 많이 조회한 보조금</h2>

@@ -149,7 +149,7 @@ const Detail = () => {
         content: comment
       })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         setComment("");
         handleGetComment();
       })
@@ -286,7 +286,7 @@ const Detail = () => {
       axios
         .get(`/v1/subsidies-review/search/reviewId?reviewId=${id}`)
         .then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
           setReview(response.data);
         })
         .catch((error) => {
@@ -313,7 +313,14 @@ const Detail = () => {
         .catch((error) => {
           console.error(error);
         });
+    }
+  }, [location.search]);
 
+  useEffect(() => {
+    const isReview = searchParams.get("review");
+
+    if (isReview !== null) {
+    } else {
       // 보조금 조회수 증가 - 일반
       axios
         .put(`/v1/subsidies/increment-views?id=${id}`)
@@ -432,8 +439,851 @@ const Detail = () => {
             console.error("기혼 조회 수 증가 실패:", error);
           });
       }
+
+      // 보조금 카테고리 조회수 증가 - 청소년 && 생활안정
+      if (lifecycle === "Teenager" && policy.category === "생활안정") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/teenager/daily-safety?id=${id}`)
+          .then((response) => {
+            console.log("청소년 && 생활안정 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청소년 && 생활안정 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 청소년 && 주거자립
+      if (lifecycle === "Teenager" && policy.category === "주거자립") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/teenager/housing-self-reliance?id=${id}`)
+          .then((response) => {
+            console.log("청소년 && 주거자립 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청소년 && 주거자립 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 청소년 && 보육교육
+      if (lifecycle === "Teenager" && policy.category === "보육교육") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/teenager/child-care-education?id=${id}`)
+          .then((response) => {
+            console.log("청소년 && 보육교육 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청소년 && 보육교육 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 청소년 && 고용창업
+      if (lifecycle === "Teenager" && policy.category === "고용창업") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/teenager/employment-entrepreneurship?id=${id}`)
+          .then((response) => {
+            console.log("청소년 && 고용창업 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청소년 && 고용창업 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 청소년 && 보건의료
+      if (lifecycle === "Teenager" && policy.category === "보건의료") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/teenager/health-care?id=${id}`)
+          .then((response) => {
+            console.log("청소년 && 보건의료 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청소년 && 보건의료 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 청소년 && 행정안전
+      if (lifecycle === "Teenager" && policy.category === "행정안전") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/teenager/admin-strative-safety?id=${id}`)
+          .then((response) => {
+            console.log("청소년 && 행정안전 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청소년 && 행정안전 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 청소년 && 임신출산
+      if (lifecycle === "Teenager" && policy.category === "임신출산") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/teenager/pregnancy-childbirth?id=${id}`)
+          .then((response) => {
+            console.log("청소년 && 임신출산 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청소년 && 임신출산 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 청소년 && 보호돌봄
+      if (lifecycle === "Teenager" && policy.category === "보호돌봄") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/teenager/protective-care?id=${id}`)
+          .then((response) => {
+            console.log("청소년 && 보호돌봄 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청소년 && 보호돌봄 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 청소년 && 문화환경
+      if (lifecycle === "Teenager" && policy.category === "문화환경") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/teenager/cultural-environment?id=${id}`)
+          .then((response) => {
+            console.log("청소년 && 문화환경 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청소년 && 문화환경 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 청소년 && 농림축산 어업
+      if (lifecycle === "Teenager" && policy.category === "농림축산 어업") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/teenager/agriculture-livestock-fisheries?id=${id}`)
+          .then((response) => {
+            console.log("청소년 && 농림축산 어업 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청소년 && 농림축산 어업 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 청년 && 생활안정
+      if (lifecycle === "Youth" && policy.category === "생활안정") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/youth/daily-safety?id=${id}`)
+          .then((response) => {
+            console.log("청년 && 생활안정 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청년 && 생활안정 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 청년 && 주거자립
+      if (lifecycle === "Youth" && policy.category === "주거자립") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/youth/housing-self-reliance?id=${id}`)
+          .then((response) => {
+            console.log("청년 && 주거자립 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청년 && 주거자립 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 청년 && 보육교육
+      if (lifecycle === "Youth" && policy.category === "보육교육") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/youth/child-care-education?id=${id}`)
+          .then((response) => {
+            console.log("청년 && 보육교육 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청년 && 보육교육 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 청년 && 고용창업
+      if (lifecycle === "Youth" && policy.category === "고용창업") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/youth/employment-entrepreneurship?id=${id}`)
+          .then((response) => {
+            console.log("청년 && 고용창업 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청년 && 고용창업 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 청년 && 보건의료
+      if (lifecycle === "Youth" && policy.category === "보건의료") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/youth/health-care?id=${id}`)
+          .then((response) => {
+            console.log("청년 && 보건의료 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청년 && 보건의료 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 청년 && 행정안전
+      if (lifecycle === "Youth" && policy.category === "행정안전") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/youth/admin-strative-safety?id=${id}`)
+          .then((response) => {
+            console.log("청년 && 행정안전 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청년 && 행정안전 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 청년 && 임신출산
+      if (lifecycle === "Youth" && policy.category === "임신출산") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/youth/pregnancy-childbirth?id=${id}`)
+          .then((response) => {
+            console.log("청년 && 임신출산 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청년 && 임신출산 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 청년 && 보호돌봄
+      if (lifecycle === "Youth" && policy.category === "보호돌봄") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/youth/protective-care?id=${id}`)
+          .then((response) => {
+            console.log("청년 && 보호돌봄 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청년 && 보호돌봄 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 청년 && 문화환경
+      if (lifecycle === "Youth" && policy.category === "문화환경") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/youth/cultural-environment?id=${id}`)
+          .then((response) => {
+            console.log("청년 && 문화환경 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청년 && 문화환경 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 청년 && 농림축산 어업
+      if (lifecycle === "Youth" && policy.category === "농림축산 어업") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/youth/agriculture-livestock-fisheries?id=${id}`)
+          .then((response) => {
+            console.log("청년 && 농림축산 어업 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("청년 && 농림축산 어업 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 중년 && 생활안정
+      if (lifecycle === "MiddleAge" && policy.category === "생활안정") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/middle-age/daily-safety?id=${id}`)
+          .then((response) => {
+            console.log("중년 && 생활안정 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("중년 && 생활안정 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 중년 && 주거자립
+      if (lifecycle === "MiddleAge" && policy.category === "주거자립") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/middle-age/housing-self-reliance?id=${id}`)
+          .then((response) => {
+            console.log("중년 && 주거자립 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("중년 && 주거자립 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 중년 && 보육교육
+      if (lifecycle === "MiddleAge" && policy.category === "보육교육") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/middle-age/child-care-education?id=${id}`)
+          .then((response) => {
+            console.log("중년 && 보육교육 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("중년 && 보육교육 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 중년 && 고용창업
+      if (lifecycle === "MiddleAge" && policy.category === "고용창업") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/middle-age/employment-entrepreneurship?id=${id}`)
+          .then((response) => {
+            console.log("중년 && 고용창업 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("중년 && 고용창업 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 중년 && 보건의료
+      if (lifecycle === "MiddleAge" && policy.category === "보건의료") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/middle-age/health-care?id=${id}`)
+          .then((response) => {
+            console.log("중년 && 보건의료 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("중년 && 보건의료 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 중년 && 행정안전
+      if (lifecycle === "MiddleAge" && policy.category === "행정안전") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/middle-age/admin-strative-safety?id=${id}`)
+          .then((response) => {
+            console.log("중년 && 행정안전 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("중년 && 행정안전 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 중년 && 임신출산
+      if (lifecycle === "MiddleAge" && policy.category === "임신출산") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/middle-age/pregnancy-childbirth?id=${id}`)
+          .then((response) => {
+            console.log("중년 && 임신출산 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("중년 && 임신출산 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 중년 && 보호돌봄
+      if (lifecycle === "MiddleAge" && policy.category === "보호돌봄") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/middle-age/protective-care?id=${id}`)
+          .then((response) => {
+            console.log("중년 && 보호돌봄 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("중년 && 보호돌봄 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 중년 && 문화환경
+      if (lifecycle === "MiddleAge" && policy.category === "문화환경") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/middle-age/cultural-environment?id=${id}`)
+          .then((response) => {
+            console.log("중년 && 문화환경 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("중년 && 문화환경 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 중년 && 농림축산 어업
+      if (lifecycle === "MiddleAge" && policy.category === "농림축산 어업") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/middle-age/agriculture-livestock-fisheries?id=${id}`)
+          .then((response) => {
+            console.log("중년 && 농림축산 어업 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("중년 && 농림축산 어업 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 장년 && 생활안정
+      if (lifecycle === "Senior" && policy.category === "생활안정") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/senior/daily-safety?id=${id}`)
+          .then((response) => {
+            console.log("장년 && 생활안정 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("장년 && 생활안정 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 장년 && 주거자립
+      if (lifecycle === "Senior" && policy.category === "주거자립") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/senior/housing-self-reliance?id=${id}`)
+          .then((response) => {
+            console.log("장년 && 주거자립 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("장년 && 주거자립 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 장년 && 보육교육
+      if (lifecycle === "Senior" && policy.category === "보육교육") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/senior/child-care-education?id=${id}`)
+          .then((response) => {
+            console.log("장년 && 보육교육 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("장년 && 보육교육 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 장년 && 고용창업
+      if (lifecycle === "Senior" && policy.category === "고용창업") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/senior/employment-entrepreneurship?id=${id}`)
+          .then((response) => {
+            console.log("장년 && 고용창업 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("장년 && 고용창업 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 장년 && 보건의료
+      if (lifecycle === "Senior" && policy.category === "보건의료") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/senior/health-care?id=${id}`)
+          .then((response) => {
+            console.log("장년 && 보건의료 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("장년 && 보건의료 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 장년 && 행정안전
+      if (lifecycle === "Senior" && policy.category === "행정안전") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/senior/admin-strative-safety?id=${id}`)
+          .then((response) => {
+            console.log("장년 && 행정안전 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("장년 && 행정안전 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 장년 && 임신출산
+      if (lifecycle === "Senior" && policy.category === "임신출산") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/senior/pregnancy-childbirth?id=${id}`)
+          .then((response) => {
+            console.log("장년 && 임신출산 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("장년 && 임신출산 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 장년 && 보호돌봄
+      if (lifecycle === "Senior" && policy.category === "보호돌봄") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/senior/protective-care?id=${id}`)
+          .then((response) => {
+            console.log("장년 && 보호돌봄 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("장년 && 보호돌봄 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 장년 && 문화환경
+      if (lifecycle === "Senior" && policy.category === "문화환경") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/senior/cultural-environment?id=${id}`)
+          .then((response) => {
+            console.log("장년 && 문화환경 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("장년 && 문화환경 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 장년 && 농림축산 어업
+      if (lifecycle === "Senior" && policy.category === "농림축산 어업") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/senior/agriculture-livestock-fisheries?id=${id}`)
+          .then((response) => {
+            console.log("장년 && 농림축산 어업 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("장년 && 농림축산 어업 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 노년 && 생활안정
+      if (lifecycle === "Elderly" && policy.category === "생활안정") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/elderly/daily-safety?id=${id}`)
+          .then((response) => {
+            console.log("노년 && 생활안정 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("노년 && 생활안정 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 노년 && 주거자립
+      if (lifecycle === "Elderly" && policy.category === "주거자립") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/elderly/housing-self-reliance?id=${id}`)
+          .then((response) => {
+            console.log("노년 && 주거자립 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("노년 && 주거자립 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 노년 && 보육교육
+      if (lifecycle === "Elderly" && policy.category === "보육교육") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/elderly/child-care-education?id=${id}`)
+          .then((response) => {
+            console.log("노년 && 보육교육 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("노년 && 보육교육 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 노년 && 고용창업
+      if (lifecycle === "Elderly" && policy.category === "고용창업") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/elderly/employment-entrepreneurship?id=${id}`)
+          .then((response) => {
+            console.log("노년 && 고용창업 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("노년 && 고용창업 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 노년 && 보건의료
+      if (lifecycle === "Elderly" && policy.category === "보건의료") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/elderly/health-care?id=${id}`)
+          .then((response) => {
+            console.log("노년 && 보건의료 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("노년 && 보건의료 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 노년 && 행정안전
+      if (lifecycle === "Elderly" && policy.category === "행정안전") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/elderly/admin-strative-safety?id=${id}`)
+          .then((response) => {
+            console.log("노년 && 행정안전 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("노년 && 행정안전 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 노년 && 임신출산
+      if (lifecycle === "Elderly" && policy.category === "임신출산") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/elderly/pregnancy-childbirth?id=${id}`)
+          .then((response) => {
+            console.log("노년 && 임신출산 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("노년 && 임신출산 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 노년 && 보호돌봄
+      if (lifecycle === "Elderly" && policy.category === "보호돌봄") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/elderly/protective-care?id=${id}`)
+          .then((response) => {
+            console.log("노년 && 보호돌봄 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("노년 && 보호돌봄 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 노년 && 문화환경
+      if (lifecycle === "Elderly" && policy.category === "문화환경") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/elderly/cultural-environment?id=${id}`)
+          .then((response) => {
+            console.log("노년 && 문화환경 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("노년 && 문화환경 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 노년 && 농림축산 어업
+      if (lifecycle === "Elderly" && policy.category === "농림축산 어업") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/elderly/agriculture-livestock-fisheries?id=${id}`)
+          .then((response) => {
+            console.log("노년 && 농림축산 어업 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("노년 && 농림축산 어업 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 남성 && 생활안정
+      if (gender === "M" && policy.category === "생활안정") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/male/daily-safety?id=${id}`)
+          .then((response) => {
+            console.log("남성 && 생활안정 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("남성 && 생활안정 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 남성 && 주거자립
+      if (gender === "M" && policy.category === "주거자립") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/male/housing-self-reliance?id=${id}`)
+          .then((response) => {
+            console.log("남성 && 주거자립 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("남성 && 주거자립 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 남성 && 보육교육
+      if (gender === "M" && policy.category === "보육교육") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/male/child-care-education?id=${id}`)
+          .then((response) => {
+            console.log("남성 && 보육교육 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("남성 && 보육교육 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 남성 && 고용창업
+      if (gender === "M" && policy.category === "고용창업") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/male/employment-entrepreneurship?id=${id}`)
+          .then((response) => {
+            console.log("남성 && 고용창업 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("남성 && 고용창업 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 남성 && 보건의료
+      if (gender === "M" && policy.category === "보건의료") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/male/health-care?id=${id}`)
+          .then((response) => {
+            console.log("남성 && 보건의료 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("남성 && 보건의료 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 남성 && 행정안전
+      if (gender === "M" && policy.category === "행정안전") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/male/admin-strative-safety?id=${id}`)
+          .then((response) => {
+            console.log("남성 && 행정안전 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("남성 && 행정안전 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 남성 && 임신출산
+      if (gender === "M" && policy.category === "임신출산") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/male/pregnancy-childbirth?id=${id}`)
+          .then((response) => {
+            console.log("남성 && 임신출산 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("남성 && 임신출산 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 남성 && 보호돌봄
+      if (gender === "M" && policy.category === "보호돌봄") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/male/protective-care?id=${id}`)
+          .then((response) => {
+            console.log("남성 && 보호돌봄 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("남성 && 보호돌봄 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 남성 && 문화환경
+      if (gender === "M" && policy.category === "문화환경") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/male/cultural-environment?id=${id}`)
+          .then((response) => {
+            console.log("남성 && 문화환경 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("남성 && 문화환경 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 남성 && 농림축산 어업
+      if (gender === "M" && policy.category === "농림축산 어업") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/male/agriculture-livestock-fisheries?id=${id}`)
+          .then((response) => {
+            console.log("남성 && 농림축산 어업 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("남성 && 농림축산 어업 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 여성 && 생활안정
+      if (gender === "F" && policy.category === "생활안정") {
+        axios
+          .post(`/v1/subsidyCategoryViewRankings/increment/female/daily-safety?id=${id}`)
+          .then((response) => {
+            console.log("여성 && 생활안정 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("여성 && 생활안정 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 여성 && 주거자립
+      if (gender === "F" && policy.category === "주거자립") {
+        axios
+          .post(`/v1/subsidyCategoryViewRankings/increment/female/housing-self-reliance?id=${id}`)
+          .then((response) => {
+            console.log("여성 && 주거자립 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("여성 && 주거자립 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 여성 && 보육교육
+      if (gender === "F" && policy.category === "보육교육") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/female/child-care-education?id=${id}`)
+          .then((response) => {
+            console.log("여성 && 보육교육 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("여성 && 보육교육 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 여성 && 고용창업
+      if (gender === "F" && policy.category === "고용창업") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/female/employment-entrepreneurship?id=${id}`)
+          .then((response) => {
+            console.log("여성 && 고용창업 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("여성 && 고용창업 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 여성 && 보건의료
+      if (gender === "F" && policy.category === "보건의료") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/female/health-care?id=${id}`)
+          .then((response) => {
+            console.log("여성 && 보건의료 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("여성 && 보건의료 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 여성 && 행정안전
+      if (gender === "F" && policy.category === "행정안전") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/female/admin-strative-safety?id=${id}`)
+          .then((response) => {
+            console.log("여성 && 행정안전 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("여성 && 행정안전 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 여성 && 임신출산
+      if (gender === "F" && policy.category === "임신출산") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/female/pregnancy-childbirth?id=${id}`)
+          .then((response) => {
+            console.log("여성 && 임신출산 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("여성 && 임신출산 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 여성 && 보호돌봄
+      if (gender === "F" && policy.category === "보호돌봄") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/female/protective-care?id=${id}`)
+          .then((response) => {
+            console.log("여성 && 보호돌봄 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("여성 && 보호돌봄 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 여성 && 문화환경
+      if (gender === "F" && policy.category === "문화환경") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/female/cultural-environment?id=${id}`)
+          .then((response) => {
+            console.log("여성 && 문화환경 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("여성 && 문화환경 조회수 증가 실패:", error);
+          });
+      }
+
+      // 보조금 카테고리 조회수 증가 - 여성 && 농림축산 어업
+      if (gender === "F" && policy.category === "농림축산 어업") {
+        axios
+          .put(`/v1/subsidyCategoryViewRankings/increment/female/agriculture-livestock-fisheries?id=${id}`)
+          .then((response) => {
+            console.log("여성 && 농림축산 어업 조회수 증가 성공:", response);
+          })
+          .catch((error) => {
+            console.error("여성 && 농림축산 어업 조회수 증가 실패:", error);
+          });
+      }
+
+      // console.log(lifecycle);
+      // console.log(policy.category);
     }
-  }, [location.search]);
+  }, [policy]);
 
   return (
     <>
