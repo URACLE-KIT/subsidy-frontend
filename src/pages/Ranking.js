@@ -35,7 +35,6 @@ const Ranking = () => {
         // 번역된 레이블이 있으면 해당 번역 사용, 없으면 원본 레이블 사용
         const koreanLabel = keyword ? translationMap[keyword] : englishLabel;
     
-        console.log("테스트: " + koreanLabel);
         return koreanLabel;
     };
 

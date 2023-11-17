@@ -1168,7 +1168,17 @@ const Detail = () => {
             });
         }
 
-        // 보조금 카테고리 조회수 증가 - 남성 && 생활안정
+      }
+      // console.log(lifecycle);
+      // console.log(policy.category);
+    }
+  }, [policy]);
+
+
+  useEffect(() => {
+    if (policy && policy.category) {
+      const gender = M.data.storage("gender");
+      // 보조금 카테고리 조회수 증가 - 남성 && 생활안정
         if (gender === "M" && policy.category === "생활안정") {
           axios
             .put(
@@ -1447,12 +1457,9 @@ const Detail = () => {
               console.error("여성 && 농림축산 어업 조회수 증가 실패:", error);
             });
         }
-      }
-      // console.log(lifecycle);
-      // console.log(policy.category);
     }
   }, [policy]);
-
+        
   return (
     <>
       <div className="container">
