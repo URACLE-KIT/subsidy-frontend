@@ -94,7 +94,7 @@ const Modal = ({ isOpen, onClose, children }) => {
         password: password,
       };
 
-      await axios.delete("/auth/withdrawal", {
+      await axios.delete("/v1/users/delete", {
         data: data,
       });
 
