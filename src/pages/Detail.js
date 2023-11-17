@@ -1321,7 +1321,7 @@ const Detail = () => {
         // 보조금 카테고리 조회수 증가 - 여성 && 생활안정
         if (gender === "F" && policy.category === "생활안정") {
           axios
-            .post(
+            .put(
               `/v1/subsidyCategoryViewRankings/increment/female/daily-safety?id=1`
             )
             .then((response) => {
@@ -1335,7 +1335,7 @@ const Detail = () => {
         // 보조금 카테고리 조회수 증가 - 여성 && 주거자립
         if (gender === "F" && policy.category === "주거자립") {
           axios
-            .post(
+            .put(
               `/v1/subsidyCategoryViewRankings/increment/female/housing-self-reliance?id=1`
             )
             .then((response) => {
