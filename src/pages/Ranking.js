@@ -287,11 +287,6 @@ const Ranking = () => {
         <>
             <h3 style={{ textAlign: 'center' }}>랭킹알리미</h3>
 
-            <div className="container">
-                <h2>청소년이 많이 조회한 카테고리</h2>
-                <CategoryChart data={categoryData.filter(item => item.label.includes("teenager"))} />
-            </div>
-
             {M.data.storage("lifecycle") === "Teenager" && (
                 <div className="container">
                     <h2>청소년이 많이 조회한 카테고리</h2>
