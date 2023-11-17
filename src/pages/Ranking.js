@@ -13,13 +13,26 @@ const Ranking = () => {
     const [seniors, setSeniors] = useState([]);
     const [elderlies, setElderlies] = useState([]);
     const [married, setMarried] = useState([]);
+    const [categoryData, setCategoryData] = useState([]);
 
-    const data = [
-        { id: '생활안정', label: '생활안정', value: 20 },
-        { id: '주거자립', label: '주거자립', value: 40 },
-        { id: '문화환경', label: '문화환경', value: 30 },
-        { id: '기타', label: '기타', value: 15 },
-    ];
+    const transformDataForChart = (data) => {
+        return Object.keys(data).map((key) => ({
+            id: key,
+            label: key,
+            value: data[key],
+        }));
+    };
+
+    useEffect(() => {
+        axios.get("/v1/subsidyCategoryViewRankings/views?id=1")
+            .then((response) => {
+                const transformedData = transformDataForChart(response.data);
+                setCategoryData(transformedData);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
 
     // 이번주
     useEffect(() => {
@@ -254,49 +267,49 @@ const Ranking = () => {
             {M.data.storage("lifecycle") === "Teenager" && (
                 <div className="container">
                     <h2>청소년이 많이 조회한 카테고리</h2>
-                    <CategoryChart data={data} />
+                    <CategoryChart data={categoryData.filter(item => item.id.includes("teenager"))} />
                 </div>
             )}
 
             {M.data.storage("lifecycle") === "Youth" && (
                 <div className="container">
                     <h2>청년이 많이 조회한 카테고리</h2>
-                    <CategoryChart data={data} />
+                    <CategoryChart data={categoryData.filter(item => item.id.includes("youth"))} />
                 </div>
             )}
 
             {M.data.storage("lifecycle") === "MiddleAge" && (
                 <div className="container">
                     <h2>중년이 많이 조회한 카테고리</h2>
-                    <CategoryChart data={data} />
+                    <CategoryChart data={categoryData.filter(item => item.id.includes("middleAge"))} />
                 </div>
             )}
 
             {M.data.storage("lifecycle") === "Senior" && (
                 <div className="container">
                     <h2>장년이 많이 조회한 카테고리</h2>
-                    <CategoryChart data={data} />
+                    <CategoryChart data={categoryData.filter(item => item.id.includes("senior"))} />
                 </div>
             )}
 
             {M.data.storage("lifecycle") === "Elderly" && (
                 <div className="container">
                     <h2>노년이 많이 조회한 카테고리</h2>
-                    <CategoryChart data={data} />
+                    <CategoryChart data={categoryData.filter(item => item.id.includes("elderly"))} />
                 </div>
             )}
 
             {M.data.storage("gender") === "M" && (
                 <div className="container">
                     <h2>남성이 많이 조회한 카테고리</h2>
-                    <CategoryChart data={data} />
+                    <CategoryChart data={categoryData.filter(item => item.id.includes("male"))} />
                 </div>
             )}
 
             {M.data.storage("gender") === "F" && (
                 <div className="container">
                     <h2>여성이 많이 조회한 카테고리</h2>
-                    <CategoryChart data={data} />
+                    <CategoryChart data={categoryData.filter(item => item.id.includes("female"))} />
                 </div>
             )}
 
