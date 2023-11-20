@@ -335,7 +335,7 @@ header {
   border-radius: 50px;
   width: calc(50% - 20px);
   min-width: 98px;
-  margin: 10px 10px 0 10px;
+  margin: 10px 10px 0 0;
   padding: 5px 0;
   color: #6675fc;
   font-weight: 800;
@@ -359,20 +359,23 @@ header {
   color: #555;
 }
 
-.like-button{
+.like-button {
   background: transparent;
   border: 1px solid #6675fc;
   border-radius: 50px;
   width: 30%;
-  margin: 10px 10px 0 10px;
+  min-width: 60px;
+  margin: 10px 10px 0 0;
   padding: 5px 0;
   color: #6675fc;
   font-weight: 800;
 }
-.like-button:hover{
+
+.like-button:hover {
   opacity: 1;
 }
-.detail-button-group{
+
+.detail-button-group {
   display: flex;
 }
 
