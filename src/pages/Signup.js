@@ -265,7 +265,7 @@ const Signup = () => {
         <h5 style={{ margin: "0", color: "#808080"}}>*만 13세 이상만 가입할 수 있습니다.</h5>
       </label>
       <div className="birthday">
-        <select value={year} onChange={(e) => setYear(e.target.value)}>
+        <select value={year} onChange={(e) => setYear(e.target.value)} style={{ width: "75px" }}>
           {yearOptions.map((option) => (
             <option key={option} value={option}>
               {option}
@@ -273,7 +273,7 @@ const Signup = () => {
           ))}
         </select>
         &nbsp;년&nbsp;&nbsp;&nbsp;
-        <select value={month} onChange={(e) => setMonth(e.target.value)} style={{ width: "70px" }}>
+        <select value={month} onChange={(e) => setMonth(e.target.value)} style={{ width: "60px" }}>
           {monthOptions.map((option) => (
             <option key={option} value={option}>
               {option}
@@ -281,7 +281,7 @@ const Signup = () => {
           ))}
         </select>
         &nbsp;월&nbsp;&nbsp;&nbsp;
-        <select value={day} onChange={(e) => setDay(e.target.value)} style={{ width: "70px" }}>
+        <select value={day} onChange={(e) => setDay(e.target.value)} style={{ width: "60px" }}>
           {dayOptions.map((option) => (
             <option key={option} value={option}>
               {option}

@@ -108,6 +108,7 @@ const Profile = () => {
       }
 
       if (uwedding !== undefined) {
+
         data.maritalStatus = uwedding;
       } else {
         data.maritalStatus = wedding;
@@ -231,7 +232,7 @@ const Profile = () => {
       <div className="profile-field">
         <label htmlFor="birth">생년월일</label>
         <div className='birthday'>
-          <select value={birthday.year} onChange={handleYearChange}>
+          <select value={birthday.year} onChange={handleYearChange} style={{ width: "75px" }}>
             {yearOptions.map((option) => (
               <option key={option} value={option}>
                 {option}
@@ -239,7 +240,7 @@ const Profile = () => {
             ))}
           </select>
           &nbsp;년&nbsp;&nbsp;&nbsp;
-          <select value={birthday.month} onChange={handleMonthChange}>
+          <select value={birthday.month} onChange={handleMonthChange} style={{ width: "60px" }}>
             {monthOptions.map((option) => (
               <option key={option} value={option}>
                 {option}
@@ -247,7 +248,7 @@ const Profile = () => {
             ))}
           </select>
           &nbsp;월&nbsp;&nbsp;&nbsp;
-          <select value={birthday.day} onChange={handleDayChange}>
+          <select value={birthday.day} onChange={handleDayChange} style={{ width: "60px" }}>
             {dayOptions.map((option) => (
               <option key={option} value={option}>
                 {option}
