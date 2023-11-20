@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FaSearch, FaRegTimesCircle } from 'react-icons/fa';
 import { RiCloseFill } from 'react-icons/ri';
 import { useState } from 'react';
@@ -8,6 +8,7 @@ const Header = () => {
     const [searchText, setSearchText] = useState('');
     const [searchOption, setSearchOption] = useState('title');
     const navigate = useNavigate();
+    const location = useLocation();
 
     let backPressedOnce = false;
 
@@ -50,6 +51,10 @@ const Header = () => {
         setSearchOpen(false);
         setSearchText('');
     };
+
+    if (location.pathname === "/download") {
+        return null;
+    }
     
     return (
         <header>
