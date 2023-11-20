@@ -123,6 +123,7 @@ const Profile = () => {
         M.data.storage({ 'name': updatedName });
         M.data.storage({ 'birthday': updatedBirthday });
         M.data.storage({ 'maritalStatus': uwedding });
+        M.data.storage({ 'lifecycle': response.data.lifecycle });
 
         navigate('/mypage');
       }

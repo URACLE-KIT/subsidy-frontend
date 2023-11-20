@@ -1479,17 +1479,20 @@ const Detail = () => {
                 {isScrapped(policy.title) ? <FaBookmark /> : <FaRegBookmark />}
               </button>
               <div className="detail-title">{policy.title}</div>
-              <button
-                className="detail-button"
-                onClick={() => openModal("공유하기")}
-              >
-                <FaExternalLinkAlt /> 공유하기
-              </button>
-              <Link to={`/write?type=review&id=${id}`}>
-                <button className="detail-button">
-                  <FaPencilAlt /> 후기글 작성
+              <div>{policy.description}</div>
+              <div style={{ textAlign: 'center' }}>
+                <button
+                  className="detail-button"
+                  onClick={() => openModal("공유하기")}
+                >
+                  <FaExternalLinkAlt /> 공유하기
                 </button>
-              </Link>
+                <Link to={`/write?type=review&id=${id}`}>
+                  <button className="detail-button">
+                    <FaPencilAlt /> 후기글 작성
+                  </button>
+                </Link>
+              </div>
             </div>
           </>
         )}
@@ -1536,25 +1539,6 @@ const Detail = () => {
                 <span style={{ color: "#999" }}>
                   ({formatDate(review.updated_at)} 수정)
                 </span>
-              </div>
-              <div className="detail-button-group">
-                <button className="like-button" onClick={toggleLike}>
-                  {isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}
-                  &nbsp;
-                  {isLiked ? review.likes + 1 : review.likes}
-                </button>
-
-                <button
-                  className="detail-button"
-                  onClick={() => openModal("공유하기")}
-                >
-                  <FaExternalLinkAlt /> 공유하기
-                </button>
-                <Link to={`/detail?id=${review.subsidy.id}`}>
-                  <button className="detail-button">
-                    <FaPencilAlt /> 원본글 가기
-                  </button>
-                </Link>
               </div>
             </div>
           </>
@@ -1700,9 +1684,37 @@ const Detail = () => {
 
       {review && (
         <div
-          className="tab-content"
+        className="tab-content"
+        style={{
+          width: 'calc(90% - 40px)',
+          padding: '15px 20px',
+          margin: '-40px auto 0 auto',
+          borderRadius: '0 0 10px 10px'
+        }}>
+        <div
           dangerouslySetInnerHTML={{ __html: review.content }}
         />
+        
+        <div className="detail-button-group" style={{ textAlign: 'center' }}>
+                <button className="like-button" onClick={toggleLike} style={{ padding: '0' }}>
+                  {isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}
+                  &nbsp;
+                  {isLiked ? review.likes + 1 : review.likes}
+                </button>
+
+                <button
+                  className="detail-button"
+                  onClick={() => openModal("공유하기")}
+                >
+                  <FaExternalLinkAlt /> 공유하기
+                </button>
+                <Link to={`/detail?id=${review.subsidy.id}`}>
+                  <button className="detail-button">
+                    <FaPencilAlt /> 원본글 가기
+                  </button>
+                </Link>
+              </div>
+        </div>
       )}
 
       {review && (
