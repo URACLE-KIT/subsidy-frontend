@@ -9,9 +9,19 @@ const Header = () => {
     const [searchOption, setSearchOption] = useState('title');
     const navigate = useNavigate();
 
+    let backPressedOnce = false;
+
     M.onBack(function (e) {
         if (window.location.pathname === '/') {
-            M.sys.exit();
+            if (backPressedOnce) {
+                M.sys.exit();
+            } else {
+                M.pop.instance("앱을 종료하시려면 뒤로가기를 한 번 더 눌러주세요.");
+                backPressedOnce = true;
+                setTimeout(() => {
+                    backPressedOnce = false;
+                }, 3000);
+            }
         } else {
             navigate(-1);
         }
