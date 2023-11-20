@@ -1047,35 +1047,25 @@ header {
 }
 
 /* 다운로드 */
-.download-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  background-color: #f8f8f8;
-}
-
-.download-content {
-  text-align: center;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
 .download-button {
   display: inline-block;
   padding: 10px 20px;
-  margin-top: 20px;
+  margin-bottom: 20px;
   font-size: 16px;
   font-weight: bold;
   text-decoration: none;
   color: #fff;
   background-color: #007bff;
   border-radius: 5px;
-  transition: background-color 0.3s;
+  position: relative;
+  overflow: hidden;
 }
 
-.download-button:hover {
-  background-color: #0056b3;
+.download-icon {
+  margin-right: 8px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.download-button:hover .download-icon {
+  transform: translateY(50px);
 }
