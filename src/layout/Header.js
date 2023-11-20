@@ -77,7 +77,7 @@ const Header = () => {
                                 onChange={(e) => setSearchOption(e.target.value)}
                             >
                                 <option value="title">제목</option>
-                                <option value="content">내용</option>
+                                <option value="description">내용</option>
                                 <option value="category">카테고리</option>
                             </select>
                             <input
