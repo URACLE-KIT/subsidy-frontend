@@ -34,7 +34,7 @@ const Profile = () => {
     const storedGender = M.data.storage('gender');
     const storedWedding = M.data.storage('maritalStatus');
     const storedBirthday = M.data.storage('birthday');
-
+  
     if (storedId) {
       setId(storedId);
     }
@@ -49,17 +49,18 @@ const Profile = () => {
     }
     if (storedWedding) {
       setWedding(storedWedding);
-
+  
       const updatedButtons = storedWedding === 'M'
-      ? [
-          { value: "M", backgroundColor: "#dae0ff", textColor: "black" },
-          { value: "S", backgroundColor: "initial", textColor: "black" },
-        ]
-      : [
-          { value: "M", backgroundColor: "initial", textColor: "black" },
-          { value: "S", backgroundColor: "#dae0ff", textColor: "black" },
-        ];
-
+        ? [
+            { value: "M", backgroundColor: "#dae0ff", textColor: "black" },
+            { value: "S", backgroundColor: "initial", textColor: "black" },
+          ]
+        : [
+            { value: "M", backgroundColor: "initial", textColor: "black" },
+            { value: "S", backgroundColor: "#dae0ff", textColor: "black" },
+          ];
+  
+      console.log('Updated State:', updatedButtons);
       setWeddingButtons(updatedButtons);
     }
     if (storedBirthday) {
@@ -67,6 +68,7 @@ const Profile = () => {
       setBirthday({ year, month, day });
     }
   }, []);
+  
 
   const handlePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -107,6 +109,8 @@ const Profile = () => {
 
       if (uwedding) {
         data.maritalStatus = uwedding;
+      } else {
+        data.maritalStatus = wedding;
       }
 
       console.log(data);
@@ -119,7 +123,6 @@ const Profile = () => {
         M.data.storage({ 'name': updatedName });
         M.data.storage({ 'birthday': updatedBirthday });
         M.data.storage({ 'maritalStatus': uwedding });
-        M.data.storage({ 'lifecycle': response.data.lifecycle });
 
         navigate('/mypage');
       }
@@ -159,6 +162,7 @@ const Profile = () => {
   }
 
   const handleWeddingClick = async (selectedWedding) => {
+    console.log('Before State:', weddingButtons);
     setUwedding(selectedWedding);
   
     if (selectedWedding === "M") {
@@ -195,7 +199,7 @@ const Profile = () => {
           type="text"
           id="gender"
           value={gender === 'M' ? '남자' : '여자'}
-          disabled
+          // disabled
         />
       </div>
       <div className="profile-field">
