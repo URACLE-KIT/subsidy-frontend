@@ -293,49 +293,49 @@ const Ranking = () => {
             <h3 style={{ textAlign: 'center' }}>랭킹알리미</h3>
 
             {M.data.storage("lifecycle") === "Teenager" && (
-                <div className="container" style={{ padding: '0 15px'}}>
+                <div className="container">
                     <h2>청소년이 많이 조회한 카테고리</h2>
                     <CategoryChart data={categoryData.filter(item => item.label.includes("teenager"))} />
                 </div>
             )}
 
             {M.data.storage("lifecycle") === "Youth" && (
-                <div className="container" style={{ padding: '0 15px'}}>
+                <div className="container">
                     <h2>청년이 많이 조회한 카테고리</h2>
                     <CategoryChart data={categoryData.filter(item => item.label.includes("youth"))} />
                 </div>
             )}
 
             {M.data.storage("lifecycle") === "MiddleAge" && (
-                <div className="container" style={{ padding: '0 15px'}}>
+                <div className="container">
                     <h2>중년이 많이 조회한 카테고리</h2>
                     <CategoryChart data={categoryData.filter(item => item.label.includes("middleAge"))} />
                 </div>
             )}
 
             {M.data.storage("lifecycle") === "Senior" && (
-                <div className="container" style={{ padding: '0 15px'}}>
+                <div className="container">
                     <h2>장년이 많이 조회한 카테고리</h2>
                     <CategoryChart data={categoryData.filter(item => item.label.includes("senior"))} />
                 </div>
             )}
 
             {M.data.storage("lifecycle") === "Elderly" && (
-                <div className="container" style={{ padding: '0 15px'}}>
+                <div className="container">
                     <h2>노년이 많이 조회한 카테고리</h2>
                     <CategoryChart data={categoryData.filter(item => item.label.includes("elderly"))} />
                 </div>
             )}
 
             {M.data.storage("gender") === "M" && (
-                <div className="container" style={{ padding: '0 15px'}}>
+                <div className="container">
                     <h2>남성이 많이 조회한 카테고리</h2>
                     <CategoryChart data={categoryData.filter(item => item.label.includes("male") && !item.label.includes("female"))} />
                 </div>
             )}
 
             {M.data.storage("gender") === "F" && (
-                <div className="container" style={{ padding: '0 15px'}}>
+                <div className="container">
                     <h2>여성이 많이 조회한 카테고리</h2>
                     <CategoryChart data={categoryData.filter(item => item.label.includes("female"))} />
                 </div>
