@@ -338,7 +338,7 @@ const Mypage = () => {
                                 {formatDate(review.updated_at)}
                               </span>
                             </div>
-                            <div className="myreview-views"><FaRegEye />{review.views}</div>
+                            <div className="myreview-views"><FaRegEye /> {review.views}</div>
                           </div>
                         </div>
                       </div>

@@ -564,7 +564,7 @@ header {
   bottom: 0;
   left: 0;
   width: 100%;
-  font-size: 9px;
+  font-size: 8px;
 }
 
 .menu-item {
@@ -672,7 +672,7 @@ header {
   width: 30%;
   height: 60px;
   display: inline;
-  font-size: 12px;
+  font-size: 10px;
   color: black;
   background: white;
   padding: 5px 8px;
