@@ -315,7 +315,7 @@ const Modal = ({ isOpen, onClose, children }) => {
       </div>
     );
   } else if (children === "자주 묻는 질문") {
-    modalContent = <div className="content">{faqContent}</div>;
+    modalContent = <div className="content" style={{ textAlign: 'left' }}>{faqContent}</div>;
   } else if (children === "비밀번호 재설정") {
     modalContent = (
       <div className="content">
@@ -350,7 +350,6 @@ const Modal = ({ isOpen, onClose, children }) => {
   } else if (children === "이용 약관") {
     modalContent = (
       <div className="content">
-        <strong>이용 약관</strong>{" "}
         <p>
           이 앱을 다운로드하거나 사용하는 경우, 이 약관은 자동으로 적용됩니다.
           따라서 앱을 사용하기 전에 반드시 주의하여 읽어보시기 바랍니다. 앱,

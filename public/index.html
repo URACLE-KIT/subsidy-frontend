@@ -16,5 +16,16 @@
   <body>
     <div id="root"></div>
     <script src="%PUBLIC_URL%/morpheus/mcore.min.js"></script>
+    <script>
+      (function() {
+        var os = M.page.info('device.os');
+        var currentPath = window.location.pathname;
+
+        if (os !== 'Android' && currentPath !== '/download') {
+          alert('앱에서만 접속이 가능합니다.');
+          window.location.href = "/download";
+        }
+      })();
+    </script>
   </body>
 </html>

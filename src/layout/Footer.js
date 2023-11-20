@@ -1,11 +1,12 @@
 import { useState } from 'react';
 
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Modal from '../layout/Modal';
 
 const Footer = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
+  const location = useLocation();
 
   const openModal = (content) => {
     setModalContent(content);
@@ -15,6 +16,10 @@ const Footer = () => {
   const closeModal = () => {
     setModalOpen(false);
   };
+
+  if (location.pathname === "/download") {
+      return null;
+  }
 
   return (
     <>
