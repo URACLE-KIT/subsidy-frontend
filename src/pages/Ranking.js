@@ -344,10 +344,10 @@ const Ranking = () => {
                                 <div className="policy-details">
                                     <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
 
-                                        {index + 1}&nbsp; {policy.title.length > 25 ? `${policy.title.slice(0, 25)}...` : policy.title}
+                                        {index + 1}&nbsp; {policy.title.length > 18 ? `${policy.title.slice(0, 18)}...` : policy.title}
 
                                     </span>
-                                    <div className="policy-agency">{policy.description.length > 27 ? `${policy.description.slice(0, 27)}...` : policy.description}</div>
+                                    <div className="policy-agency">{policy.description.length > 23 ? `${policy.description.slice(0, 23)}...` : policy.description}</div>
                                 </div>
                             </Link>
                         </li>
@@ -365,10 +365,10 @@ const Ranking = () => {
 
                                     <div className="policy-details">
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            {index + 1}&nbsp; {teenager.title.length > 25 ? `${teenager.title.slice(0, 25)}...` : teenager.title}
+                                            {index + 1}&nbsp; {teenager.title.length > 18 ? `${teenager.title.slice(0, 18)}...` : teenager.title}
 
                                         </span>
-                                        <div className="policy-agency">{teenager.description.length > 27 ? `${teenager.description.slice(0, 27)}...` : teenager.description}</div>
+                                        <div className="policy-agency">{teenager.description.length > 23 ? `${teenager.description.slice(0, 23)}...` : teenager.description}</div>
                                     </div>
                                 </Link>
                             </li>
@@ -387,10 +387,10 @@ const Ranking = () => {
 
                                     <div className="policy-details">
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            {index + 1}&nbsp; {youth.title.length > 25 ? `${youth.title.slice(0, 25)}...` : youth.title}
+                                            {index + 1}&nbsp; {youth.title.length > 18 ? `${youth.title.slice(0, 18)}...` : youth.title}
 
                                         </span>
-                                        <div className="policy-agency">{youth.description.length > 27 ? `${youth.description.slice(0, 27)}...` : youth.description}</div>
+                                        <div className="policy-agency">{youth.description.length > 23 ? `${youth.description.slice(0, 23)}...` : youth.description}</div>
                                     </div>
                                 </Link>
                             </li>
@@ -409,10 +409,10 @@ const Ranking = () => {
 
                                     <div className="policy-details">
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            {index + 1}&nbsp; {middle.title.length > 25 ? `${middle.title.slice(0, 25)}...` : middle.title}
+                                            {index + 1}&nbsp; {middle.title.length > 18 ? `${middle.title.slice(0, 18)}...` : middle.title}
 
                                         </span>
-                                        <div className="policy-agency">{middle.description.length > 27 ? `${middle.description.slice(0, 27)}...` : middle.description}</div>
+                                        <div className="policy-agency">{middle.description.length > 23 ? `${middle.description.slice(0, 23)}...` : middle.description}</div>
                                     </div>
                                 </Link>
                             </li>
@@ -431,10 +431,10 @@ const Ranking = () => {
 
                                     <div className="policy-details">
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            {index + 1}&nbsp; {senior.title.length > 25 ? `${senior.title.slice(0, 25)}...` : senior.title}
+                                            {index + 1}&nbsp; {senior.title.length > 18 ? `${senior.title.slice(0, 18)}...` : senior.title}
 
                                         </span>
-                                        <div className="policy-agency">{senior.description.length > 27 ? `${senior.description.slice(0, 27)}...` : senior.description}</div>
+                                        <div className="policy-agency">{senior.description.length > 23 ? `${senior.description.slice(0, 23)}...` : senior.description}</div>
                                     </div>
                                 </Link>
                             </li>
@@ -453,10 +453,10 @@ const Ranking = () => {
 
                                     <div className="policy-details">
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            {index + 1}&nbsp; {elderly.title.length > 25 ? `${elderly.title.slice(0, 25)}...` : elderly.title}
+                                            {index + 1}&nbsp; {elderly.title.length > 18 ? `${elderly.title.slice(0, 18)}...` : elderly.title}
 
                                         </span>
-                                        <div className="policy-agency">{elderly.description.length > 27 ? `${elderly.description.slice(0, 27)}...` : elderly.description}</div>
+                                        <div className="policy-agency">{elderly.description.length > 23 ? `${elderly.description.slice(0, 23)}...` : elderly.description}</div>
                                     </div>
                                 </Link>
                             </li>
@@ -475,10 +475,10 @@ const Ranking = () => {
 
                                     <div className="policy-details">
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            {index + 1}&nbsp; {male.title.length > 25 ? `${male.title.slice(0, 25)}...` : male.title}
+                                            {index + 1}&nbsp; {male.title.length > 18 ? `${male.title.slice(0, 18)}...` : male.title}
 
                                         </span>
-                                        <div className="policy-agency">{male.description.length > 27 ? `${male.description.slice(0, 27)}...` : male.description}</div>
+                                        <div className="policy-agency">{male.description.length > 23 ? `${male.description.slice(0, 23)}...` : male.description}</div>
                                     </div>
                                 </Link>
                             </li>
@@ -496,9 +496,9 @@ const Ranking = () => {
                                 <Link to={`/detail?id=${female.id}`}>
                                     <div className="policy-details">
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            {index + 1}&nbsp; {female.title.length > 25 ? `${female.title.slice(0, 25)}...` : female.title}
+                                            {index + 1}&nbsp; {female.title.length > 18 ? `${female.title.slice(0, 18)}...` : female.title}
                                         </span>
-                                        <div className="policy-agency">{female.description.length > 27 ? `${female.description.slice(0, 27)}...` : female.description}</div>
+                                        <div className="policy-agency">{female.description.length > 23 ? `${female.description.slice(0, 23)}...` : female.description}</div>
                                     </div>
                                 </Link>
                             </li>
@@ -516,9 +516,9 @@ const Ranking = () => {
                                 <Link to={`/detail?id=${marry.id}`}>
                                     <div className="policy-details">
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            {index + 1}&nbsp; {marry.title.length > 25 ? `${marry.title.slice(0, 25)}...` : marry.title}
+                                            {index + 1}&nbsp; {marry.title.length > 18 ? `${marry.title.slice(0, 18)}...` : marry.title}
                                         </span>
-                                        <div className="policy-agency">{marry.description.length > 27 ? `${marry.description.slice(0, 27)}...` : marry.description}</div>
+                                        <div className="policy-agency">{marry.description.length > 23 ? `${marry.description.slice(0, 23)}...` : marry.description}</div>
                                     </div>
                                 </Link>
                             </li>
