@@ -918,11 +918,10 @@ header {
 .content {
   max-height: 60vh;
   overflow-y: auto;
-  text-align: left;
 }
 
 .content * {
-  text-align: left;
+  text-align: left !important;
   line-height: 1.5;
 }
 
