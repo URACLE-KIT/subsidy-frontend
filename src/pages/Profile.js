@@ -123,7 +123,7 @@ const Profile = () => {
         M.pop.alert('프로필이 업데이트되었습니다.');
         M.data.storage({ 'name': updatedName });
         M.data.storage({ 'birthday': updatedBirthday });
-        M.data.storage({ 'maritalStatus': uwedding });
+        M.data.storage({ 'maritalStatus': data.maritalStatus });
 
         navigate('/mypage');
       }
