@@ -67,7 +67,7 @@ const Modal = ({ isOpen, onClose, children }) => {
       const id = response.data.id;
 
       if (id) {
-        const resetLink = `http://localhost:3000/reset?id=${id}`;
+        const resetLink = `http://172.30.124.20:8080/reset?id=${id}`;
 
         const templateParams = {
           to_email: email,

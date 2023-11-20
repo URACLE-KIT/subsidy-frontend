@@ -1513,7 +1513,7 @@ const Detail = () => {
                     <FaRegCommentDots /> {comments.length}
                   </Link>
                 </span>
-                {M.data.storage("name") === review.user.name && (
+                {M.data.storage("email") === review.user.email && (
                   <>
                     <span>
                       <Link to={`/write?id=${id}&type=reviewedit`}>
@@ -1717,7 +1717,7 @@ const Detail = () => {
               />
 
               <button className="comment-btn" onClick={submitComment}>
-                전송
+                입력
               </button>
             </>
           )}
@@ -1799,7 +1799,7 @@ const Detail = () => {
                         </div>
                       )}
                       <div>
-                        {comment.user.name === M.data.storage("name") && (
+                        {comment.user.email === M.data.storage("email") && (
                           <FaEllipsisV
                             className="comment-option"
                             onClick={() =>

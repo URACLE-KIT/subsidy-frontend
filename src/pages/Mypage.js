@@ -170,7 +170,7 @@ const Mypage = () => {
         <div className="mycount">
           <Link to="/custom">
             <span>
-              맞춤 정책
+              맞춤 보조금
               <br />
               <p className="num">{total}</p>
             </span>
