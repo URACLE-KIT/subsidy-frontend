@@ -144,7 +144,7 @@ const Write = () => {
       <input type="text" id="title" placeholder="제목" />
       <ReactQuill
         id="content"
-        style={{ height: "200px" }}
+        style={{ height: "200px"}}
         value={quillValue}
         onChange={onChangeContents}
         modules={modules}
