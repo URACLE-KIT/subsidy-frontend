@@ -67,6 +67,7 @@ const Profile = () => {
       const [year, month, day] = storedBirthday.split('-');
       setBirthday({ year, month, day });
     }
+    setUwedding(null);
   }, []);
   
 
@@ -107,7 +108,7 @@ const Profile = () => {
         data.password = passwordInput.value;
       }
 
-      if (uwedding) {
+      if (uwedding !== null) {
         data.maritalStatus = uwedding;
       } else {
         data.maritalStatus = wedding;
