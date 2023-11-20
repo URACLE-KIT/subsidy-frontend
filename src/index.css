@@ -604,7 +604,7 @@ header {
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-size: 11px;
+  font-size: 10px;
   background: #eee;
   padding: 20px 0px;
   margin: 10px 0;
@@ -931,11 +931,10 @@ header {
 .content {
   max-height: 60vh;
   overflow-y: auto;
-  text-align: left;
 }
 
 .content * {
-  text-align: left;
+  text-align: left !important;
   line-height: 1.5;
 }
 
@@ -1058,4 +1057,28 @@ header {
 
 .button-container .cancel {
   background-color: #ffdbda;
+}
+
+/* 다운로드 */
+.download-button {
+  display: inline-block;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #fff;
+  background-color: #007bff;
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.download-icon {
+  margin-right: 8px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.download-button:hover .download-icon {
+  transform: translateY(50px);
 }

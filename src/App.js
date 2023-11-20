@@ -17,8 +17,7 @@ import Setting from './pages/Setting';
 import Mycustom from './pages/Mycustom';
 import Reset from './pages/Reset';
 import Ranking from './pages/Ranking';
-
-
+import Download from './pages/Download';
 
 function App() {
   return (
@@ -41,6 +40,7 @@ function App() {
           <Route path="/mycustom" element={<Mycustom />}></Route>
           <Route path="/reset" element={<Reset />}></Route>
           <Route path="/ranking" element={<Ranking />}></Route>
+          <Route path="/download" element={<Download />}></Route>
         </Routes>
         <Menu />
         <Footer />

@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import {
+  FaBookmark,
+  FaRegBookmark,
+  FaRegEye,
+  FaRegCommentDots,
+} from "react-icons/fa";
 
 const Main = () => {
   const [policies, setPolicies] = useState([]);
@@ -101,9 +107,13 @@ const Main = () => {
                     </div>
                     <div
                       className="policy-date"
-                      style={{ maxWidth: "100%", display: "inline-block" }}
+                      style={{ maxWidth: "95%", display: "inline-block" }}
                     >
                       {top4Items.application_period}
+                    </div>
+                    <div className="policy-description">
+                      <FaRegEye /> {top4Items.views}&nbsp;&nbsp;&nbsp;
+                      <FaRegCommentDots /> {top4Items.numReviews}
                     </div>
                   </div>
                 </Link>
@@ -147,7 +157,7 @@ const Main = () => {
                   <div className="policy-description">{policy.description}</div>
                   <div
                     className="policy-date"
-                    style={{ maxWidth: "100%", display: "inline-block" }}
+                    style={{ maxWidth: "95%", display: "inline-block" }}
                   >
                     {policy.application_period}
                   </div>

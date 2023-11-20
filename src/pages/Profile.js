@@ -9,7 +9,7 @@ const Profile = () => {
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState('');
   const [wedding, setWedding] = useState('');
-  const [uwedding, setUwedding] = useState("");
+  const [uwedding, setUwedding] = useState(undefined);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -67,7 +67,6 @@ const Profile = () => {
       const [year, month, day] = storedBirthday.split('-');
       setBirthday({ year, month, day });
     }
-    setUwedding(null);
   }, []);
   
 
@@ -108,7 +107,8 @@ const Profile = () => {
         data.password = passwordInput.value;
       }
 
-      if (uwedding !== null) {
+      if (uwedding !== undefined) {
+
         data.maritalStatus = uwedding;
       } else {
         data.maritalStatus = wedding;
@@ -124,6 +124,7 @@ const Profile = () => {
         M.data.storage({ 'name': updatedName });
         M.data.storage({ 'birthday': updatedBirthday });
         M.data.storage({ 'maritalStatus': data.maritalStatus });
+        M.data.storage({ 'lifecycle': response.data.lifecycle });
 
         navigate('/mypage');
       }
@@ -200,7 +201,7 @@ const Profile = () => {
           type="text"
           id="gender"
           value={gender === 'M' ? '남자' : '여자'}
-          // disabled
+          disabled
         />
       </div>
       <div className="profile-field">

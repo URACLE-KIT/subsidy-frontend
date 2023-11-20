@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FaSearch, FaRegTimesCircle } from 'react-icons/fa';
 import { RiCloseFill } from 'react-icons/ri';
 import { useState } from 'react';
@@ -8,10 +8,21 @@ const Header = () => {
     const [searchText, setSearchText] = useState('');
     const [searchOption, setSearchOption] = useState('title');
     const navigate = useNavigate();
+    const location = useLocation();
+
+    let backPressedOnce = false;
 
     M.onBack(function (e) {
         if (window.location.pathname === '/') {
-            M.sys.exit();
+            if (backPressedOnce) {
+                M.sys.exit();
+            } else {
+                M.pop.instance("앱을 종료하시려면 뒤로가기를 한 번 더 눌러주세요.");
+                backPressedOnce = true;
+                setTimeout(() => {
+                    backPressedOnce = false;
+                }, 3000);
+            }
         } else {
             navigate(-1);
         }
@@ -40,6 +51,10 @@ const Header = () => {
         setSearchOpen(false);
         setSearchText('');
     };
+
+    if (location.pathname === "/download") {
+        return null;
+    }
     
     return (
         <header>
@@ -67,7 +82,7 @@ const Header = () => {
                                 onChange={(e) => setSearchOption(e.target.value)}
                             >
                                 <option value="title">제목</option>
-                                <option value="content">내용</option>
+                                <option value="description">내용</option>
                                 <option value="category">카테고리</option>
                             </select>
                             <input

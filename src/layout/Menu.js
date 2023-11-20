@@ -9,6 +9,10 @@ const Menu = () => {
         return location.pathname === pathname;
     };
 
+    if (location.pathname === "/download") {
+        return null;
+    }
+
     return (
         <div className="menu">
             <Link to="/" className={isActive('/') ? 'active' : ''}><FiHome className="menu-icon" /><p>홈</p></Link>
