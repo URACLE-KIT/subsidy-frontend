@@ -57,7 +57,7 @@ const Header = () => {
             {isSearchOpen && (
                 <div className={`search-modal ${isSearchOpen ? 'open' : ''}`}>
                     <div className="search-content">
-                        <button onClick={closeSearch} className="close-search">
+                        <button onClick={closeSearch} className="close-search" style={{ boxShadow: 'none', width: '25px' }}>
                             <RiCloseFill />
                         </button>
                         <h3 style={{ textAlign: 'center' }}>궁금한 정책을 검색해 보세요!</h3>
