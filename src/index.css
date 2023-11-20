@@ -148,7 +148,7 @@ button:hover {
 
 .policy-item {
   margin: 10px 0;
-  padding: 15px 20px 25px 20px;
+  padding: 0px 20px 15px 20px;
   border-bottom: 1px solid #ccc;
   background-color: #fff;
 }
@@ -687,6 +687,16 @@ header {
 
 .category-icon {
   margin-bottom: 6px;
+}
+
+
+.myreview-bottom{
+  display: flex;
+}
+.myreview-views{
+  margin-left: 20px;
+  font-size: 13px;
+  color: #999;
 }
 
 /* 로그인 & 회원가입 */

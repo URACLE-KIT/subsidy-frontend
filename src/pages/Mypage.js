@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaBookmark, FaRegBookmark, FaPencilAlt } from "react-icons/fa";
+import { FaBookmark, FaRegBookmark, FaRegEye, FaPencilAlt } from "react-icons/fa";
 import { FiSettings } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -151,6 +151,15 @@ const Mypage = () => {
     return doc.body.textContent || "";
   };
 
+  const formatDate = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    };
+    return new Date(dateString).toLocaleString("ko-KR", options);
+  };
+
   return (
     <>
       <div className="container" style={{ padding: "30px 20px" }}>
@@ -249,7 +258,7 @@ const Mypage = () => {
           <div className="tab-panel">
             {userScrappedPolicies.length === 0 ? (
               <>
-                <p style={{textAlign:"center"}}>
+                <p style={{ textAlign: "center" }}>
                   관심 정책의 스크랩 버튼을 누르면 <br /> 원하는 정책을 저장하고
                   관리할 수 있어요.
                 </p>
@@ -313,14 +322,24 @@ const Mypage = () => {
                 </div>
               </>
             ) : (
-              <ul className="policy-list" style={{textAlign: "left"}}>
+              <ul className="policy-list" style={{ textAlign: "left" }}>
                 {reviews.map((review) => (
                   <li key={review.id} className="policy-item">
                     <Link to={`/detail?id=${review.id}&review`}>
                       <div className="policy-details">
-                        <div className="policy-title">{review.title}</div>
-                        <div className="policy-description">
-                          {sanitizeHtml(review.content)}
+                        <div>
+                          <div className="policy-title">{review.title}</div>
+                          <div className="policy-description">
+                            {sanitizeHtml(review.content)}
+                          </div>
+                          <div className="myreview-bottom">
+                            <div className="latest-date">
+                              <span style={{ color: "#999" }}>
+                                {formatDate(review.updated_at)}
+                              </span>
+                            </div>
+                            <div className="myreview-views"><FaRegEye />{review.views}</div>
+                          </div>
                         </div>
                       </div>
                     </Link>
@@ -347,7 +366,7 @@ const Mypage = () => {
                 </div>
               </>
             ) : (
-              <ul className="policy-list" style={{textAlign: "left"}}>
+              <ul className="policy-list" style={{ textAlign: "left" }}>
                 {reviewcomments.map((comment) => (
                   <div key={comment.id} className="policy-item">
                     <Link to={`/detail?id=${comment.reviews.id}&review`}>
@@ -355,6 +374,11 @@ const Mypage = () => {
                         <div className="policy-title">
                           {sanitizeHtml(comment.content)}
                         </div>
+                        <div className="latest-date">
+                              <span style={{ color: "#999" }}>
+                                {formatDate(comment.updated_at)}
+                              </span>
+                            </div>
                       </div>
                     </Link>
                   </div>
