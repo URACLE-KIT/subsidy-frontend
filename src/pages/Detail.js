@@ -82,22 +82,21 @@ const Detail = () => {
     setEditedComment(commentContent);
   };
 
-  const handleDeleteReview = async () => {
+  const handleDeleteReview = async (comments) => {
     const subsidyReviewId = searchParams.get("id");
     try {
-      await axios.delete(
-        `/v1/subsidies-review/delete?reviewId=${subsidyReviewId}`
-      );
-      await axios.put(
-        `/v1/subsidies/decrement-numReviews?id=${review.subsidy.id}`
-      );
-
+      comments.map((comment)=>
+        axios.delete(`/v1/subsidy-reviewcomments/delete?commentId=${comment.id}`)
+      )
+      await axios.delete(`/v1/subsidies-review/delete?reviewId=${subsidyReviewId}`);
+      await axios.put(`/v1/subsidies/decrement-numReviews?id=${review.subsidy.id}`);
+      
       M.pop.alert("삭제가 완료되었습니다.");
       navigate("/review");
     } catch (error) {
       console.error(error);
     }
-  };
+  };  
 
   const handleCancelEdit = (commentId) => {
     setEditingCommentId(null);
@@ -1521,7 +1520,7 @@ const Detail = () => {
                         <FaPencilAlt />
                       </Link>
                     </span>
-                    <span onClick={handleDeleteReview}>
+                    <span onClick={()=>handleDeleteReview(comments)}>
                       <FaRegTrashAlt />
                     </span>
                   </>
