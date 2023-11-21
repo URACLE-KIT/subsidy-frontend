@@ -30,7 +30,7 @@ const CategoryChart = ({ data }) => {
     <div style={{ height: '200px' }}>
       <ResponsivePie
         data={transformedData}
-        margin={{ top: 40, right: 110, bottom: 80, left: 110 }}
+        margin={{ top: 40, right: 60, bottom: 40, left: 60 }}
         innerRadius={0.5}
         padAngle={0.7}
         cornerRadius={3}

@@ -327,10 +327,24 @@ const Ranking = () => {
                 </div>
             )}
 
+            {!M.data.storage("token") && (
+                <div className="container">
+                    <h2>남성이 많이 조회한 카테고리</h2>
+                    <CategoryChart data={categoryData.filter(item => item.label.includes("male") && !item.label.includes("female"))} />
+                </div>
+            )}
+
             {M.data.storage("gender") === "M" && (
                 <div className="container">
                     <h2>남성이 많이 조회한 카테고리</h2>
                     <CategoryChart data={categoryData.filter(item => item.label.includes("male") && !item.label.includes("female"))} />
+                </div>
+            )}
+
+            {!M.data.storage("token") && (
+                <div className="container">
+                    <h2>여성이 많이 조회한 카테고리</h2>
+                    <CategoryChart data={categoryData.filter(item => item.label.includes("female"))} />
                 </div>
             )}
 
@@ -485,6 +499,29 @@ const Ranking = () => {
                 </div>
             )}
 
+            {!M.data.storage("token") && (
+                <div className="container">
+                    <h2>남성이 많이 조회한 보조금</h2>
+                    <ul className="policy-list">
+                        {males.map((male, index) => (
+                            <li key={male.id} className="policy-item">
+                                <Link to={`/detail?id=${male.id}`}>
+                                    <div className="policy-details">
+                                        <div className="policy-description" style={{ float: 'right', marginTop: '15px' }}>
+                                            <FaRegEye /> {male.views}
+                                        </div>
+                                        <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                            {index + 1}&nbsp; {male.title.length > 18 ? `${male.title.slice(0, 18)}...` : male.title}
+                                        </span>
+                                        <div className="policy-agency">{male.description.length > 21 ? `${male.description.slice(0, 21)}...` : male.description}</div>
+                                    </div>
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+
             {M.data.storage("gender") === "M" && (
                 <div className="container">
                     <h2>남성이 많이 조회한 보조금</h2>
@@ -500,6 +537,29 @@ const Ranking = () => {
                                             {index + 1}&nbsp; {male.title.length > 18 ? `${male.title.slice(0, 18)}...` : male.title}
                                         </span>
                                         <div className="policy-agency">{male.description.length > 21 ? `${male.description.slice(0, 21)}...` : male.description}</div>
+                                    </div>
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+
+            {!M.data.storage("token") && (
+                <div className="container">
+                    <h2>여성이 많이 조회한 보조금</h2>
+                    <ul className="policy-list">
+                        {females.map((female, index) => (
+                            <li key={female.id} className="policy-item">
+                                <Link to={`/detail?id=${female.id}`}>
+                                    <div className="policy-details">
+                                        <div className="policy-description" style={{ float: 'right', marginTop: '15px' }}>
+                                            <FaRegEye /> {female.views}
+                                        </div>
+                                        <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                            {index + 1}&nbsp; {female.title.length > 18 ? `${female.title.slice(0, 18)}...` : female.title}
+                                        </span>
+                                        <div className="policy-agency">{female.description.length > 21 ? `${female.description.slice(0, 21)}...` : female.description}</div>
                                     </div>
                                 </Link>
                             </li>
