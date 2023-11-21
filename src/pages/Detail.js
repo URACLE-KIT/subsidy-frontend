@@ -1508,7 +1508,17 @@ const Detail = () => {
                 {review.subsidy.title}
               </div>
 
-              <div className="views" style={{ float: "right" }}>
+              <div className="detail-title">{review.title}</div>
+              <div className="policy-description">
+                작성자: {review.user.name}
+              </div>
+              <div className="latest-date">
+                {formatDate(review.created_at)}{" "}
+                <span style={{ color: "#999" }}>
+                  ({formatDate(review.updated_at)} 수정)
+                </span>
+              </div>
+              <div className="views" style={{ margin: "10px 0px 0px -20px" }}>
                 <span>
                   <FaRegEye /> {review.views}
                 </span>
@@ -1529,17 +1539,6 @@ const Detail = () => {
                     </span>
                   </>
                 )}
-              </div>
-
-              <div className="detail-title">{review.title}</div>
-              <div className="policy-description">
-                작성자: {review.user.name}
-              </div>
-              <div className="latest-date">
-                {formatDate(review.created_at)}{" "}
-                <span style={{ color: "#999" }}>
-                  ({formatDate(review.updated_at)} 수정)
-                </span>
               </div>
             </div>
           </>
@@ -1652,9 +1651,11 @@ const Detail = () => {
                     <BsLink45Deg />
                     &nbsp;&nbsp; 상세정보
                   </span>
-                  <Link to={policy.detail_information_url}>
+                  <span onClick={()=>{
+                    M.apps.browser(policy.detail_information_url, "UTF-8");
+                  }}>
                     바로가기 <BsBoxArrowUpRight />
-                  </Link>
+                  </span>
                 </div>
               </div>
             )}
@@ -1666,9 +1667,11 @@ const Detail = () => {
                     <BsPersonFill />
                     &nbsp;&nbsp; 신청방법
                   </span>
-                  <Link to={policy.application_process_url}>
-                    {policy.application_process} <BsBoxArrowUpRight />
-                  </Link>
+                  <span onClick={()=>{
+                    M.apps.browser(policy.detail_information_url, "UTF-8");
+                  }}>
+                    바로가기 <BsBoxArrowUpRight />
+                  </span>
                 </div>
                 <div className="tab-item">
                   <span className="sub-title">
