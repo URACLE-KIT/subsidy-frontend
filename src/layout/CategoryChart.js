@@ -1,14 +1,43 @@
 import React from 'react';
 import { ResponsivePie } from '@nivo/pie';
+const toKorean = (englishLabel) => {
+  const translationMap = {
+      PregnancyChildbirth: '임신출산',
+      HousingSelfReliance: '주거자립',
+      EmploymentEntrepreneurship: '고용창업',
+      AdminStrativeSafety: '행정안전',
+      CulturalEnvironment: '문화환경',
+      AgricultureLivestockFisheries: '농림축산어업',
+      ChildCareEducation: '보육교육',
+      DailySafety: '생활안정',
+      ProtectiveCare: '보호돌봄',
+      HealthCare: '보건의료'
+  };
+
+  // 영어 레이블에서 키워드 추출
+  const keyword = Object.keys(translationMap).find((key) => englishLabel.includes(key));
+
+  // 번역된 레이블이 있으면 해당 번역 사용, 없으면 원본 레이블 사용
+  const koreanLabel = keyword ? translationMap[keyword] : englishLabel;
+
+  return koreanLabel;
+};
 
 const transformData = (data) => {
   const clonedData = [...data];
+  console.log(clonedData);
+  
+  // 클론된 데이터 매핑 및 id 값을 한글 번역으로 업데이트
+  const translatedData = clonedData.map(entry => ({
+    ...entry,
+    id: toKorean(entry.id),
+  }));
+  
+  translatedData.sort((a, b) => b.value - a.value);
 
-  clonedData.sort((a, b) => b.value - a.value);
+  const otherSum = translatedData.slice(3).reduce((acc, entry) => acc + entry.value, 0);
 
-  const otherSum = clonedData.slice(3).reduce((acc, entry) => acc + entry.value, 0);
-
-  const transformedData = clonedData.slice(0, 3).concat({
+  const transformedData = translatedData.slice(0, 3).concat({
     id: '기타',
     value: otherSum,
   });
@@ -21,7 +50,7 @@ const transformData = (data) => {
   }));
 
   return finalData;
-};
+}; 
 
 const CategoryChart = ({ data }) => {
   const transformedData = transformData(data);
