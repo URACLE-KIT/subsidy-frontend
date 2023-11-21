@@ -259,7 +259,7 @@ const Custom = () => {
           .map((policy) => (
             <li key={policy.id} className="policy-item">
               <Link to={`/detail?id=${policy.id}`}>
-                <button
+                {userId !== "" ? <button
                   style={{ boxShadow: "none", width: "auto", marginTop: 0 }}
                   className="bookmark-button"
                   onClick={(e) => {
@@ -268,7 +268,8 @@ const Custom = () => {
                   }}
                 >
                   {isScrapped(policy.id) ? <FaBookmark /> : <FaRegBookmark />}
-                </button>
+                </button>: <></>}
+                
                 <div className="policy-details">
                   <div className="policy-agency">{policy.receiving_agency}</div>
                   <div className="policy-title">{policy.title}</div>
