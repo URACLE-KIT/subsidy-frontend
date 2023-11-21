@@ -2,6 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import CategoryChart from '../layout/CategoryChart';
+import {
+  FaBookmark,
+  FaRegBookmark,
+  FaRegEye,
+  FaRegCommentDots,
+} from "react-icons/fa";
 
 const Ranking = () => {
     const [policies, setPolicies] = useState([]);
@@ -321,10 +327,24 @@ const Ranking = () => {
                 </div>
             )}
 
+            {!M.data.storage("token") && (
+                <div className="container">
+                    <h2>남성이 많이 조회한 카테고리</h2>
+                    <CategoryChart data={categoryData.filter(item => item.label.includes("male") && !item.label.includes("female"))} />
+                </div>
+            )}
+
             {M.data.storage("gender") === "M" && (
                 <div className="container">
                     <h2>남성이 많이 조회한 카테고리</h2>
                     <CategoryChart data={categoryData.filter(item => item.id.includes("male") && !item.id.includes("female"))} />
+                </div>
+            )}
+
+            {!M.data.storage("token") && (
+                <div className="container">
+                    <h2>여성이 많이 조회한 카테고리</h2>
+                    <CategoryChart data={categoryData.filter(item => item.label.includes("female"))} />
                 </div>
             )}
 
@@ -342,12 +362,15 @@ const Ranking = () => {
                         <li key={policy.id} className="policy-item">
                             <Link to={`/detail?id=${policy.id}`}>
                                 <div className="policy-details">
+                                    <div className="policy-description" style={{ float: 'right', marginTop: '15px' }}>
+                                        <FaRegEye /> {policy.views}
+                                    </div>
                                     <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
 
                                         {index + 1}&nbsp; {policy.title.length > 18 ? `${policy.title.slice(0, 18)}...` : policy.title}
 
                                     </span>
-                                    <div className="policy-agency">{policy.description.length > 23 ? `${policy.description.slice(0, 23)}...` : policy.description}</div>
+                                    <div className="policy-agency">{policy.description.length > 21 ? `${policy.description.slice(0, 21)}...` : policy.description}</div>
                                 </div>
                             </Link>
                         </li>
@@ -364,11 +387,14 @@ const Ranking = () => {
                                 <Link to={`/detail?id=${teenager.id}`}>
 
                                     <div className="policy-details">
+                                        <div className="policy-description" style={{ float: 'right', marginTop: '15px' }}>
+                                            <FaRegEye /> {teenager.views}
+                                        </div>
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                             {index + 1}&nbsp; {teenager.title.length > 18 ? `${teenager.title.slice(0, 18)}...` : teenager.title}
 
                                         </span>
-                                        <div className="policy-agency">{teenager.description.length > 23 ? `${teenager.description.slice(0, 23)}...` : teenager.description}</div>
+                                        <div className="policy-agency">{teenager.description.length > 21 ? `${teenager.description.slice(0, 21)}...` : teenager.description}</div>
                                     </div>
                                 </Link>
                             </li>
@@ -386,11 +412,13 @@ const Ranking = () => {
                                 <Link to={`/detail?id=${youth.id}`}>
 
                                     <div className="policy-details">
+                                        <div className="policy-description" style={{ float: 'right', marginTop: '15px' }}>
+                                            <FaRegEye /> {youth.views}
+                                        </div>
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                             {index + 1}&nbsp; {youth.title.length > 18 ? `${youth.title.slice(0, 18)}...` : youth.title}
-
                                         </span>
-                                        <div className="policy-agency">{youth.description.length > 23 ? `${youth.description.slice(0, 23)}...` : youth.description}</div>
+                                        <div className="policy-agency">{youth.description.length > 21 ? `${youth.description.slice(0, 21)}...` : youth.description}</div>
                                     </div>
                                 </Link>
                             </li>
@@ -408,11 +436,13 @@ const Ranking = () => {
                                 <Link to={`/detail?id=${middle.id}`}>
 
                                     <div className="policy-details">
+                                        <div className="policy-description" style={{ float: 'right', marginTop: '15px' }}>
+                                            <FaRegEye /> {middle.views}
+                                        </div>
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                             {index + 1}&nbsp; {middle.title.length > 18 ? `${middle.title.slice(0, 18)}...` : middle.title}
-
                                         </span>
-                                        <div className="policy-agency">{middle.description.length > 23 ? `${middle.description.slice(0, 23)}...` : middle.description}</div>
+                                        <div className="policy-agency">{middle.description.length > 21 ? `${middle.description.slice(0, 21)}...` : middle.description}</div>
                                     </div>
                                 </Link>
                             </li>
@@ -430,11 +460,13 @@ const Ranking = () => {
                                 <Link to={`/detail?id=${senior.id}`}>
 
                                     <div className="policy-details">
+                                        <div className="policy-description" style={{ float: 'right', marginTop: '15px' }}>
+                                            <FaRegEye /> {senior.views}
+                                        </div>
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                             {index + 1}&nbsp; {senior.title.length > 18 ? `${senior.title.slice(0, 18)}...` : senior.title}
-
                                         </span>
-                                        <div className="policy-agency">{senior.description.length > 23 ? `${senior.description.slice(0, 23)}...` : senior.description}</div>
+                                        <div className="policy-agency">{senior.description.length > 21 ? `${senior.description.slice(0, 21)}...` : senior.description}</div>
                                     </div>
                                 </Link>
                             </li>
@@ -452,11 +484,36 @@ const Ranking = () => {
                                 <Link to={`/detail?id=${elderly.id}`}>
 
                                     <div className="policy-details">
+                                        <div className="policy-description" style={{ float: 'right', marginTop: '15px' }}>
+                                            <FaRegEye /> {elderly.views}
+                                        </div>
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                             {index + 1}&nbsp; {elderly.title.length > 18 ? `${elderly.title.slice(0, 18)}...` : elderly.title}
-
                                         </span>
-                                        <div className="policy-agency">{elderly.description.length > 23 ? `${elderly.description.slice(0, 23)}...` : elderly.description}</div>
+                                        <div className="policy-agency">{elderly.description.length > 21 ? `${elderly.description.slice(0, 21)}...` : elderly.description}</div>
+                                    </div>
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+
+            {!M.data.storage("token") && (
+                <div className="container">
+                    <h2>남성이 많이 조회한 보조금</h2>
+                    <ul className="policy-list">
+                        {males.map((male, index) => (
+                            <li key={male.id} className="policy-item">
+                                <Link to={`/detail?id=${male.id}`}>
+                                    <div className="policy-details">
+                                        <div className="policy-description" style={{ float: 'right', marginTop: '15px' }}>
+                                            <FaRegEye /> {male.views}
+                                        </div>
+                                        <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                            {index + 1}&nbsp; {male.title.length > 18 ? `${male.title.slice(0, 18)}...` : male.title}
+                                        </span>
+                                        <div className="policy-agency">{male.description.length > 21 ? `${male.description.slice(0, 21)}...` : male.description}</div>
                                     </div>
                                 </Link>
                             </li>
@@ -472,13 +529,37 @@ const Ranking = () => {
                         {males.map((male, index) => (
                             <li key={male.id} className="policy-item">
                                 <Link to={`/detail?id=${male.id}`}>
-
                                     <div className="policy-details">
+                                        <div className="policy-description" style={{ float: 'right', marginTop: '15px' }}>
+                                            <FaRegEye /> {male.views}
+                                        </div>
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                             {index + 1}&nbsp; {male.title.length > 18 ? `${male.title.slice(0, 18)}...` : male.title}
-
                                         </span>
-                                        <div className="policy-agency">{male.description.length > 23 ? `${male.description.slice(0, 23)}...` : male.description}</div>
+                                        <div className="policy-agency">{male.description.length > 21 ? `${male.description.slice(0, 21)}...` : male.description}</div>
+                                    </div>
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+
+            {!M.data.storage("token") && (
+                <div className="container">
+                    <h2>여성이 많이 조회한 보조금</h2>
+                    <ul className="policy-list">
+                        {females.map((female, index) => (
+                            <li key={female.id} className="policy-item">
+                                <Link to={`/detail?id=${female.id}`}>
+                                    <div className="policy-details">
+                                        <div className="policy-description" style={{ float: 'right', marginTop: '15px' }}>
+                                            <FaRegEye /> {female.views}
+                                        </div>
+                                        <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                            {index + 1}&nbsp; {female.title.length > 18 ? `${female.title.slice(0, 18)}...` : female.title}
+                                        </span>
+                                        <div className="policy-agency">{female.description.length > 21 ? `${female.description.slice(0, 21)}...` : female.description}</div>
                                     </div>
                                 </Link>
                             </li>
@@ -495,10 +576,13 @@ const Ranking = () => {
                             <li key={female.id} className="policy-item">
                                 <Link to={`/detail?id=${female.id}`}>
                                     <div className="policy-details">
+                                        <div className="policy-description" style={{ float: 'right', marginTop: '15px' }}>
+                                            <FaRegEye /> {female.views}
+                                        </div>
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                             {index + 1}&nbsp; {female.title.length > 18 ? `${female.title.slice(0, 18)}...` : female.title}
                                         </span>
-                                        <div className="policy-agency">{female.description.length > 23 ? `${female.description.slice(0, 23)}...` : female.description}</div>
+                                        <div className="policy-agency">{female.description.length > 21 ? `${female.description.slice(0, 21)}...` : female.description}</div>
                                     </div>
                                 </Link>
                             </li>
@@ -515,10 +599,13 @@ const Ranking = () => {
                             <li key={marry.id} className="policy-item">
                                 <Link to={`/detail?id=${marry.id}`}>
                                     <div className="policy-details">
+                                        <div className="policy-description" style={{ float: 'right', marginTop: '15px' }}>
+                                            <FaRegEye /> {marry.views}
+                                        </div>
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                             {index + 1}&nbsp; {marry.title.length > 18 ? `${marry.title.slice(0, 18)}...` : marry.title}
                                         </span>
-                                        <div className="policy-agency">{marry.description.length > 23 ? `${marry.description.slice(0, 23)}...` : marry.description}</div>
+                                        <div className="policy-agency">{marry.description.length > 21 ? `${marry.description.slice(0, 21)}...` : marry.description}</div>
                                     </div>
                                 </Link>
                             </li>

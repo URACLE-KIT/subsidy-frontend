@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useId } from "react";
 import axios from "axios";
 import {
   FaBookmark,
@@ -1471,13 +1471,14 @@ const Detail = () => {
                   <FaRegCommentDots /> {policy.numReviews}
                 </Link>
               </div>
-              <button
+              {userId !== "" ? <button
                 className="bookmark-button"
                 onClick={toggleBookmark}
                 style={{ boxShadow: "none", width: "auto", marginTop: "-50px" }}
               >
                 {isScrapped(policy.title) ? <FaBookmark /> : <FaRegBookmark />}
-              </button>
+              </button>: <></>}
+              
               <div className="detail-title">{policy.title}</div>
               <div>{policy.description}</div>
               <div style={{ textAlign: 'center' }}>

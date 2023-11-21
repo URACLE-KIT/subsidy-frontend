@@ -1,7 +1,8 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FaSearch, FaRegTimesCircle } from 'react-icons/fa';
 import { RiCloseFill } from 'react-icons/ri';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+const event = new Event('onBack');
 
 const Header = () => {
     const [isSearchOpen, setSearchOpen] = useState(false);
@@ -9,24 +10,29 @@ const Header = () => {
     const [searchOption, setSearchOption] = useState('title');
     const navigate = useNavigate();
     const location = useLocation();
-
     let backPressedOnce = false;
-
-    M.onBack(function (e) {
-        if (window.location.pathname === '/') {
-            if (backPressedOnce) {
-                M.sys.exit();
+    
+    useEffect(() => {
+        const handleOnBack = () => {
+            if (window.location.pathname === '/') {
+                if (backPressedOnce) {
+                    M.sys.exit();
+                } else {
+                    M.pop.instance("앱을 종료하시려면 뒤로가기를 한 번 더 눌러주세요.");
+                    backPressedOnce = true;
+                    setTimeout(() => {
+                        backPressedOnce = false;
+                    }, 3000);
+                }
             } else {
-                M.pop.instance("앱을 종료하시려면 뒤로가기를 한 번 더 눌러주세요.");
-                backPressedOnce = true;
-                setTimeout(() => {
-                    backPressedOnce = false;
-                }, 3000);
+                navigate(-1);
             }
-        } else {
-            navigate(-1);
         }
-    });
+        window.addEventListener('onBack', handleOnBack)
+        return () => {
+          window.removeEventListener('onBack', handleOnBack)
+        }
+      })
 
     const toggleSearch = () => {
         setSearchOpen(!isSearchOpen);
@@ -55,7 +61,7 @@ const Header = () => {
     if (location.pathname === "/download") {
         return null;
     }
-    
+
     return (
         <header>
             <div className="title">
