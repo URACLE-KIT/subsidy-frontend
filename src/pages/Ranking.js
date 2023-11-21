@@ -330,7 +330,7 @@ const Ranking = () => {
             {!M.data.storage("token") && (
                 <div className="container">
                     <h2>남성이 많이 조회한 카테고리</h2>
-                    <CategoryChart data={categoryData.filter(item => item.label.includes("male") && !item.label.includes("female"))} />
+                    <CategoryChart data={categoryData.filter(item => item.id.includes("male") && !item.id.includes("female"))} />
                 </div>
             )}
 
@@ -344,7 +344,7 @@ const Ranking = () => {
             {!M.data.storage("token") && (
                 <div className="container">
                     <h2>여성이 많이 조회한 카테고리</h2>
-                    <CategoryChart data={categoryData.filter(item => item.label.includes("female"))} />
+                    <CategoryChart data={categoryData.filter(item => item.id.includes("female"))} />
                 </div>
             )}
 
