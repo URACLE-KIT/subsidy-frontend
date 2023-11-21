@@ -124,7 +124,7 @@ const Profile = () => {
         M.data.storage({ 'name': updatedName });
         M.data.storage({ 'birthday': updatedBirthday });
         M.data.storage({ 'maritalStatus': data.maritalStatus });
-        M.data.storage({ 'lifecycle': response.data.lifecycle });
+        M.data.storage({ 'lifecycle': data.lifecycle });
 
         navigate('/mypage');
       }
