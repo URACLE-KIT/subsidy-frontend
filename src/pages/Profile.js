@@ -108,17 +108,14 @@ const Profile = () => {
       }
 
       if (uwedding !== undefined) {
-
         data.maritalStatus = uwedding;
       } else {
         data.maritalStatus = wedding;
       }
 
-      console.log(data);
-
       const response = await axios.patch(`/v1/users/update?id=${id}`, data);
 
-      M.pop.alert(data.lifecycle);
+      console.log("테스트:", response.data);
 
       if (response.status === 200) {
         console.log(new Date());
