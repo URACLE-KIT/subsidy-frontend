@@ -94,23 +94,18 @@ const Modal = ({ isOpen, onClose, children }) => {
   };
 
   const handleWithdrawal = async () => {
+    const storedId = M.data.storage("id");
+  
     try {
-      const data = {
-        email: email,
-        password: password,
-      };
-
-      await axios.delete("/auth/withdrawal", {
-        data: data,
-      });
-
+      await axios.delete(`/v1/users/delete?userId=${storedId}`);
+  
       M.data.removeStorage();
       M.pop.alert("회원 탈퇴가 완료되었습니다.");
       navigate("/required");
     } catch (error) {
       console.error(error);
     }
-  };
+  };  
 
   const faqItems = [
     {
@@ -334,14 +329,7 @@ const Modal = ({ isOpen, onClose, children }) => {
   } else if (children === "회원 탈퇴") {
     modalContent = (
       <div className="content">
-        <p>정말 탈퇴하시려면 비밀번호를 입력해 주세요.</p>
-        <input
-          style={{ width: "calc(100% - 40px)" }}
-          placeholder="비밀번호 입력"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <p>정말 탈퇴하시려면 회원 탈퇴 버튼을 눌러주세요.</p>
         <button style={{ margin: "0 0 20px 0" }} onClick={handleWithdrawal}>
           회원 탈퇴
         </button>
