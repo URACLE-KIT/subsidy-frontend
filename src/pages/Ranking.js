@@ -367,10 +367,10 @@ const Ranking = () => {
                                     </div>
                                     <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
 
-                                        {index + 1}&nbsp; {policy.title.length > 18 ? `${policy.title.slice(0, 18)}...` : policy.title}
+                                        {index + 1}&nbsp; {policy.title.length > 16 ? `${policy.title.slice(0, 16)}...` : policy.title}
 
                                     </span>
-                                    <div className="policy-agency">{policy.description.length > 21 ? `${policy.description.slice(0, 21)}...` : policy.description}</div>
+                                    <div className="policy-agency">{policy.description.length > 19 ? `${policy.description.slice(0, 19)}...` : policy.description}</div>
                                 </div>
                             </Link>
                         </li>
@@ -391,10 +391,10 @@ const Ranking = () => {
                                             <FaRegEye /> {teenager.views}
                                         </div>
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            {index + 1}&nbsp; {teenager.title.length > 18 ? `${teenager.title.slice(0, 18)}...` : teenager.title}
+                                            {index + 1}&nbsp; {teenager.title.length > 16 ? `${teenager.title.slice(0, 16)}...` : teenager.title}
 
                                         </span>
-                                        <div className="policy-agency">{teenager.description.length > 21 ? `${teenager.description.slice(0, 21)}...` : teenager.description}</div>
+                                        <div className="policy-agency">{teenager.description.length > 19 ? `${teenager.description.slice(0, 19)}...` : teenager.description}</div>
                                     </div>
                                 </Link>
                             </li>
@@ -416,9 +416,9 @@ const Ranking = () => {
                                             <FaRegEye /> {youth.views}
                                         </div>
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            {index + 1}&nbsp; {youth.title.length > 18 ? `${youth.title.slice(0, 18)}...` : youth.title}
+                                            {index + 1}&nbsp; {youth.title.length > 16 ? `${youth.title.slice(0, 16)}...` : youth.title}
                                         </span>
-                                        <div className="policy-agency">{youth.description.length > 21 ? `${youth.description.slice(0, 21)}...` : youth.description}</div>
+                                        <div className="policy-agency">{youth.description.length > 19 ? `${youth.description.slice(0, 19)}...` : youth.description}</div>
                                     </div>
                                 </Link>
                             </li>
@@ -440,9 +440,9 @@ const Ranking = () => {
                                             <FaRegEye /> {middle.views}
                                         </div>
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            {index + 1}&nbsp; {middle.title.length > 18 ? `${middle.title.slice(0, 18)}...` : middle.title}
+                                            {index + 1}&nbsp; {middle.title.length > 16 ? `${middle.title.slice(0, 16)}...` : middle.title}
                                         </span>
-                                        <div className="policy-agency">{middle.description.length > 21 ? `${middle.description.slice(0, 21)}...` : middle.description}</div>
+                                        <div className="policy-agency">{middle.description.length > 19 ? `${middle.description.slice(0, 19)}...` : middle.description}</div>
                                     </div>
                                 </Link>
                             </li>
@@ -464,9 +464,9 @@ const Ranking = () => {
                                             <FaRegEye /> {senior.views}
                                         </div>
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            {index + 1}&nbsp; {senior.title.length > 18 ? `${senior.title.slice(0, 18)}...` : senior.title}
+                                            {index + 1}&nbsp; {senior.title.length > 16 ? `${senior.title.slice(0, 16)}...` : senior.title}
                                         </span>
-                                        <div className="policy-agency">{senior.description.length > 21 ? `${senior.description.slice(0, 21)}...` : senior.description}</div>
+                                        <div className="policy-agency">{senior.description.length > 19 ? `${senior.description.slice(0, 19)}...` : senior.description}</div>
                                     </div>
                                 </Link>
                             </li>
@@ -488,9 +488,9 @@ const Ranking = () => {
                                             <FaRegEye /> {elderly.views}
                                         </div>
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            {index + 1}&nbsp; {elderly.title.length > 18 ? `${elderly.title.slice(0, 18)}...` : elderly.title}
+                                            {index + 1}&nbsp; {elderly.title.length > 16 ? `${elderly.title.slice(0, 16)}...` : elderly.title}
                                         </span>
-                                        <div className="policy-agency">{elderly.description.length > 21 ? `${elderly.description.slice(0, 21)}...` : elderly.description}</div>
+                                        <div className="policy-agency">{elderly.description.length > 19 ? `${elderly.description.slice(0, 19)}...` : elderly.description}</div>
                                     </div>
                                 </Link>
                             </li>
@@ -511,9 +511,9 @@ const Ranking = () => {
                                             <FaRegEye /> {male.views}
                                         </div>
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            {index + 1}&nbsp; {male.title.length > 18 ? `${male.title.slice(0, 18)}...` : male.title}
+                                            {index + 1}&nbsp; {male.title.length > 16 ? `${male.title.slice(0, 16)}...` : male.title}
                                         </span>
-                                        <div className="policy-agency">{male.description.length > 21 ? `${male.description.slice(0, 21)}...` : male.description}</div>
+                                        <div className="policy-agency">{male.description.length > 19 ? `${male.description.slice(0, 19)}...` : male.description}</div>
                                     </div>
                                 </Link>
                             </li>
@@ -534,9 +534,9 @@ const Ranking = () => {
                                             <FaRegEye /> {male.views}
                                         </div>
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            {index + 1}&nbsp; {male.title.length > 18 ? `${male.title.slice(0, 18)}...` : male.title}
+                                            {index + 1}&nbsp; {male.title.length > 16 ? `${male.title.slice(0, 16)}...` : male.title}
                                         </span>
-                                        <div className="policy-agency">{male.description.length > 21 ? `${male.description.slice(0, 21)}...` : male.description}</div>
+                                        <div className="policy-agency">{male.description.length > 19 ? `${male.description.slice(0, 19)}...` : male.description}</div>
                                     </div>
                                 </Link>
                             </li>
@@ -557,9 +557,9 @@ const Ranking = () => {
                                             <FaRegEye /> {female.views}
                                         </div>
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            {index + 1}&nbsp; {female.title.length > 18 ? `${female.title.slice(0, 18)}...` : female.title}
+                                            {index + 1}&nbsp; {female.title.length > 16 ? `${female.title.slice(0, 16)}...` : female.title}
                                         </span>
-                                        <div className="policy-agency">{female.description.length > 21 ? `${female.description.slice(0, 21)}...` : female.description}</div>
+                                        <div className="policy-agency">{female.description.length > 19 ? `${female.description.slice(0, 19)}...` : female.description}</div>
                                     </div>
                                 </Link>
                             </li>
@@ -580,9 +580,9 @@ const Ranking = () => {
                                             <FaRegEye /> {female.views}
                                         </div>
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            {index + 1}&nbsp; {female.title.length > 18 ? `${female.title.slice(0, 18)}...` : female.title}
+                                            {index + 1}&nbsp; {female.title.length > 16 ? `${female.title.slice(0, 16)}...` : female.title}
                                         </span>
-                                        <div className="policy-agency">{female.description.length > 21 ? `${female.description.slice(0, 21)}...` : female.description}</div>
+                                        <div className="policy-agency">{female.description.length > 19 ? `${female.description.slice(0, 19)}...` : female.description}</div>
                                     </div>
                                 </Link>
                             </li>
@@ -603,9 +603,9 @@ const Ranking = () => {
                                             <FaRegEye /> {marry.views}
                                         </div>
                                         <span className="policy-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            {index + 1}&nbsp; {marry.title.length > 18 ? `${marry.title.slice(0, 18)}...` : marry.title}
+                                            {index + 1}&nbsp; {marry.title.length > 16 ? `${marry.title.slice(0, 16)}...` : marry.title}
                                         </span>
-                                        <div className="policy-agency">{marry.description.length > 21 ? `${marry.description.slice(0, 21)}...` : marry.description}</div>
+                                        <div className="policy-agency">{marry.description.length > 19 ? `${marry.description.slice(0, 19)}...` : marry.description}</div>
                                     </div>
                                 </Link>
                             </li>
