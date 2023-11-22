@@ -118,13 +118,15 @@ const Profile = () => {
 
       const response = await axios.patch(`/v1/users/update?id=${id}`, data);
 
+      M.pop.alert(data.lifecycle);
+
       if (response.status === 200) {
         console.log(new Date());
         M.pop.alert('프로필이 업데이트되었습니다.');
         M.data.storage({ 'name': updatedName });
         M.data.storage({ 'birthday': updatedBirthday });
-        M.data.storage({ 'maritalStatus': data.maritalStatus });
-        M.data.storage({ 'lifecycle': data.lifecycle });
+        M.data.storage({ 'maritalStatus': response.data.maritalStatus });
+        M.data.storage({ 'lifecycle': response.data.lifecycle });
 
         navigate('/mypage');
       }
